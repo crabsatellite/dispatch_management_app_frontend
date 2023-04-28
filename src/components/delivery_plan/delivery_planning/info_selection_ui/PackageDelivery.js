@@ -18,7 +18,15 @@ const PackageDelivery = ({dispatcher, deliveryState, setDeliveryState, setTabKey
         );
 
     } else if (deliveryState == DISPATCH_STATE.DELIVER_PREPARATION) {
-        return (<Button type="primary" onClick={() => {setDeliveryState(DISPATCH_STATE.DELIVER_PROCESSING)}}>Auto Dispatch</Button>);
+
+        return (<Card
+                    title="DELIVERY INFORMATION"
+                    style={{width: 1000, left: 20}}
+                >
+                    <Button type="primary" onClick={() => {setDeliveryState(DISPATCH_STATE.DELIVER_PROCESSING)}}>Auto Dispatch</Button>
+                    <Image className="image" width={200} src={"./delivery_box.png"}/>
+                </Card>
+        );
     }
 
     return (<Card

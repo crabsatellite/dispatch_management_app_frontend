@@ -12,14 +12,14 @@ const DeliveryPlanSelectionController = ({dispatcher, setDispatcher, deliverySta
 
     const steps = [
         {
-            title: 'Package Pick-up',
-            content: <PackagePickupStep dispatcher={dispatcher} deliveryState={deliveryState} setDispatcher={setDispatcher} setDeliveryState={setDeliveryState} setDeliveryStartLocationKey={setDeliveryStartLocationKey}></PackagePickupStep>,
-            icon: <AimOutlined />,
-        },
-        {
             title: 'Package Information',
             content: <PackageInformationStep />,
             icon: <CodeSandboxOutlined />,
+        },
+        {
+            title: 'Package Pick-up',
+            content: <PackagePickupStep dispatcher={dispatcher} deliveryState={deliveryState} setDispatcher={setDispatcher} setDeliveryState={setDeliveryState} setDeliveryStartLocationKey={setDeliveryStartLocationKey}></PackagePickupStep>,
+            icon: <AimOutlined />,
         },
         {
             title: 'Package Delivery',
@@ -47,7 +47,7 @@ const DeliveryPlanSelectionController = ({dispatcher, setDispatcher, deliverySta
   };
 
   useEffect(() => {
-    if (current === 0 && deliveryState == DISPATCH_STATE.DELIVER_PREPARATION) {
+    if (current === 1 && deliveryState == DISPATCH_STATE.DELIVER_PREPARATION) {
       next();
     }
     if (current === 2 && deliveryState == DISPATCH_STATE.RESET_ROUTE) {
@@ -62,16 +62,25 @@ const DeliveryPlanSelectionController = ({dispatcher, setDispatcher, deliverySta
       <Steps current={current} items={items} />
       <div style={contentStyle}>{steps[current].content}</div>
       <div style={{ marginTop: 24 }}>
-        {current === 2 && (
-          <Button type="primary" onClick={() => prev()}>
+        {(current === 1 || current === 2) && (
+          <Button type="primary" onClick={() => setCurrent(0)}>
             Back To Package Information
           </Button>
         )}
-        {current === 1 && (
-          <Button type="primary" onClick={() => next()}>
+        {(current === 0 && (deliveryState == DISPATCH_STATE.DELIVER_PREPARATION 
+          || deliveryState == DISPATCH_STATE.DELIVER_PROCESSING 
+          || deliveryState == DISPATCH_STATE.DELIVER_FINISHED)) && (
+          <Button type="primary" onClick={() => setCurrent(2)}>
             Proceed To Delivery Planning
-          </Button>
-        )}
+          </Button>)
+        }
+        {(current === 0 && (deliveryState === DISPATCH_STATE.PICKUP_PREPARATION 
+          || deliveryState === DISPATCH_STATE.PICKUP_INITIALIZATION
+          || deliveryState === DISPATCH_STATE.PICKUP_PROCESSING)) && (
+          <Button type="primary" onClick={() => setCurrent(1)}>
+            Proceed To Pick-Up Planning
+          </Button>)
+        }
         
       </div>
     </>
