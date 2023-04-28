@@ -15,7 +15,7 @@ function ChangeView({ center, zoom }) {
   return null;
 }
 
-const DeliveryMap = ({authed, setTabKey}) => {
+const DeliveryPlanning = ({authed, setTabKey}) => {
   
   const [dispatcher, setDispatcher] = useState(DISPATCHER_TYPE.ROBOT);
   const [deliveryState, setDeliveryState] = useState(DELIVERY_STATE.IDLE);
@@ -65,4 +65,4 @@ const DeliveryMap = ({authed, setTabKey}) => {
   );
 }
 
-export default DeliveryMap;
+export default DeliveryPlanning;
