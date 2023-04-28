@@ -7,7 +7,7 @@ import PackagePickupStep from '../info_selection_ui/PackagePickupStep';
 import PackageInformationStep from '../info_selection_ui/PackageInformationStep';
 import PackageDelivery from '../info_selection_ui/PackageDelivery';
 
-const DeliveryPlanSelectionController = ({dispatcher, setDispatcher, deliveryState, setDeliveryState, setDeliveryStartLocationKey, setTabKey}) => {
+const DeliveryStepStateMachineController = ({dispatcher, setDispatcher, deliveryState, setDeliveryState, setDeliveryStartLocationKey, setTabKey}) => {
 
     const steps = [
       {
@@ -70,4 +70,4 @@ const DeliveryPlanSelectionController = ({dispatcher, setDispatcher, deliverySta
     );
 };
 
-export default DeliveryPlanSelectionController;
+export default DeliveryStepStateMachineController;
