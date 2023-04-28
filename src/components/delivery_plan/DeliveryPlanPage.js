@@ -22,7 +22,7 @@ const DeliveryPlanPage = () => {
                     onChange={(newKey) => {setTabKey(newKey)}}
                 >
                 <TabPane tab="Delivery Planning" key="1">
-                    <DeliveryPlanning authed={authed}/>
+                    <DeliveryPlanning authed={authed} setTabKey={setTabKey}/>
                 </TabPane>
                 <TabPane tab="Delivery History" key="2"    >
                     <DeliveryHistory />

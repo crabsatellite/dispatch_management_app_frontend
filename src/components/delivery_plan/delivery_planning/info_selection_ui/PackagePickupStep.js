@@ -1,4 +1,4 @@
-import { Button, Image } from 'antd';
+import { Button, Image, Result, Row, Card } from 'antd';
 import { DISPATCH_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE } from '../../../../utils/delivery_plan_utils';
 import "./InfoSelection.css";
 
@@ -6,14 +6,21 @@ const PackagePickupStep = ({dispatcher, deliveryState, setDispatcher, setDeliver
 
     if (deliveryState === DISPATCH_STATE.PICKUP_PROCESSING) {
 
-        return (<div class="parent">
-                    <p class="text">THE DISPATCHER IS MOVING TOWARD YOUR PICK-UP LOCATION...</p>
+        return (<Card
+                    title="PICK-UP INFORMATION"
+                    style={{width: 1000, left: 20}}
+                >
+                    <Result
+                        title="DISPATCH FOR PICK-UP"
+                        subTitle="THE DISPATCHER IS MOVING TOWARDS YOUR PICK-UP LOCATION......"
+                    />
                     <Image className="image" width={200} src={dispatcher === DISPATCHER_TYPE.ROBOT ? "./robot.png" : "./drone.png"}/>
-                </div>
-                    
-          );
+                </Card>
+        );
+
     } else if (deliveryState === DISPATCH_STATE.PICKUP_PREPARATION) {
-        return (
+
+          return (
             <>
                 <Button onClick={() => {setDeliveryState(DISPATCH_STATE.RESET_ROUTE)}}>Reset</Button>
                 <Button onClick={() => {setDispatcher(DISPATCHER_TYPE.ROBOT)}}>Select Robot</Button>

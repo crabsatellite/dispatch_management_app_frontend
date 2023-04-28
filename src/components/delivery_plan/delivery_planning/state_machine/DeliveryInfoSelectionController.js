@@ -8,7 +8,7 @@ import PackageInformationStep from '../info_selection_ui/PackageInformationStep'
 import PackageDelivery from '../info_selection_ui/PackageDelivery';
 
 
-const DeliveryPlanSelectionController = ({dispatcher, setDispatcher, deliveryState, setDeliveryState, setDeliveryStartLocationKey}) => {
+const DeliveryPlanSelectionController = ({dispatcher, setDispatcher, deliveryState, setDeliveryState, setDeliveryStartLocationKey, setTabKey}) => {
 
     const steps = [
         {
@@ -23,7 +23,7 @@ const DeliveryPlanSelectionController = ({dispatcher, setDispatcher, deliverySta
         },
         {
             title: 'Package Delivery',
-            content: <PackageDelivery dispatcher={dispatcher} deliveryState={deliveryState} setDeliveryState={setDeliveryState}></PackageDelivery>,
+            content: <PackageDelivery dispatcher={dispatcher} deliveryState={deliveryState} setDeliveryState={setDeliveryState} setTabKey={setTabKey}></PackageDelivery>,
             icon: <RocketOutlined />,
         },
     ];
@@ -50,8 +50,12 @@ const DeliveryPlanSelectionController = ({dispatcher, setDispatcher, deliverySta
     if (current === 0 && deliveryState == DISPATCH_STATE.DELIVER_PREPARATION) {
       next();
     }
+    if (current === 2 && deliveryState == DISPATCH_STATE.RESET_ROUTE) {
+      setCurrent(0);
+    }
 
   }, [deliveryState]);
+
 
   return (
     <>

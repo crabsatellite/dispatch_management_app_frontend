@@ -15,7 +15,7 @@ function ChangeView({ center, zoom }) {
   return null;
 }
 
-const DeliveryMap = ({authed}) => {
+const DeliveryMap = ({authed, setTabKey}) => {
   
   const [dispatcher, setDispatcher] = useState(DISPATCHER_TYPE.ROBOT);
   const [deliveryState, setDeliveryState] = useState(DISPATCH_STATE.IDLE);
@@ -32,7 +32,6 @@ const DeliveryMap = ({authed}) => {
     console.log("Package Delivery State: " + deliveryState);
     if (deliveryState === DISPATCH_STATE.DELIVER_FINISHED) {
       showSuccess("Confirmation", "The package is delivered successfully!");
-      //setDeliveryState(DISPATCH_STATE.PICKUP_PREPARATION);
     } else if (deliveryState === DISPATCH_STATE.DELIVER_PREPARATION) {
       showInfo("Information", "The dispatcher has arrived the pick-up location, please complete package information before handing over your package to dispatcher");
 
@@ -60,7 +59,7 @@ const DeliveryMap = ({authed}) => {
         </div>
       </Col>
       <Col span={12}>
-          <DeliveryInfoSelectionController dispatcher={dispatcher} setDispatcher={setDispatcher} deliveryState={deliveryState} setDeliveryState={setDeliveryState} setDeliveryStartLocationKey={setDeliveryStartLocationKey}></DeliveryInfoSelectionController>
+          <DeliveryInfoSelectionController dispatcher={dispatcher} setDispatcher={setDispatcher} deliveryState={deliveryState} setDeliveryState={setDeliveryState} setDeliveryStartLocationKey={setDeliveryStartLocationKey} setTabKey={setTabKey}></DeliveryInfoSelectionController>
       </Col>
     </Row>
   );
