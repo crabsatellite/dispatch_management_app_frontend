@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Steps } from 'antd';
 import { CodeSandboxOutlined, RocketOutlined, AimOutlined } from '@ant-design/icons';
-import { DISPATCH_STATE } from '../../../../utils/delivery_plan_utils';
+import { DELIVERY_STATE } from '../../../../utils/delivery_plan_utils';
 
 import PackagePickupStep from '../info_selection_ui/PackagePickupStep';
 import PackageInformationStep from '../info_selection_ui/PackageInformationStep';
@@ -12,7 +12,7 @@ const DeliveryPlanSelectionController = ({dispatcher, setDispatcher, deliverySta
     const steps = [
       {
           title: 'Package Information',
-          content: <PackageInformationStep />,
+          content: <PackageInformationStep deliveryState={deliveryState}/>,
           icon: <CodeSandboxOutlined />,
       },
       {
@@ -31,10 +31,10 @@ const DeliveryPlanSelectionController = ({dispatcher, setDispatcher, deliverySta
     const items = steps.map((item) => ({ key: item.title, title: item.title, icon: item.icon }));
     
     useEffect(() => {
-      if (current === 1 && deliveryState == DISPATCH_STATE.DELIVER_PREPARATION) {
+      if (current === 1 && deliveryState == DELIVERY_STATE.DELIVER_PREPARATION) {
         setCurrent(current + 1);
       }
-      if (current === 2 && deliveryState == DISPATCH_STATE.RESET_ROUTE) {
+      if (current === 2 && deliveryState == DELIVERY_STATE.RESET_ROUTE) {
         setCurrent(0);
       }
 
@@ -50,16 +50,17 @@ const DeliveryPlanSelectionController = ({dispatcher, setDispatcher, deliverySta
               Back To Package Information
             </Button>
           )}
-          {(current === 0 && (deliveryState == DISPATCH_STATE.DELIVER_PREPARATION 
-            || deliveryState == DISPATCH_STATE.DELIVER_PROCESSING 
-            || deliveryState == DISPATCH_STATE.DELIVER_FINISHED)) && (
+          {(current === 0 && (deliveryState == DELIVERY_STATE.DELIVER_PREPARATION
+            || deliveryState == DELIVERY_STATE.DELIVER_INITIALIZATION 
+            || deliveryState == DELIVERY_STATE.DELIVER_PROCESSING 
+            || deliveryState == DELIVERY_STATE.DELIVER_FINISHED)) && (
             <Button style={{marginLeft: 22}} type="primary" onClick={() => setCurrent(2)}>
               Proceed To Delivery Planning
             </Button>)
           }
-          {(current === 0 && (deliveryState === DISPATCH_STATE.PICKUP_PREPARATION 
-            || deliveryState === DISPATCH_STATE.PICKUP_INITIALIZATION
-            || deliveryState === DISPATCH_STATE.PICKUP_PROCESSING)) && (
+          {(current === 0 && (deliveryState === DELIVERY_STATE.PICKUP_PREPARATION 
+            || deliveryState === DELIVERY_STATE.PICKUP_INITIALIZATION
+            || deliveryState === DELIVERY_STATE.PICKUP_PROCESSING)) && (
             <Button style={{marginLeft: 22}} type="primary" onClick={() => setCurrent(1)}>
               Proceed To Pick-Up Planning
             </Button>)

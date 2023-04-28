@@ -3,7 +3,7 @@ import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import { useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
-import { DISPATCH_STATE, DISPATCHER_START_LOCATION, DISPATCHER_TYPE } from "../../../../utils/delivery_plan_utils";
+import { DELIVERY_STATE, DISPATCHER_START_LOCATION, DISPATCHER_TYPE } from "../../../../utils/delivery_plan_utils";
 
 
 const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey, deliveryState, setDeliveryState}) => {
@@ -186,7 +186,7 @@ const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey
 
     switch (deliveryState) {
 
-      case DISPATCH_STATE.PICKUP_PREPARATION: 
+      case DELIVERY_STATE.PICKUP_PREPARATION: 
         if (focusPointPos.length === 0) {
           return;
         }
@@ -194,17 +194,17 @@ const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey
         setFocusPointMarker(focusPointMarker);
         break;
 
-      case DISPATCH_STATE.PICKUP_INITIALIZATION:
+      case DELIVERY_STATE.PICKUP_INITIALIZATION:
         focusPointMarker.setIcon(pickUpIcon);
         setFocusPointMarker(focusPointMarker);
         break;
 
-      case DISPATCH_STATE.PICKUP_PROCESSING:
+      case DELIVERY_STATE.PICKUP_PROCESSING:
         var destination = routeCoordinates[routeCoordinates.length-1];
         routeCoordinates.forEach((c, i) => {
           setTimeout(() => {
             if (c.lat === destination.lat && c.lng === destination.lng) {
-              setDeliveryState(DISPATCH_STATE.DELIVER_PREPARATION);
+              setDeliveryState(DELIVERY_STATE.DELIVER_PREPARATION);
             }
             dispatcherMarker.setLatLng([c.lat, c.lng]);
           }, 100 * i);
@@ -214,7 +214,7 @@ const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey
         L.marker(destination, { icon: pickUpIcon }).addTo(map).bindPopup("Pick-up Location").openPopup();
         break;
 
-      case DISPATCH_STATE.DELIVER_PREPARATION:
+      case DELIVERY_STATE.DELIVER_PREPARATION:
         if (map) {
           map.removeControl(routeControl);
           setRouteCoordinates([]);   
@@ -223,12 +223,12 @@ const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey
         } 
         break;
 
-      case DISPATCH_STATE.DELIVER_PROCESSING:
+      case DELIVERY_STATE.DELIVER_PROCESSING:
         var destination = routeCoordinates[routeCoordinates.length-1];
         routeCoordinates.forEach((c, i) => {
           setTimeout(() => {
             if (c.lat === destination.lat && c.lng === destination.lng) {
-              setDeliveryState(DISPATCH_STATE.DELIVER_FINISHED);
+              setDeliveryState(DELIVERY_STATE.DELIVER_FINISHED);
             }
             dispatcherMarker.setLatLng([c.lat, c.lng]);
           }, 100 * i);
@@ -238,14 +238,14 @@ const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey
         L.marker(destination, { icon: deliveryIcon }).addTo(map).bindPopup("Delivery Location").openPopup();
         break;
 
-      case DISPATCH_STATE.DELIVER_FINISHED:
+      case DELIVERY_STATE.DELIVER_FINISHED:
         if (map) {
           map.removeControl(routeControl);
           setRouteCoordinates([]);
         } 
         break;
 
-      case DISPATCH_STATE.RESET_ROUTE:
+      case DELIVERY_STATE.RESET_ROUTE:
         if (map) {
 
           // Remove route control 
@@ -271,7 +271,7 @@ const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey
           L.marker(DISPATCHER_START_LOCATION.LOCATION_B, { icon: wareHouseIcon }).addTo(map).bindPopup("Location B").openPopup();
           L.marker(DISPATCHER_START_LOCATION.LOCATION_C, { icon: wareHouseIcon }).addTo(map).bindPopup("Location C").openPopup();
         } 
-        setDeliveryState(DISPATCH_STATE.PICKUP_PREPARATION);
+        setDeliveryState(DELIVERY_STATE.PICKUP_PREPARATION);
         break;
     }
 

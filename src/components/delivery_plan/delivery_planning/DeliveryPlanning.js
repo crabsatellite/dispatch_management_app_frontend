@@ -7,7 +7,7 @@ import "./state_machine/DeliveryMap.css";
 import DeliveryMapStateMachineController from "./state_machine/DeliveryMapStateMachineController";
 import DeliveryInfoSelectionController from "./state_machine/DeliveryInfoSelectionController";
 import { showSuccess, showInfo } from "../../../utils/dialog_utils"
-import { DISPATCH_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_START_LOCATION, DISPATCHER_TYPE } from "../../../utils/delivery_plan_utils";
+import { DELIVERY_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_START_LOCATION, DISPATCHER_TYPE } from "../../../utils/delivery_plan_utils";
 
 function ChangeView({ center, zoom }) {
   const map = useMap();
@@ -18,22 +18,22 @@ function ChangeView({ center, zoom }) {
 const DeliveryMap = ({authed, setTabKey}) => {
   
   const [dispatcher, setDispatcher] = useState(DISPATCHER_TYPE.ROBOT);
-  const [deliveryState, setDeliveryState] = useState(DISPATCH_STATE.IDLE);
+  const [deliveryState, setDeliveryState] = useState(DELIVERY_STATE.IDLE);
   const [deliveryStartLocationKey, setDeliveryStartLocationKey] = useState(DISPATCHER_START_LOCATION_KEY.LOCATION_A);
   
   useEffect(() => {
     if (authed) {
-      setDeliveryState(DISPATCH_STATE.PICKUP_PREPARATION);
+      setDeliveryState(DELIVERY_STATE.PICKUP_PREPARATION);
     }
   }, [authed]);
 
   useEffect(() => {
 
     console.log("Package Delivery State: " + deliveryState);
-    if (deliveryState === DISPATCH_STATE.DELIVER_FINISHED) {
+    if (deliveryState === DELIVERY_STATE.DELIVER_FINISHED) {
       showSuccess("Confirmation", "The package is delivered successfully!");
-    } else if (deliveryState === DISPATCH_STATE.DELIVER_PREPARATION) {
-      showInfo("Information", "The dispatcher has arrived the pick-up location, please complete package information before handing over your package to dispatcher");
+    } else if (deliveryState === DELIVERY_STATE.DELIVER_PREPARATION) {
+      showInfo("Information", "The dispatcher has arrived the pick-up location, please review package information before handing over your package to dispatcher");
 
     }
   }, [deliveryState]);
@@ -51,9 +51,9 @@ const DeliveryMap = ({authed, setTabKey}) => {
               <DeliveryMapStateMachineController dispatcher={dispatcher} deliveryStartLocationKey={deliveryStartLocationKey} deliveryState={deliveryState} setDeliveryState={setDeliveryState}></DeliveryMapStateMachineController>
           </MapContainer>
 
-          {deliveryState === DISPATCH_STATE.PICKUP_PROCESSING || 
-           deliveryState === DISPATCH_STATE.DELIVER_PROCESSING || 
-           deliveryState === DISPATCH_STATE.DELIVER_FINISHED ? 
+          {deliveryState === DELIVERY_STATE.PICKUP_PROCESSING || 
+           deliveryState === DELIVERY_STATE.DELIVER_PROCESSING || 
+           deliveryState === DELIVERY_STATE.DELIVER_FINISHED ? 
             <Image className="stack-top" preview={false} src={"./blur_layer.png"}/> : <></>
           }
         </div>
