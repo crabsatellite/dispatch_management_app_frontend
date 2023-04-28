@@ -10,7 +10,7 @@ const PackageInformationStep = ({deliveryState}) => {
       {deliveryState === DELIVERY_STATE.DELIVER_INITIALIZATION 
        || deliveryState === DELIVERY_STATE.DELIVER_PROCESSING 
        || deliveryState === DELIVERY_STATE.DELIVER_FINISHED? 
-        <div>User can not modify package info</div> : <div>User can modify package info</div>
+        <div>N/A</div> : <div>Placeholder: User enters package information here......</div>
       }
       <Image className="image" width={200} src={"./box.png"}/>
     </Card>

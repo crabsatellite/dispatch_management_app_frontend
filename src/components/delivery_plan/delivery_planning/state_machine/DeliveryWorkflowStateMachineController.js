@@ -3,9 +3,9 @@ import { Button, Steps } from 'antd';
 import { CodeSandboxOutlined, RocketOutlined, AimOutlined } from '@ant-design/icons';
 import { DELIVERY_STATE } from '../../../../utils/delivery_plan_utils';
 
-import PackagePickupStep from '../info_selection_ui/PackagePickupStep';
-import PackageInformationStep from '../info_selection_ui/PackageInformationStep';
-import PackageDelivery from '../info_selection_ui/PackageDelivery';
+import PackagePickupStep from '../workflow/PackagePickupStep';
+import PackageInformationStep from '../workflow/PackageInformationStep';
+import PackageDelivery from '../workflow/PackageDelivery';
 
 const DeliveryWorkflowStateMachineController = ({dispatcher, setDispatcher, deliveryState, setDeliveryState, setDeliveryStartLocationKey, setTabKey}) => {
 
