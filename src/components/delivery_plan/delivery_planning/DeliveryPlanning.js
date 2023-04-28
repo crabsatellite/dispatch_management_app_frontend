@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Row, Col, Image } from "antd";
 import "./state_machine/DeliveryMap.css";
 import DeliveryMapStateMachineController from "./state_machine/DeliveryMapStateMachineController";
-import DeliveryStepStateMachineController from "./state_machine/DeliveryStepStateMachineController";
+import DeliveryWorkflowStateMachineController from "./state_machine/DeliveryWorkflowStateMachineController";
 import { showSuccess, showInfo } from "../../../utils/dialog_utils"
 import { DELIVERY_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_START_LOCATION, DISPATCHER_TYPE } from "../../../utils/delivery_plan_utils";
 
@@ -59,7 +59,7 @@ const DeliveryMap = ({authed, setTabKey}) => {
         </div>
       </Col>
       <Col span={12}>
-          <DeliveryStepStateMachineController dispatcher={dispatcher} setDispatcher={setDispatcher} deliveryState={deliveryState} setDeliveryState={setDeliveryState} setDeliveryStartLocationKey={setDeliveryStartLocationKey} setTabKey={setTabKey}></DeliveryStepStateMachineController>
+          <DeliveryWorkflowStateMachineController dispatcher={dispatcher} setDispatcher={setDispatcher} deliveryState={deliveryState} setDeliveryState={setDeliveryState} setDeliveryStartLocationKey={setDeliveryStartLocationKey} setTabKey={setTabKey}></DeliveryWorkflowStateMachineController>
       </Col>
     </Row>
   );
