@@ -21,3 +21,10 @@ export const showWarning = (titleInput, contentInput) => {
         content: contentInput,
     });
 }
+
+export const showInfo = (titleInput, contentInput) => {
+    Modal.info({
+        title: titleInput,
+        content: contentInput,
+    });
+}

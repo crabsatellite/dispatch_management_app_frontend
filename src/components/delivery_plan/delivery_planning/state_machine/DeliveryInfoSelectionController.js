@@ -1,47 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Steps } from 'antd';
-import { CodeSandboxOutlined, RocketOutlined, CarryOutOutlined, AimOutlined, DollarOutlined } from '@ant-design/icons';
-import { DELIVERY_STATE, DELIVERY_START_LOCATION_KEY } from '../../../../utils/delivery_plan_utils';
+import { CodeSandboxOutlined, RocketOutlined, AimOutlined } from '@ant-design/icons';
+import { DISPATCH_STATE } from '../../../../utils/delivery_plan_utils';
 
-import RoutePlanningStep from '../info_selection_ui/RoutePlanningStep';
+import PackagePickupStep from '../info_selection_ui/PackagePickupStep';
+import PackageInformationStep from '../info_selection_ui/PackageInformationStep';
+import PackageDelivery from '../info_selection_ui/PackageDelivery';
 
-/*
-* Select robot/drone for dispatch
-* Enter package information
-* Provide planning tips
-*/
-const DeliveryPlanSelectionController = ({setDeliveryState, setDeliveryStartLocationKey}) => {
+
+const DeliveryPlanSelectionController = ({dispatcher, setDispatcher, deliveryState, setDeliveryState, setDeliveryStartLocationKey}) => {
 
     const steps = [
         {
-            title: 'Route Planning',
-            content: <>
-                        <Button onClick={() => {setDeliveryState(DELIVERY_STATE.CLEAR)}}>Clear Location</Button>,
-                        <Button onClick={() => {setDeliveryStartLocationKey(DELIVERY_START_LOCATION_KEY.LOCATION_A)}}>Select Start Location A</Button>,
-                        <Button onClick={() => {setDeliveryStartLocationKey(DELIVERY_START_LOCATION_KEY.LOCATION_B)}}>Select Start Location B</Button>,
-                        <Button onClick={() => {setDeliveryStartLocationKey(DELIVERY_START_LOCATION_KEY.LOCATION_C)}}>Select Start Location C</Button>,
-                    </>
-            ,
+            title: 'Package Pick-up',
+            content: <PackagePickupStep dispatcher={dispatcher} deliveryState={deliveryState} setDispatcher={setDispatcher} setDeliveryState={setDeliveryState} setDeliveryStartLocationKey={setDeliveryStartLocationKey}></PackagePickupStep>,
             icon: <AimOutlined />,
         },
         {
-          title: 'Package Information',
-          content: <RoutePlanningStep />,
-          icon: <CodeSandboxOutlined />,
+            title: 'Package Information',
+            content: <PackageInformationStep />,
+            icon: <CodeSandboxOutlined />,
         },
         {
-            title: 'Delivery Review',
-            content: 'Third-content',
-            icon: <CarryOutOutlined />,
-        },
-        {
-          title: 'Payment',
-          content: `Placeholder`,
-          icon: <DollarOutlined />,
-      },
-        {
-            title: 'Dispatch',
-            content: <Button type="primary" onClick={() => {setDeliveryState(DELIVERY_STATE.DISPATCHED)}}>Auto Dispatch</Button>,
+            title: 'Package Delivery',
+            content: <PackageDelivery dispatcher={dispatcher} deliveryState={deliveryState} setDeliveryState={setDeliveryState}></PackageDelivery>,
             icon: <RocketOutlined />,
         },
     ];
@@ -64,19 +46,26 @@ const DeliveryPlanSelectionController = ({setDeliveryState, setDeliveryStartLoca
     marginTop: 16,
   };
 
+  useEffect(() => {
+    if (current === 0 && deliveryState == DISPATCH_STATE.DELIVER_PREPARATION) {
+      next();
+    }
+
+  }, [deliveryState]);
+
   return (
     <>
       <Steps current={current} items={items} />
       <div style={contentStyle}>{steps[current].content}</div>
       <div style={{ marginTop: 24 }}>
-        {current > 0 && current < steps.length - 1 && (
-          <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
-            Previous
+        {current === 2 && (
+          <Button type="primary" onClick={() => prev()}>
+            Back To Package Information
           </Button>
         )}
-        {current < steps.length - 1 && (
+        {current === 1 && (
           <Button type="primary" onClick={() => next()}>
-            Next
+            Proceed To Delivery Planning
           </Button>
         )}
         
