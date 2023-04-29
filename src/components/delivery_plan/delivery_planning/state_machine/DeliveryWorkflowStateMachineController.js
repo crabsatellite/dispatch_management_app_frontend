@@ -55,14 +55,14 @@ const DeliveryWorkflowStateMachineController = ({dispatcher, setDispatcher, deli
             || deliveryState == DELIVERY_STATE.DELIVER_PROCESSING 
             || deliveryState == DELIVERY_STATE.DELIVER_FINISHED)) && (
             <Button style={{marginLeft: 22}} type="primary" onClick={() => setCurrent(2)}>
-              Proceed To Delivery Planning
+              Proceed To Delivery Portal
             </Button>)
           }
           {(current === 0 && (deliveryState === DELIVERY_STATE.PICKUP_PREPARATION 
             || deliveryState === DELIVERY_STATE.PICKUP_INITIALIZATION
             || deliveryState === DELIVERY_STATE.PICKUP_PROCESSING)) && (
             <Button style={{marginLeft: 22}} type="primary" onClick={() => setCurrent(1)}>
-              Proceed To Pick-Up Planning
+              Proceed To Pick-Up Portal
             </Button>)
           }
         </div>

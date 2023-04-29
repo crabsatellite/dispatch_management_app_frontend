@@ -8,7 +8,7 @@ const navigationItems = [
       icon: <ReadOutlined />, 
     },
     { key: '2',
-      label: `Dispatch Plan `,  
+      label: `Delivery Plan `,  
       icon: <CompassOutlined />,
     },
     { key: '3',

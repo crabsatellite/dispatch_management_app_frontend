@@ -137,7 +137,7 @@ const PackagePickupStep = ({dispatcher, deliveryState, setDispatcher, setDeliver
 
         return (
         <Card
-            title="PICK-UP SOON"
+            title="PICK-UP ONBOARDING"
             style={{width: 1000, left: 20}}
         >
             <Collapse bordered={false} defaultActiveKey={['1']}>

@@ -24,7 +24,7 @@ const PackageDelivery = ({dispatcher, deliveryState, setDeliveryState, setTabKey
 
         return (
             <Card
-                title="DELIVERY REVIEW"
+                title="DELIVERY ONBOARDING"
                 style={{width: 1000, left: 20}}
             >
                  <Collapse bordered={false} defaultActiveKey={['1']}>
@@ -54,7 +54,7 @@ const PackageDelivery = ({dispatcher, deliveryState, setDeliveryState, setTabKey
 
         return (
             <Card
-                title="DELIVERY SOON"
+                title="DELIVERY ONBOARDING"
                 style={{width: 1000, left: 20}}
             >
                 <Collapse bordered={false} defaultActiveKey={['1']}>
