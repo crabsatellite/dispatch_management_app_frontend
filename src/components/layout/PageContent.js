@@ -8,7 +8,9 @@ const { Content } = Layout;
 
 const PageContent = ({navigationKey}) => {
 
-    const [authed, setAuthed] = useState(true); // TODO: change it to false after login implementation is completed
+    // TODO: change it to false after backend API integration for login is completed,
+    // since unauthenticated status might blocks some testing on delivery plan page
+    const [authed, setAuthed] = useState(true); 
 
     const renderItem = (key) => {
 
