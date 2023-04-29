@@ -135,8 +135,13 @@ const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey
     if (!map) {
       return;
     }
-    map.removeLayer(dispatcherMarker);
-    map.removeLayer(routeControl);
+
+    try {
+      map.removeLayer(dispatcherMarker);
+      map.removeLayer(routeControl);
+    } catch (error) {
+      console.log("Error from map update");
+    }
     setDispatcherMarker(L.marker(DISPATCHER_START_LOCATION[deliveryStartLocationKey], { icon: dispatcherIcon }));  
     routeControl.getPlan().setWaypoints([
       L.latLng(DISPATCHER_START_LOCATION[deliveryStartLocationKey]),
@@ -166,7 +171,12 @@ const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey
         iconUrl: dispatcher === DISPATCHER_TYPE.ROBOT ?  "/robot.png" : "/drone.png",
         iconSize: [90, 90],
       }));
-      map.removeLayer(dispatcherMarker);
+
+      try {
+        map.removeLayer(dispatcherMarker);
+      } catch (error) {
+        console.log("Error from updating the dispatcher marker");
+      }
       dispatcherMarker.setIcon(dispatcherIcon);
       setDispatcherMarker(dispatcherMarker);
       dispatcherMarker.addTo(map);
@@ -259,7 +269,11 @@ const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey
           // Remove all markers
           map.eachLayer(function (layer) {
             if (layer instanceof L.Marker) {
-              map.removeLayer(layer);
+              try {
+                map.removeLayer(layer);
+              } catch (error) {
+                console.log("Error from reset route state");
+              }
             }
           });
           
