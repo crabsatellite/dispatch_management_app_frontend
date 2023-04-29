@@ -3,7 +3,7 @@ import React from 'react';
 import { Carousel, Row, Col } from 'antd';
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
-const contentStyle: React.CSSProperties = {
+const contentStyle = {
     margin: 0,
     height: '450px',
     color: '#fff',
