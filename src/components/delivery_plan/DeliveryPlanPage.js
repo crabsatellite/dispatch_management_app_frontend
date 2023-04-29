@@ -1,7 +1,7 @@
 import { Tabs } from "antd";
 import React, { useState } from "react";
 import DeliveryPlanning from "./delivery_planning/DeliveryPlanning";
-import DeliveryHistory from "./delivery_history/DeliveryHistory";
+import DeliveryOrderHistory from "./delivery_order_history/DeliveryOrderHistory";
 
 const { TabPane } = Tabs;
 
@@ -20,8 +20,8 @@ const DeliveryPlanPage = ({authed}) => {
             <TabPane tab="Delivery Planning" key="1">
                 <DeliveryPlanning authed={authed} setTabKey={setTabKey}/>
             </TabPane>
-            <TabPane tab="Delivery History" key="2"    >
-                <DeliveryHistory />
+            <TabPane tab="Delivery Order History" key="2"    >
+                <DeliveryOrderHistory />
             </TabPane>
             </Tabs> 
             }

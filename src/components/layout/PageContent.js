@@ -1,8 +1,8 @@
 import { Layout } from "antd";
-import HomePage from "./HomePage";
 import { useState } from "react";
-import DeliveryPlanPage from "./delivery_plan/DeliveryPlanPage";
-import LoginForm from "./user_registration/LoginForm";
+import HomePage from "../home/HomePage";
+import DeliveryPlanPage from "../delivery_plan/DeliveryPlanPage";
+import LoginForm from "../user_portal/LoginForm";
 
 const { Content } = Layout;
 

@@ -63,6 +63,7 @@ const LoginForm = ({ setAuthed }) => {
           <UsergroupAddOutlined /> <SignupButton />
         </Form.Item>
       </Form>
+      <p>TODO: The form opens for refactoring...</p>
     </div>
   );
 };
