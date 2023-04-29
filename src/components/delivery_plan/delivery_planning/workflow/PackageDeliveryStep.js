@@ -4,7 +4,7 @@ import { DELIVERY_STATE, DISPATCHER_TYPE } from '../../../../utils/delivery_plan
 import "./InfoSelection.css";
 
 const { Panel } = Collapse;
-const PackageDelivery = ({dispatcher, deliveryState, setDeliveryState, setTabKey}) => {
+const PackageDeliveryStep = ({dispatcher, deliveryState, setDeliveryState, setTabKey}) => {
 
     if (deliveryState == DELIVERY_STATE.DELIVER_PROCESSING) {
         return (
@@ -101,4 +101,4 @@ const PackageDelivery = ({dispatcher, deliveryState, setDeliveryState, setTabKey
     );
 };
 
-export default PackageDelivery;
+export default PackageDeliveryStep;

@@ -5,7 +5,7 @@ import { DELIVERY_STATE } from '../../../../utils/delivery_plan_utils';
 
 import PackagePickupStep from '../workflow/PackagePickupStep';
 import PackageInformationStep from '../workflow/PackageInformationStep';
-import PackageDelivery from '../workflow/PackageDelivery';
+import PackageDeliveryStep from '../workflow/PackageDeliveryStep';
 
 const DeliveryWorkflowStateMachineController = ({dispatcher, setDispatcher, deliveryState, setDeliveryState, setDeliveryStartLocationKey, setTabKey}) => {
 
@@ -22,7 +22,7 @@ const DeliveryWorkflowStateMachineController = ({dispatcher, setDispatcher, deli
       },
       {
           title: 'Package Delivery',
-          content: <PackageDelivery dispatcher={dispatcher} deliveryState={deliveryState} setDeliveryState={setDeliveryState} setTabKey={setTabKey}></PackageDelivery>,
+          content: <PackageDeliveryStep dispatcher={dispatcher} deliveryState={deliveryState} setDeliveryState={setDeliveryState} setTabKey={setTabKey}></PackageDeliveryStep>,
           icon: <RocketOutlined />,
       },
     ];
