@@ -1,7 +1,7 @@
 import { Button, Modal, Form, Input, message } from "antd";
 import { useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
-import { register } from "../../../utils/backend_utils";
+import { register } from "../../utils/backend_utils";
 
 const SignupButton = () => {
 

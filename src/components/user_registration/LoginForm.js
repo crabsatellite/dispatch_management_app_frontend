@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Input, message } from "antd";
 import { UserOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import SignupButton from "./SignupButton";
-import { login } from "../../../utils/backend_utils";
+import { login } from "../../utils/backend_utils";
 
 const LoginForm = ({ setAuthed }) => {
 

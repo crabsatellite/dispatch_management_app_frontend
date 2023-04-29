@@ -1,5 +1,5 @@
 import { Layout, Menu, Row, Col } from "antd";
-import { UserOutlined, ReadOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { UserOutlined, ReadOutlined, CompassOutlined } from '@ant-design/icons';
 
 const navigationItems = [
 
@@ -8,12 +8,12 @@ const navigationItems = [
       icon: <ReadOutlined />, 
     },
     { key: '2',
-      label: `Delivery Plan `,  
-      icon: <UserOutlined />,
+      label: `Dispatch Plan `,  
+      icon: <CompassOutlined />,
     },
     { key: '3',
-      label: `FAQ`,  
-      icon: <QuestionCircleOutlined />,
+      label: `User Portal`,  
+      icon: <UserOutlined />,
     }
 ];
 
