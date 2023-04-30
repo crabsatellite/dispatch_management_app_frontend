@@ -53,16 +53,6 @@ const DeliveryWorkflowStateMachineController = (
     ];
 
     const items = steps.map((item) => ({ key: item.title, title: item.title, icon: item.icon }));
-    
-    useEffect(() => {
-      if (currentStep === 1 && deliveryState == DELIVERY_STATE.DELIVER_PREPARATION) {
-        setCurrentStep(currentStep + 1);
-      }
-      if (currentStep === 2 && deliveryState == DELIVERY_STATE.RESET_ROUTE) {
-        setCurrentStep(0);
-      }
-
-    }, [deliveryState]);
 
     return (
       <>

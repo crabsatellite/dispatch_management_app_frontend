@@ -17,8 +17,8 @@ function ChangeView({ center, zoom }) {
 
 const DeliveryPlanning = ({authed, setTabKey}) => {
   
-  const [currentStep, setCurrentStep] = useState(0);
-  const [focusPointAddress, setFocusPointAddress] = useState("[]");
+  const [currentStep, setCurrentStep] = useState(0); 
+  const [focusPointAddress, setFocusPointAddress] = useState("[]"); 
   const [dispatcher, setDispatcher] = useState(DISPATCHER_TYPE.ROBOT);
   const [deliveryState, setDeliveryState] = useState(DELIVERY_STATE.IDLE);
   const [deliveryStartLocationKey, setDeliveryStartLocationKey] = useState(DISPATCHER_START_LOCATION_KEY.LOCATION_A);
@@ -29,8 +29,9 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
   }, []);
 
   useEffect(() => {
-    if(deliveryState === DELIVERY_STATE.PICKUP_PREPARATION) {
+    if (deliveryState === DELIVERY_STATE.PICKUP_PREPARATION) {
       localStorage.setItem("pickupAddress", focusPointAddress);
+
     } else if (deliveryState === DELIVERY_STATE.DELIVER_PREPARATION) {
       localStorage.setItem("deliveryAddress", focusPointAddress);
 
@@ -38,7 +39,8 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
       setDeliveryStartLocationKey(DISPATCHER_START_LOCATION_KEY.LOCATION_A);
       setDispatcher(DISPATCHER_TYPE.ROBOT);
       localStorage.setItem("pickupAddress", "[]");
-      setDeliveryState(DELIVERY_STATE.DELIVER_PREPARATION);
+      localStorage.setItem("deliveryAddress", "[]");
+      setDeliveryState(DELIVERY_STATE.PICKUP_PREPARATION);
     }
   }, [focusPointAddress]);
   
@@ -51,11 +53,25 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
   useEffect(() => {
 
     console.log("Package Delivery State: " + deliveryState);
-    if (deliveryState === DELIVERY_STATE.DELIVER_FINISHED) {
-      showSuccess("Confirmation", "The package is delivered successfully!");
-    } else if (deliveryState === DELIVERY_STATE.DELIVER_PREPARATION) {
-      showInfo("Information", "The dispatcher has arrived the pick-up location, please review package information before handing over your package to dispatcher");
-    } 
+    switch (deliveryState) {
+
+      case DELIVERY_STATE.DELIVER_PREPARATION:
+        if (currentStep === 1) {
+          setCurrentStep(currentStep + 1);
+          localStorage.setItem("deliveryAddress", focusPointAddress);
+          showInfo("Information", "The dispatcher has arrived the pick-up location, please review package information before handing over your package to dispatcher");
+        }
+        break;
+
+      case DELIVERY_STATE.DELIVER_FINISHED:
+        showSuccess("Confirmation", "The package is delivered successfully!");
+        break;  
+
+      case DELIVERY_STATE.RESET_ROUTE:
+        if (currentStep === 2) {
+          setCurrentStep(0);
+        }
+    }
   }, [deliveryState]);
 
   return (
