@@ -3,10 +3,15 @@ import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import { useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
-import { DELIVERY_STATE, DISPATCHER_START_LOCATION, DISPATCHER_TYPE } from "../../../../utils/delivery_plan_utils";
+import { DELIVERY_STATE, DISPATCHER_START_LOCATION, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE } from "../../../../utils/delivery_plan_utils";
 import Geocode from "react-geocode";
 
-const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey, deliveryState, setDeliveryState}) => {
+const DeliveryMapStateMachineController = (
+    { dispatcher, 
+      deliveryStartLocationKey, 
+      deliveryState, 
+      setDeliveryState,
+      setFocusPointAddress}) => {
   
   let defaultIcon = L.icon({
     iconUrl: "/marker-icon.png",
@@ -98,6 +103,7 @@ const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey
           response => {
             const address = response.results[0].formatted_address;
             console.log(address);
+            setFocusPointAddress(address);
           },
           error => {
             console.error(error);
@@ -130,6 +136,7 @@ const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey
           response => {
             const address = response.results[0].formatted_address;
             console.log(address);
+            setFocusPointAddress(address);
           },
           error => {
             console.error(error);
@@ -230,7 +237,7 @@ const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey
         break;
 
       case DELIVERY_STATE.PICKUP_INITIALIZATION:
-        focusPointMarker.setIcon(pickUpIcon);
+        focusPointMarker.setIcon(pickUpIcon);;
         setFocusPointMarker(focusPointMarker);
         break;
 
@@ -287,9 +294,36 @@ const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey
           map.removeControl(routeControl);
           setRouteCoordinates([]);
 
+          setRouteControl(L.Routing.control({
+            waypoints: [
+              L.latLng(DISPATCHER_START_LOCATION[DISPATCHER_START_LOCATION_KEY.LOCATION_A][0], DISPATCHER_START_LOCATION[DISPATCHER_START_LOCATION_KEY.LOCATION_A][1]),
+              L.latLng(DISPATCHER_START_LOCATION[DISPATCHER_START_LOCATION_KEY.LOCATION_A][0], DISPATCHER_START_LOCATION[DISPATCHER_START_LOCATION_KEY.LOCATION_A][1]),
+            ],
+            lineOptions: {
+              styles: [
+                {
+                  color: "blue",
+                  weight: 4,
+                  opacity: 0.7,
+                },
+              ],
+            },
+            routeWhileDragging: false,
+            geocoder: L.Control.Geocoder.nominatim(),
+            addWaypoints: false,
+            draggableWaypoints: false,
+            fitSelectedRoutes: true,
+            showAlternatives: false,
+          }));
+
           // Reset focus point
+          setFocusPointAddress("[]");
+          setFocusPointPos(DISPATCHER_START_LOCATION.LOCATION_A);
+          focusPointMarker.setLatLng(DISPATCHER_START_LOCATION.LOCATION_A);
           focusPointMarker.setIcon(defaultIcon);
           setFocusPointMarker(focusPointMarker);
+          map.removeControl(routeControl);
+
           
           // Remove all markers
           map.eachLayer(function (layer) {

@@ -18,9 +18,25 @@ function ChangeView({ center, zoom }) {
 const DeliveryPlanning = ({authed, setTabKey}) => {
   
   const [currentStep, setCurrentStep] = useState(0);
+  const [focusPointAddress, setFocusPointAddress] = useState("[]");
   const [dispatcher, setDispatcher] = useState(DISPATCHER_TYPE.ROBOT);
   const [deliveryState, setDeliveryState] = useState(DELIVERY_STATE.IDLE);
   const [deliveryStartLocationKey, setDeliveryStartLocationKey] = useState(DISPATCHER_START_LOCATION_KEY.LOCATION_A);
+
+  useEffect(() => {
+    localStorage.setItem("pickupAddress", "[]");
+  }, []);
+
+  useEffect(() => {
+    if(deliveryState === DELIVERY_STATE.PICKUP_PREPARATION) {
+      localStorage.setItem("pickupAddress", focusPointAddress);
+    } else if (deliveryState === DELIVERY_STATE.RESET_ROUTE) {
+      setDeliveryStartLocationKey(DISPATCHER_START_LOCATION_KEY.LOCATION_A);
+      setDispatcher(DISPATCHER_TYPE.ROBOT);
+      localStorage.setItem("pickupAddress", "[]");
+      setDeliveryState(DELIVERY_STATE.DELIVER_PREPARATION);
+    }
+  }, [focusPointAddress]);
   
   useEffect(() => {
     if (authed) {
@@ -35,8 +51,7 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
       showSuccess("Confirmation", "The package is delivered successfully!");
     } else if (deliveryState === DELIVERY_STATE.DELIVER_PREPARATION) {
       showInfo("Information", "The dispatcher has arrived the pick-up location, please review package information before handing over your package to dispatcher");
-
-    }
+    } 
   }, [deliveryState]);
 
   return (
@@ -54,10 +69,12 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
                 deliveryStartLocationKey={deliveryStartLocationKey} 
                 deliveryState={deliveryState} 
                 setDeliveryState={setDeliveryState} 
+                setFocusPointAddress={setFocusPointAddress}
               />
           </MapContainer>
 
           {currentStep === 0 || 
+           deliveryState === DELIVERY_STATE.PICKUP_INITIALIZATION ||
            deliveryState === DELIVERY_STATE.PICKUP_PROCESSING || 
            deliveryState === DELIVERY_STATE.DELIVER_PROCESSING || 
            deliveryState === DELIVERY_STATE.DELIVER_FINISHED ? 
@@ -66,13 +83,15 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
         </div>
       </Col>
       <Col span={12}>
-          <DeliveryWorkflowStateMachineController 
+          <DeliveryWorkflowStateMachineController
+            focusPointAddress={focusPointAddress} 
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
             dispatcher={dispatcher} 
             setDispatcher={setDispatcher} 
             deliveryState={deliveryState} 
             setDeliveryState={setDeliveryState} 
+            deliveryStartLocationKey={deliveryStartLocationKey}
             setDeliveryStartLocationKey={setDeliveryStartLocationKey} 
             setTabKey={setTabKey}
           />

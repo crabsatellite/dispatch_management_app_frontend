@@ -8,29 +8,46 @@ import PackageInformationStep from '../workflow/PackageInformationStep';
 import PackageDeliveryStep from '../workflow/PackageDeliveryStep';
 
 const DeliveryWorkflowStateMachineController = (
-  { currentStep,
+  { focusPointAddress,
+    currentStep,
     setCurrentStep,
     dispatcher, 
     setDispatcher, 
     deliveryState, 
     setDeliveryState, 
+    deliveryStartLocationKey,
     setDeliveryStartLocationKey, 
     setTabKey}) => {
 
     const steps = [
       {
           title: 'Package Information',
-          content: <PackageInformationStep deliveryState={deliveryState}/>,
+          content: <PackageInformationStep 
+                      deliveryState={deliveryState}
+                    />,
           icon: <CodeSandboxOutlined />,
       },
       {
           title: 'Package Pick-up',
-          content: <PackagePickupStep dispatcher={dispatcher} deliveryState={deliveryState} setDispatcher={setDispatcher} setDeliveryState={setDeliveryState} setDeliveryStartLocationKey={setDeliveryStartLocationKey}></PackagePickupStep>,
+          content: <PackagePickupStep 
+                      focusPointAddress={focusPointAddress} 
+                      dispatcher={dispatcher} 
+                      deliveryState={deliveryState} 
+                      setDispatcher={setDispatcher} 
+                      setDeliveryState={setDeliveryState} 
+                      deliveryStartLocationKey={deliveryStartLocationKey}
+                      setDeliveryStartLocationKey={setDeliveryStartLocationKey}
+                    />,
           icon: <AimOutlined />,
       },
       {
           title: 'Package Delivery',
-          content: <PackageDeliveryStep dispatcher={dispatcher} deliveryState={deliveryState} setDeliveryState={setDeliveryState} setTabKey={setTabKey}></PackageDeliveryStep>,
+          content: <PackageDeliveryStep 
+                      dispatcher={dispatcher} 
+                      deliveryState={deliveryState} 
+                      setDeliveryState={setDeliveryState} 
+                      setTabKey={setTabKey}
+                    />,
           icon: <RocketOutlined />,
       },
     ];
