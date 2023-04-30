@@ -4,7 +4,7 @@ import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import { useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
 import { DELIVERY_STATE, DISPATCHER_START_LOCATION, DISPATCHER_TYPE } from "../../../../utils/delivery_plan_utils";
-
+import Geocode from "react-geocode";
 
 const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey, deliveryState, setDeliveryState}) => {
   
@@ -65,6 +65,9 @@ const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey
  
   // Data init
   useEffect(() => {
+    Geocode.setApiKey("AIzaSyCz5OF-rGLoXBxBJthfwawYJfLpLN1vfBw");
+    Geocode.setRegion("us");
+    Geocode.setLanguage("en");
     setMap(leafletMap);
     setDispatcherMarker(L.marker([DISPATCHER_START_LOCATION[deliveryStartLocationKey][0], DISPATCHER_START_LOCATION[deliveryStartLocationKey][1]], { icon: dispatcherIcon })); 
     setFocusPointMarker(L.marker([DISPATCHER_START_LOCATION[deliveryStartLocationKey][0], DISPATCHER_START_LOCATION[deliveryStartLocationKey][1]])); 
@@ -90,6 +93,17 @@ const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey
       // Search box event listener
       geoCoder.on("markgeocode", function (e) {
 
+        // Convert lat & lng to address
+        Geocode.fromLatLng(e.geocode.center.lat, e.geocode.center.lng).then(
+          response => {
+            const address = response.results[0].formatted_address;
+            console.log(address);
+          },
+          error => {
+            console.error(error);
+          }
+        );
+
         map.fitBounds(e.geocode.bbox);
 
         // Update waypoints
@@ -110,6 +124,17 @@ const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey
       
       // Mouse click event listener
       map.on("click", function (e) {
+
+        // Convert lat & lng to address
+        Geocode.fromLatLng(e.latlng.lat, e.latlng.lng).then(
+          response => {
+            const address = response.results[0].formatted_address;
+            console.log(address);
+          },
+          error => {
+            console.error(error);
+          }
+        );
 
         // Update waypoints
         routeControl.getPlan().setWaypoints([
