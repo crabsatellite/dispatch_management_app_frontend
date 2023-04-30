@@ -17,6 +17,7 @@ function ChangeView({ center, zoom }) {
 
 const DeliveryPlanning = ({authed, setTabKey}) => {
   
+  const [currentStep, setCurrentStep] = useState(0);
   const [dispatcher, setDispatcher] = useState(DISPATCHER_TYPE.ROBOT);
   const [deliveryState, setDeliveryState] = useState(DELIVERY_STATE.IDLE);
   const [deliveryStartLocationKey, setDeliveryStartLocationKey] = useState(DISPATCHER_START_LOCATION_KEY.LOCATION_A);
@@ -48,10 +49,16 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-              <DeliveryMapStateMachineController dispatcher={dispatcher} deliveryStartLocationKey={deliveryStartLocationKey} deliveryState={deliveryState} setDeliveryState={setDeliveryState}></DeliveryMapStateMachineController>
+              <DeliveryMapStateMachineController 
+                dispatcher={dispatcher} 
+                deliveryStartLocationKey={deliveryStartLocationKey} 
+                deliveryState={deliveryState} 
+                setDeliveryState={setDeliveryState} 
+              />
           </MapContainer>
 
-          {deliveryState === DELIVERY_STATE.PICKUP_PROCESSING || 
+          {currentStep === 0 || 
+           deliveryState === DELIVERY_STATE.PICKUP_PROCESSING || 
            deliveryState === DELIVERY_STATE.DELIVER_PROCESSING || 
            deliveryState === DELIVERY_STATE.DELIVER_FINISHED ? 
             <Image className="stack-top" preview={false} src={"./blur_layer.png"}/> : <></>
@@ -59,7 +66,16 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
         </div>
       </Col>
       <Col span={12}>
-          <DeliveryWorkflowStateMachineController dispatcher={dispatcher} setDispatcher={setDispatcher} deliveryState={deliveryState} setDeliveryState={setDeliveryState} setDeliveryStartLocationKey={setDeliveryStartLocationKey} setTabKey={setTabKey}></DeliveryWorkflowStateMachineController>
+          <DeliveryWorkflowStateMachineController 
+            currentStep={currentStep}
+            setCurrentStep={setCurrentStep}
+            dispatcher={dispatcher} 
+            setDispatcher={setDispatcher} 
+            deliveryState={deliveryState} 
+            setDeliveryState={setDeliveryState} 
+            setDeliveryStartLocationKey={setDeliveryStartLocationKey} 
+            setTabKey={setTabKey}
+          />
       </Col>
     </Row>
   );

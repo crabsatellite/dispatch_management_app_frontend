@@ -7,7 +7,15 @@ import PackagePickupStep from '../workflow/PackagePickupStep';
 import PackageInformationStep from '../workflow/PackageInformationStep';
 import PackageDeliveryStep from '../workflow/PackageDeliveryStep';
 
-const DeliveryWorkflowStateMachineController = ({dispatcher, setDispatcher, deliveryState, setDeliveryState, setDeliveryStartLocationKey, setTabKey}) => {
+const DeliveryWorkflowStateMachineController = (
+  { currentStep,
+    setCurrentStep,
+    dispatcher, 
+    setDispatcher, 
+    deliveryState, 
+    setDeliveryState, 
+    setDeliveryStartLocationKey, 
+    setTabKey}) => {
 
     const steps = [
       {
@@ -27,41 +35,40 @@ const DeliveryWorkflowStateMachineController = ({dispatcher, setDispatcher, deli
       },
     ];
 
-    const [current, setCurrent] = useState(0);
     const items = steps.map((item) => ({ key: item.title, title: item.title, icon: item.icon }));
     
     useEffect(() => {
-      if (current === 1 && deliveryState == DELIVERY_STATE.DELIVER_PREPARATION) {
-        setCurrent(current + 1);
+      if (currentStep === 1 && deliveryState == DELIVERY_STATE.DELIVER_PREPARATION) {
+        setCurrentStep(currentStep + 1);
       }
-      if (current === 2 && deliveryState == DELIVERY_STATE.RESET_ROUTE) {
-        setCurrent(0);
+      if (currentStep === 2 && deliveryState == DELIVERY_STATE.RESET_ROUTE) {
+        setCurrentStep(0);
       }
 
     }, [deliveryState]);
 
     return (
       <>
-        <Steps current={current} items={items} style={{marginLeft: 20}}/>
-        <div style={{lineHeight: '700px', textAlign: 'center', marginTop: 16,}}>{steps[current].content}</div>
+        <Steps current={currentStep} items={items} style={{marginLeft: 20}}/>
+        <div style={{lineHeight: '700px', textAlign: 'center', marginTop: 16,}}>{steps[currentStep].content}</div>
         <div style={{ marginTop: 24 }}>
-          {(current === 1 || current === 2) && (
-            <Button style={{marginLeft: 22}} type="primary" onClick={() => setCurrent(0)}>
+          {(currentStep === 1 || currentStep === 2) && (
+            <Button style={{marginLeft: 22}} type="primary" onClick={() => setCurrentStep(0)}>
               Back To Package Information
             </Button>
           )}
-          {(current === 0 && (deliveryState == DELIVERY_STATE.DELIVER_PREPARATION
+          {(currentStep === 0 && (deliveryState == DELIVERY_STATE.DELIVER_PREPARATION
             || deliveryState == DELIVERY_STATE.DELIVER_INITIALIZATION 
             || deliveryState == DELIVERY_STATE.DELIVER_PROCESSING 
             || deliveryState == DELIVERY_STATE.DELIVER_FINISHED)) && (
-            <Button style={{marginLeft: 22}} type="primary" onClick={() => setCurrent(2)}>
+            <Button style={{marginLeft: 22}} type="primary" onClick={() => setCurrentStep(2)}>
               Proceed To Delivery Portal
             </Button>)
           }
-          {(current === 0 && (deliveryState === DELIVERY_STATE.PICKUP_PREPARATION 
+          {(currentStep === 0 && (deliveryState === DELIVERY_STATE.PICKUP_PREPARATION 
             || deliveryState === DELIVERY_STATE.PICKUP_INITIALIZATION
             || deliveryState === DELIVERY_STATE.PICKUP_PROCESSING)) && (
-            <Button style={{marginLeft: 22}} type="primary" onClick={() => setCurrent(1)}>
+            <Button style={{marginLeft: 22}} type="primary" onClick={() => setCurrentStep(1)}>
               Proceed To Pick-Up Portal
             </Button>)
           }
