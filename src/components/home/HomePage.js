@@ -43,7 +43,7 @@ const HomePage = () => {
 
 
                 <Col span={8}>
-                    World
+                    World!
                 </Col>
 
                 <Col span={8}>
