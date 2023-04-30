@@ -69,7 +69,7 @@ const DeliveryWorkflowStateMachineController = (
         <Steps current={currentStep} items={items} style={{marginLeft: 20}}/>
         <div style={{lineHeight: '700px', textAlign: 'center', marginTop: 16,}}>{steps[currentStep].content}</div>
         <div style={{ marginTop: 24 }}>
-          {(currentStep === 1 || currentStep === 2) && (
+          {(currentStep === 1 || (currentStep === 2 && deliveryState == DELIVERY_STATE.DELIVER_PREPARATION)) && (
             <Button style={{marginLeft: 22}} type="primary" onClick={() => setCurrentStep(0)}>
               Back To Package Information
             </Button>

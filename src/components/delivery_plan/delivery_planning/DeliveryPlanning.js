@@ -25,11 +25,15 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
 
   useEffect(() => {
     localStorage.setItem("pickupAddress", "[]");
+    localStorage.setItem("deliveryAddress", "[]");
   }, []);
 
   useEffect(() => {
     if(deliveryState === DELIVERY_STATE.PICKUP_PREPARATION) {
       localStorage.setItem("pickupAddress", focusPointAddress);
+    } else if (deliveryState === DELIVERY_STATE.DELIVER_PREPARATION) {
+      localStorage.setItem("deliveryAddress", focusPointAddress);
+
     } else if (deliveryState === DELIVERY_STATE.RESET_ROUTE) {
       setDeliveryStartLocationKey(DISPATCHER_START_LOCATION_KEY.LOCATION_A);
       setDispatcher(DISPATCHER_TYPE.ROBOT);
@@ -76,6 +80,7 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
           {currentStep === 0 || 
            deliveryState === DELIVERY_STATE.PICKUP_INITIALIZATION ||
            deliveryState === DELIVERY_STATE.PICKUP_PROCESSING || 
+           deliveryState === DELIVERY_STATE.DELIVER_INITIALIZATION || 
            deliveryState === DELIVERY_STATE.DELIVER_PROCESSING || 
            deliveryState === DELIVERY_STATE.DELIVER_FINISHED ? 
             <Image className="stack-top" preview={false} src={"./blur_layer.png"}/> : <></>

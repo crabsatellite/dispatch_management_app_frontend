@@ -1,50 +1,75 @@
-import { Button, Image, Result, Card, Collapse } from 'antd';
-import { InfoCircleOutlined, SearchOutlined, AimOutlined, InfoCircleFilled } from '@ant-design/icons';
+import { Button, Image, Result, Card, Collapse,Descriptions } from 'antd';
+import { LoadingOutlined, SearchOutlined, AimOutlined, InfoCircleFilled, CodeSandboxOutlined } from '@ant-design/icons';
 import { DELIVERY_STATE, DISPATCHER_TYPE } from '../../../../utils/delivery_plan_utils';
 import "./InfoSelection.css";
+import { showError } from '../../../../utils/dialog_utils';
 
 const { Panel } = Collapse;
 const PackageDeliveryStep = ({dispatcher, deliveryState, setDeliveryState, setTabKey}) => {
 
     if (deliveryState == DELIVERY_STATE.DELIVER_PROCESSING) {
         return (
-        <Card
-            title="DELIVERY PROCESSING"
-            style={{width: 1000, left: 20}}
-        >
-            <Result
-                title="DISPATCH FOR DELIVERY"
-                subTitle="THE DISPATCHER IS MOVING TOWARDS YOUR DELIVERY LOCATION......"
-            />
-            <Image className="image" width={200} src={dispatcher === DISPATCHER_TYPE.ROBOT ? "./robot.png" : "./drone.png"}/>
-        </Card>
+            <Card
+                title="DELIVERY PROCESSING"
+                style={{width: 1000, left: 20}}
+            >
+                <Result
+                    title="DISPATCH FOR DELIVERY"
+                    subTitle="THE DISPATCHER IS MOVING TOWARDS YOUR DELIVERY LOCATION......"
+                />
+                <LoadingOutlined style={{fontSize: 50, marginLeft: 200}}/>
+                <Image className="image" width={200} src={dispatcher === DISPATCHER_TYPE.ROBOT ? "./robot.png" : "./drone.png"}/>
+            </Card>
         );
 
     } else if (deliveryState == DELIVERY_STATE.DELIVER_PREPARATION) {
 
         return (
             <Card
-                title="DELIVERY ONBOARDING"
+                title="DELIVERY PLANNING"
                 style={{width: 1000, left: 20}}
             >
                  <Collapse bordered={false} defaultActiveKey={['1']}>
-                    <Panel header="SELECT DELIVERY LOCATION" key="1">
+                    <Panel header="Select Delivery Location" key="1">
                         <p style={{marginLeft: 90}}>
                             <SearchOutlined />
-                            FIRST WAY: TOP-RIGHT CORNER SEARCH BAR FROM MAP
+                            First Way: Use Top-Right Corner Search Bar On Map
                         </p>
                         <p>
                             <AimOutlined />
-                            SECOND WAY: LEFT MOUSE CLICK ON MAP
+                            Second Way: Use Left Mouse Click To Localize On Map
+                        </p>
+                        <p style={{marginLeft: 315}}>
+                        <Descriptions>
+                            <Descriptions.Item label="Delivery Location">{localStorage.getItem("deliveryAddress")}</Descriptions.Item>
+                        </Descriptions>
                         </p>
                     </Panel>
-                    <Panel header="REVIEW PACKAGE INFORMATION" key="1">
-                    <Button type="primary" onClick={() => {setDeliveryState(DELIVERY_STATE.DELIVER_INITIALIZATION)}}>Confirm</Button>
+                    <Panel header="Review Package Information" key="1">
                     <p></p>
                     <p>
-                        <InfoCircleFilled/>
-                        ONCE CLICK, IT IS NOT ALLOWED TO MODIFY PACKAGE INFORMATION AGAIN
+                        <CodeSandboxOutlined/>
+                        Please go back and review the package information again.    
                     </p>
+                    </Panel>
+                    <Panel header="Confirmation" key="1">
+                        <Button 
+                            type="primary" 
+                            onClick={() => {
+                                if (localStorage.getItem("deliveryAddress") === "[]") {
+                                    showError("Error!" ,"The delivery location can not be empty");
+                                    return;
+                                }
+                                setDeliveryState(DELIVERY_STATE.DELIVER_INITIALIZATION)
+                            }}
+                        >
+                            Confirm
+                        </Button>
+                        <p></p>
+                        <p>
+                            <InfoCircleFilled/>
+                            Once click, the package information and delivery location are confirmed.
+                        </p>
                     </Panel>
                 </Collapse>
                 <Image className="image" width={200} src={"./delivery_box.png"}/>
@@ -58,22 +83,18 @@ const PackageDeliveryStep = ({dispatcher, deliveryState, setDeliveryState, setTa
                 style={{width: 1000, left: 20}}
             >
                 <Collapse bordered={false} defaultActiveKey={['1']}>
-                    <Panel header="MODIFIABLE DELIVERY LOCATION" key="1">
-                        <p style={{marginLeft: 90}}>
-                            <SearchOutlined />
-                            FIRST WAY: TOP-RIGHT CORNER SEARCH BAR FROM MAP
-                        </p>
-                        <p>
-                            <AimOutlined />
-                            SECOND WAY: LEFT MOUSE CLICK ON MAP
-                        </p>
+                    <Panel header="Delivery Planning Summary" key="1">
+                        <Descriptions layout="vertical">
+                            <Descriptions.Item label="Package Information">Placeholder</Descriptions.Item>
+                            <Descriptions.Item label="Delivery Location">{localStorage.getItem("deliveryAddress")}</Descriptions.Item>
+                        </Descriptions>   
                     </Panel>
-                    <Panel header="DELIVERY DISPATCH" key="1">
-                        <Button type="primary" onClick={() => {setDeliveryState(DELIVERY_STATE.DELIVER_PROCESSING)}}>Delivery Dispatch</Button>
+                    <Panel type="primary" header="Delivery Dispatch" key="1">
+                        <Button type="primary" onClick={() => {setDeliveryState(DELIVERY_STATE.DELIVER_PROCESSING)}}>Start Delivery</Button>,
                         <p></p>
                         <p>
                             <InfoCircleFilled />
-                            BEFORE CLICK, YOU ARE STILL ALLOWED TO MODIFY DELIVERY LOCATION
+                            Once click, the dispatcher will proceed towards your delivery location.
                         </p>
                     </Panel>
                 </Collapse>
