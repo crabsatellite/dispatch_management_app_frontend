@@ -5,7 +5,13 @@ import "./InfoSelection.css";
 import { showError } from '../../../../utils/dialog_utils';
 
 const { Panel } = Collapse;
-const PackageDeliveryStep = ({dispatcher, deliveryState, setDeliveryState, setTabKey}) => {
+const PackageDeliveryStep = (
+        {   pickupAddress,
+            deliverAddress,
+            dispatcher, 
+            deliveryState, 
+            setDeliveryState, 
+            setTabKey}) => {
 
     if (deliveryState == DELIVERY_STATE.DELIVER_PROCESSING) {
         return (
@@ -41,7 +47,8 @@ const PackageDeliveryStep = ({dispatcher, deliveryState, setDeliveryState, setTa
                         </p>
                         <p style={{marginLeft: 315}}>
                         <Descriptions>
-                            <Descriptions.Item label="Delivery Location">{localStorage.getItem("deliveryAddress")}</Descriptions.Item>
+                            <Descriptions.Item label="Pick-up Location">{pickupAddress}</Descriptions.Item>
+                            <Descriptions.Item label="Delivery Location">{deliverAddress}</Descriptions.Item>
                         </Descriptions>
                         </p>
                     </Panel>
@@ -56,7 +63,7 @@ const PackageDeliveryStep = ({dispatcher, deliveryState, setDeliveryState, setTa
                         <Button 
                             type="primary" 
                             onClick={() => {
-                                if (localStorage.getItem("deliveryAddress") === "[]") {
+                                if (deliverAddress === "[]") {
                                     showError("Error!" ,"The delivery location can not be empty");
                                     return;
                                 }
@@ -86,7 +93,7 @@ const PackageDeliveryStep = ({dispatcher, deliveryState, setDeliveryState, setTa
                     <Panel header="Delivery Planning Summary" key="1">
                         <Descriptions layout="vertical">
                             <Descriptions.Item label="Package Information">Placeholder</Descriptions.Item>
-                            <Descriptions.Item label="Delivery Location">{localStorage.getItem("deliveryAddress")}</Descriptions.Item>
+                            <Descriptions.Item label="Delivery Location">{deliverAddress}</Descriptions.Item>
                         </Descriptions>   
                     </Panel>
                     <Panel type="primary" header="Delivery Dispatch" key="1">

@@ -18,31 +18,11 @@ function ChangeView({ center, zoom }) {
 const DeliveryPlanning = ({authed, setTabKey}) => {
   
   const [currentStep, setCurrentStep] = useState(0); 
-  const [focusPointAddress, setFocusPointAddress] = useState("[]"); 
+  const [pickupAddress, setPickupAddress] = useState("[]");
+  const [deliveryAddress, setDeliveryAddress] = useState("[]");
   const [dispatcher, setDispatcher] = useState(DISPATCHER_TYPE.ROBOT);
   const [deliveryState, setDeliveryState] = useState(DELIVERY_STATE.IDLE);
   const [deliveryStartLocationKey, setDeliveryStartLocationKey] = useState(DISPATCHER_START_LOCATION_KEY.LOCATION_A);
-
-  useEffect(() => {
-    localStorage.setItem("pickupAddress", "[]");
-    localStorage.setItem("deliveryAddress", "[]");
-  }, []);
-
-  useEffect(() => {
-    if (deliveryState === DELIVERY_STATE.PICKUP_PREPARATION) {
-      localStorage.setItem("pickupAddress", focusPointAddress);
-
-    } else if (deliveryState === DELIVERY_STATE.DELIVER_PREPARATION) {
-      localStorage.setItem("deliveryAddress", focusPointAddress);
-
-    } else if (deliveryState === DELIVERY_STATE.RESET_ROUTE) {
-      setDeliveryStartLocationKey(DISPATCHER_START_LOCATION_KEY.LOCATION_A);
-      setDispatcher(DISPATCHER_TYPE.ROBOT);
-      localStorage.setItem("pickupAddress", "[]");
-      localStorage.setItem("deliveryAddress", "[]");
-      setDeliveryState(DELIVERY_STATE.PICKUP_PREPARATION);
-    }
-  }, [focusPointAddress]);
   
   useEffect(() => {
     if (authed) {
@@ -58,7 +38,6 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
       case DELIVERY_STATE.DELIVER_PREPARATION:
         if (currentStep === 1) {
           setCurrentStep(currentStep + 1);
-          localStorage.setItem("deliveryAddress", focusPointAddress);
           showInfo("Information", "The dispatcher has arrived the pick-up location, please review package information before handing over your package to dispatcher");
         }
         break;
@@ -71,6 +50,8 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
         if (currentStep === 2) {
           setCurrentStep(0);
         }
+        setDeliveryStartLocationKey(DISPATCHER_START_LOCATION_KEY.LOCATION_A);
+        setDispatcher(DISPATCHER_TYPE.ROBOT);
     }
   }, [deliveryState]);
 
@@ -89,23 +70,21 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
                 deliveryStartLocationKey={deliveryStartLocationKey} 
                 deliveryState={deliveryState} 
                 setDeliveryState={setDeliveryState} 
-                setFocusPointAddress={setFocusPointAddress}
+                setPickupAddress={setPickupAddress}
+                setDeliveryAddress={setDeliveryAddress}
+                deliveryAddress={deliveryAddress}
               />
           </MapContainer>
 
-          {currentStep === 0 || 
-           deliveryState === DELIVERY_STATE.PICKUP_INITIALIZATION ||
-           deliveryState === DELIVERY_STATE.PICKUP_PROCESSING || 
-           deliveryState === DELIVERY_STATE.DELIVER_INITIALIZATION || 
-           deliveryState === DELIVERY_STATE.DELIVER_PROCESSING || 
-           deliveryState === DELIVERY_STATE.DELIVER_FINISHED ? 
+          {currentStep === 0 ? 
             <Image className="stack-top" preview={false} src={"./blur_layer.png"}/> : <></>
           }
         </div>
       </Col>
       <Col span={12}>
           <DeliveryWorkflowStateMachineController
-            focusPointAddress={focusPointAddress} 
+            pickupAddress={pickupAddress}
+            deliveryAddress={deliveryAddress} 
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
             dispatcher={dispatcher} 

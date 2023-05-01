@@ -8,7 +8,8 @@ import PackageInformationStep from '../workflow/PackageInformationStep';
 import PackageDeliveryStep from '../workflow/PackageDeliveryStep';
 
 const DeliveryWorkflowStateMachineController = (
-  { focusPointAddress,
+  { pickupAddress,
+    dummy,
     currentStep,
     setCurrentStep,
     dispatcher, 
@@ -30,7 +31,7 @@ const DeliveryWorkflowStateMachineController = (
       {
           title: 'Package Pick-up',
           content: <PackagePickupStep 
-                      focusPointAddress={focusPointAddress} 
+                      pickupAddress={pickupAddress} 
                       dispatcher={dispatcher} 
                       deliveryState={deliveryState} 
                       setDispatcher={setDispatcher} 
@@ -43,6 +44,8 @@ const DeliveryWorkflowStateMachineController = (
       {
           title: 'Package Delivery',
           content: <PackageDeliveryStep 
+                      pickupAddress={pickupAddress}
+                      deliveryAddress={dummy}
                       dispatcher={dispatcher} 
                       deliveryState={deliveryState} 
                       setDeliveryState={setDeliveryState} 

@@ -7,7 +7,7 @@ import { showError } from '../../../../utils/dialog_utils';
 
 const { Panel } = Collapse;
 const PackagePickupStep = (
-        {   focusPointAddress,
+        {   pickupAddress,
             dispatcher, 
             deliveryState, 
             setDispatcher, 
@@ -118,7 +118,7 @@ const PackagePickupStep = (
                     </p>
                     <p style={{marginLeft: 315}}>
                     <Descriptions>
-                        <Descriptions.Item label="Pick-up Location">{focusPointAddress}</Descriptions.Item>
+                        <Descriptions.Item label="Pick-up Location">{pickupAddress}</Descriptions.Item>
                     </Descriptions>
                     </p>
                 </Panel>
@@ -136,7 +136,7 @@ const PackagePickupStep = (
                     <Button 
                         type="primary" 
                         onClick={() => {
-                            if (focusPointAddress === "[]") {
+                            if (pickupAddress === "[]") {
                                 showError("Error!" ,"The pick-up location can not be empty");
                                 return;
                             }
@@ -165,7 +165,7 @@ const PackagePickupStep = (
             <Collapse bordered={false} defaultActiveKey={['1']}>
                 <Panel header="Pick-up Planning Summary" key="1">
                     <Descriptions layout="vertical">
-                        <Descriptions.Item label="Pick-up Location">{focusPointAddress}</Descriptions.Item>
+                        <Descriptions.Item label="Pick-up Location">{pickupAddress}</Descriptions.Item>
                         <Descriptions.Item label="Warehouse Location">{deliveryStartLocationKey}</Descriptions.Item>
                         <Descriptions.Item label="Dispatcher Type">{dispatcher}</Descriptions.Item>
                     </Descriptions>   
