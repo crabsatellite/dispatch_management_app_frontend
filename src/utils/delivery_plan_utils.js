@@ -30,7 +30,7 @@ export const DISPATCHER_TYPE = {
     AIR_DRONE : 'AIR_DRONE',
 };
 
-export const FOCUS_POINT_MARKER_TYPE = {
+export const DISPATCH_ROUTE_TYPE = {
     PICK_UP : 'PICK_UP',
     DELIVERY : 'DELIVERY',
 }
