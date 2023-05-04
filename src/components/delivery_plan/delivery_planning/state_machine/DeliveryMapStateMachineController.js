@@ -143,7 +143,7 @@ const DeliveryMapStateMachineController = (
     let speedFactor = 1;
     switch (speed) {
       case DISPATCH_SPEED_TYPE.PRIORITY:
-        speedFactor = 20;
+        speedFactor = 10;
         break;
       case DISPATCH_SPEED_TYPE.FIRST_CLASS:
         speedFactor = 50;
