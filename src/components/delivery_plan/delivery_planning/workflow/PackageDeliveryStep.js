@@ -6,8 +6,7 @@ import { showError } from '../../../../utils/dialog_utils';
 
 const { Panel } = Collapse;
 const PackageDeliveryStep = (
-        {   pickupAddress,
-            deliverAddress,
+        {   deliveryAddress,
             dispatcher, 
             deliveryState, 
             setDeliveryState, 
@@ -47,8 +46,7 @@ const PackageDeliveryStep = (
                         </p>
                         <p style={{marginLeft: 315}}>
                         <Descriptions>
-                            <Descriptions.Item label="Pick-up Location">{pickupAddress}</Descriptions.Item>
-                            <Descriptions.Item label="Delivery Location">{deliverAddress}</Descriptions.Item>
+                            <Descriptions.Item label="Delivery Location">{deliveryAddress}</Descriptions.Item>
                         </Descriptions>
                         </p>
                     </Panel>
@@ -63,7 +61,7 @@ const PackageDeliveryStep = (
                         <Button 
                             type="primary" 
                             onClick={() => {
-                                if (deliverAddress === "[]") {
+                                if (deliveryAddress === "[]") {
                                     showError("Error!" ,"The delivery location can not be empty");
                                     return;
                                 }
@@ -93,7 +91,7 @@ const PackageDeliveryStep = (
                     <Panel header="Delivery Planning Summary" key="1">
                         <Descriptions layout="vertical">
                             <Descriptions.Item label="Package Information">Placeholder</Descriptions.Item>
-                            <Descriptions.Item label="Delivery Location">{deliverAddress}</Descriptions.Item>
+                            <Descriptions.Item label="Delivery Location">{deliveryAddress}</Descriptions.Item>
                         </Descriptions>   
                     </Panel>
                     <Panel type="primary" header="Delivery Dispatch" key="1">

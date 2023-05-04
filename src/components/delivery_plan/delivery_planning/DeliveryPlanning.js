@@ -72,7 +72,6 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
                 setDeliveryState={setDeliveryState} 
                 setPickupAddress={setPickupAddress}
                 setDeliveryAddress={setDeliveryAddress}
-                deliveryAddress={deliveryAddress}
               />
           </MapContainer>
 

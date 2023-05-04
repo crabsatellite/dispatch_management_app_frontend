@@ -12,8 +12,7 @@ const DeliveryMapStateMachineController = (
       deliveryState, 
       setDeliveryState,
       setPickupAddress,
-      setDeliveryAddress,
-      deliveryAddress}) => {
+      setDeliveryAddress}) => {
 
   /*
    * Icon definitions start -----------------------------------------------------------------------------------------------------
@@ -229,7 +228,6 @@ const DeliveryMapStateMachineController = (
           Geocode.fromLatLng(e.latlng.lat, e.latlng.lng).then(
             response => {
               const address = response.results[0].formatted_address;
-              console.log(address);
               setPickupAddress(address);
             },
             error => {
@@ -267,7 +265,6 @@ const DeliveryMapStateMachineController = (
           Geocode.fromLatLng(e.latlng.lat, e.latlng.lng).then(
             response => {
               const address = response.results[0].formatted_address;
-              console.log(address);
               setDeliveryAddress(address);
             },
             error => {

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { Button, Steps } from 'antd';
 import { CodeSandboxOutlined, RocketOutlined, AimOutlined } from '@ant-design/icons';
 import { DELIVERY_STATE } from '../../../../utils/delivery_plan_utils';
@@ -9,7 +8,7 @@ import PackageDeliveryStep from '../workflow/PackageDeliveryStep';
 
 const DeliveryWorkflowStateMachineController = (
   { pickupAddress,
-    dummy,
+    deliveryAddress,
     currentStep,
     setCurrentStep,
     dispatcher, 
@@ -44,8 +43,7 @@ const DeliveryWorkflowStateMachineController = (
       {
           title: 'Package Delivery',
           content: <PackageDeliveryStep 
-                      pickupAddress={pickupAddress}
-                      deliveryAddress={dummy}
+                      deliveryAddress={deliveryAddress}
                       dispatcher={dispatcher} 
                       deliveryState={deliveryState} 
                       setDeliveryState={setDeliveryState} 
