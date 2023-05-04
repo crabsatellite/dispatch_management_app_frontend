@@ -1,19 +1,20 @@
 import { Button, Image, Result, Card, Dropdown, Collapse, Descriptions } from 'antd';
 import { HomeOutlined, SearchOutlined, AimOutlined, InfoCircleFilled, LoadingOutlined } from '@ant-design/icons';
-import { DELIVERY_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE } from '../../../../utils/delivery_plan_utils';
+import { DELIVERY_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from '../../../../utils/delivery_plan_utils';
 import "./InfoSelection.css";
 import { showError } from '../../../../utils/dialog_utils';
 
-
 const { Panel } = Collapse;
 const PackagePickupStep = (
-        {   pickupAddress,
+        {   pickupSpeed,
+            pickupAddress,
             dispatcher, 
             deliveryState, 
             setDispatcher, 
             setDeliveryState, 
             deliveryStartLocationKey,
-            setDeliveryStartLocationKey}) => {
+            setDeliveryStartLocationKey,
+            setPickupSpeed}) => {
 
     const dispatcherItems = [
         {
@@ -46,6 +47,24 @@ const PackagePickupStep = (
         },
     ];
 
+    const dispatchSpeedItems = [
+        {
+            label: 'Priority',
+            key: '1',
+            icon: <HomeOutlined />,
+        },
+        {
+            label: 'First Class',
+            key: '2',
+            icon: <HomeOutlined />,
+        },
+        {
+            label: 'Normal',
+            key: '3',
+            icon: <HomeOutlined />,
+        },
+    ];
+
     const handleDispatcherMenuClick = (e) => {
 
         switch (e.key) {
@@ -73,6 +92,21 @@ const PackagePickupStep = (
         }
     };
 
+    const handleDispatchSpeedMenuClick = (e) => {
+
+        switch (e.key) {
+            case '1':
+                setPickupSpeed(DISPATCH_SPEED_TYPE.PRIORITY);
+                break;
+            case '2':
+                setPickupSpeed(DISPATCH_SPEED_TYPE.FIRST_CLASS);
+                break;
+            case '3':
+                setPickupSpeed(DISPATCH_SPEED_TYPE.NORMAL);
+                break;
+        }
+    };
+
     const dispatcherMenuProps = {
         items: dispatcherItems,
         onClick: handleDispatcherMenuClick,
@@ -81,6 +115,11 @@ const PackagePickupStep = (
     const startLocationMenuProps = {
         items: startLocationItems,
         onClick: handleStartLocationMenuClick,
+    };
+
+    const dispatchSpeedMenuProps = {
+        items: dispatchSpeedItems,
+        onClick: handleDispatchSpeedMenuClick,
     };
 
     if (deliveryState === DELIVERY_STATE.PICKUP_PROCESSING) {
@@ -126,11 +165,22 @@ const PackagePickupStep = (
                     <Dropdown.Button style={{marginLeft: 410, top: 100}} type="primary" menu={startLocationMenuProps} onClick={handleStartLocationMenuClick}>
                         Warehouse
                     </Dropdown.Button>
+                    <p></p>
+                    <p>Selection: {deliveryStartLocationKey}</p>
                 </Panel>
                 <Panel header="Select Dispatcher" key="1">
                     <Dropdown.Button style={{marginLeft: 410}} type="primary" menu={dispatcherMenuProps} onClick={handleDispatcherMenuClick}>
                         Dispatcher
                     </Dropdown.Button>
+                    <p></p>
+                    <p>Selection: {dispatcher}</p>
+                </Panel>
+                <Panel header="Select Pick-up Speed" key="1">
+                    <Dropdown.Button style={{marginLeft: 410}} type="primary" menu={dispatchSpeedMenuProps} onClick={handleDispatchSpeedMenuClick}>
+                        Speed
+                    </Dropdown.Button>
+                    <p></p>
+                    <p>Selection: {pickupSpeed}</p>
                 </Panel>
                 <Panel header="Confirmation" key="1">
                     <Button 
@@ -168,6 +218,7 @@ const PackagePickupStep = (
                         <Descriptions.Item label="Pick-up Location">{pickupAddress}</Descriptions.Item>
                         <Descriptions.Item label="Warehouse Location">{deliveryStartLocationKey}</Descriptions.Item>
                         <Descriptions.Item label="Dispatcher Type">{dispatcher}</Descriptions.Item>
+                        <Descriptions.Item label="Pick-up Speed">{pickupSpeed}</Descriptions.Item>
                     </Descriptions>   
                 </Panel>
                 <Panel type="primary" header="Pick-up Dispatch" key="1">

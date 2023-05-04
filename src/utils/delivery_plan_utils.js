@@ -34,3 +34,9 @@ export const DISPATCH_ROUTE_TYPE = {
     PICK_UP : 'PICK_UP',
     DELIVERY : 'DELIVERY',
 }
+
+export const DISPATCH_SPEED_TYPE = {
+    PRIORITY : 'PRIORITY',
+    FIRST_CLASS : 'FIRST_CLASS',
+    NORMAL : 'NORMAL',
+}

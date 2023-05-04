@@ -7,7 +7,9 @@ import PackageInformationStep from '../workflow/PackageInformationStep';
 import PackageDeliveryStep from '../workflow/PackageDeliveryStep';
 
 const DeliveryWorkflowStateMachineController = (
-  { pickupAddress,
+  { pickupSpeed,
+    deliverySpeed,
+    pickupAddress,
     deliveryAddress,
     currentStep,
     setCurrentStep,
@@ -17,7 +19,9 @@ const DeliveryWorkflowStateMachineController = (
     setDeliveryState, 
     deliveryStartLocationKey,
     setDeliveryStartLocationKey, 
-    setTabKey}) => {
+    setTabKey,
+    setPickupSpeed,
+    setDeliverySpeed}) => {
 
     const steps = [
       {
@@ -30,6 +34,7 @@ const DeliveryWorkflowStateMachineController = (
       {
           title: 'Package Pick-up',
           content: <PackagePickupStep 
+                      pickupSpeed={pickupSpeed}
                       pickupAddress={pickupAddress} 
                       dispatcher={dispatcher} 
                       deliveryState={deliveryState} 
@@ -37,17 +42,21 @@ const DeliveryWorkflowStateMachineController = (
                       setDeliveryState={setDeliveryState} 
                       deliveryStartLocationKey={deliveryStartLocationKey}
                       setDeliveryStartLocationKey={setDeliveryStartLocationKey}
+                      pick
+                      setPickupSpeed={setPickupSpeed}
                     />,
           icon: <AimOutlined />,
       },
       {
           title: 'Package Delivery',
           content: <PackageDeliveryStep 
+                      deliverySpeed={deliverySpeed}
                       deliveryAddress={deliveryAddress}
                       dispatcher={dispatcher} 
                       deliveryState={deliveryState} 
                       setDeliveryState={setDeliveryState} 
                       setTabKey={setTabKey}
+                      setDeliverySpeed={setDeliverySpeed}
                     />,
           icon: <RocketOutlined />,
       },

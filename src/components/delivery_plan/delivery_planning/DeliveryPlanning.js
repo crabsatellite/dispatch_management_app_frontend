@@ -7,7 +7,7 @@ import "./state_machine/DeliveryMap.css";
 import DeliveryMapStateMachineController from "./state_machine/DeliveryMapStateMachineController";
 import DeliveryWorkflowStateMachineController from "./state_machine/DeliveryWorkflowStateMachineController";
 import { showSuccess, showInfo } from "../../../utils/dialog_utils"
-import { DELIVERY_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_START_LOCATION, DISPATCHER_TYPE } from "../../../utils/delivery_plan_utils";
+import { DELIVERY_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_START_LOCATION, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from "../../../utils/delivery_plan_utils";
 
 function ChangeView({ center, zoom }) {
   const map = useMap();
@@ -20,6 +20,8 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
   const [currentStep, setCurrentStep] = useState(0); 
   const [pickupAddress, setPickupAddress] = useState("[]");
   const [deliveryAddress, setDeliveryAddress] = useState("[]");
+  const [pickupSpeed, setPickupSpeed] = useState(DISPATCH_SPEED_TYPE.NORMAL);
+  const [deliverySpeed, setDeliverySpeed] = useState(DISPATCH_SPEED_TYPE.NORMAL);
   const [dispatcher, setDispatcher] = useState(DISPATCHER_TYPE.ROBOT);
   const [deliveryState, setDeliveryState] = useState(DELIVERY_STATE.IDLE);
   const [deliveryStartLocationKey, setDeliveryStartLocationKey] = useState(DISPATCHER_START_LOCATION_KEY.LOCATION_A);
@@ -66,6 +68,8 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
               <DeliveryMapStateMachineController 
+                pickupSpeed={pickupSpeed}
+                deliverySpeed={deliverySpeed}
                 dispatcher={dispatcher} 
                 deliveryStartLocationKey={deliveryStartLocationKey} 
                 deliveryState={deliveryState} 
@@ -82,6 +86,8 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
       </Col>
       <Col span={12}>
           <DeliveryWorkflowStateMachineController
+            pickupSpeed={pickupSpeed}
+            deliverySpeed={deliverySpeed}
             pickupAddress={pickupAddress}
             deliveryAddress={deliveryAddress} 
             currentStep={currentStep}
@@ -93,6 +99,8 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
             deliveryStartLocationKey={deliveryStartLocationKey}
             setDeliveryStartLocationKey={setDeliveryStartLocationKey} 
             setTabKey={setTabKey}
+            setPickupSpeed={setPickupSpeed}
+            setDeliverySpeed={setDeliverySpeed}
           />
       </Col>
     </Row>

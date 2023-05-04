@@ -1,16 +1,56 @@
-import { Button, Image, Result, Card, Collapse,Descriptions } from 'antd';
-import { LoadingOutlined, SearchOutlined, AimOutlined, InfoCircleFilled, CodeSandboxOutlined } from '@ant-design/icons';
-import { DELIVERY_STATE, DISPATCHER_TYPE } from '../../../../utils/delivery_plan_utils';
+import { Button, Image, Result, Card, Collapse,Descriptions, Dropdown } from 'antd';
+import { LoadingOutlined, SearchOutlined, AimOutlined, InfoCircleFilled, CodeSandboxOutlined, HomeOutlined } from '@ant-design/icons';
+import { DELIVERY_STATE, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from '../../../../utils/delivery_plan_utils';
 import "./InfoSelection.css";
 import { showError } from '../../../../utils/dialog_utils';
 
 const { Panel } = Collapse;
 const PackageDeliveryStep = (
-        {   deliveryAddress,
+        {   deliverySpeed,
+            deliveryAddress,
             dispatcher, 
             deliveryState, 
             setDeliveryState, 
-            setTabKey}) => {
+            setTabKey,
+            setDeliverySpeed}) => {
+
+    const dispatchSpeedItems = [
+        {
+            label: 'Priority',
+            key: '1',
+            icon: <HomeOutlined />,
+        },
+        {
+            label: 'First Class',
+            key: '2',
+            icon: <HomeOutlined />,
+        },
+        {
+            label: 'Normal',
+            key: '3',
+            icon: <HomeOutlined />,
+        },
+    ];
+
+    const handleDispatchSpeedMenuClick = (e) => {
+
+        switch (e.key) {
+            case '1':
+                setDeliverySpeed(DISPATCH_SPEED_TYPE.PRIORITY);
+                break;
+            case '2':
+                setDeliverySpeed(DISPATCH_SPEED_TYPE.FIRST_CLASS);
+                break;
+            case '3':
+                setDeliverySpeed(DISPATCH_SPEED_TYPE.NORMAL);
+                break;
+        }
+    };
+
+    const dispatchSpeedMenuProps = {
+        items: dispatchSpeedItems,
+        onClick: handleDispatchSpeedMenuClick,
+    };
 
     if (deliveryState == DELIVERY_STATE.DELIVER_PROCESSING) {
         return (
@@ -49,6 +89,13 @@ const PackageDeliveryStep = (
                             <Descriptions.Item label="Delivery Location">{deliveryAddress}</Descriptions.Item>
                         </Descriptions>
                         </p>
+                    </Panel>
+                    <Panel header="Select Delivery Speed" key="1">
+                    <Dropdown.Button style={{marginLeft: 410}} type="primary" menu={dispatchSpeedMenuProps} onClick={handleDispatchSpeedMenuClick}>
+                            Speed
+                        </Dropdown.Button>
+                        <p></p>
+                        <p>Selection: {deliverySpeed}</p>
                     </Panel>
                     <Panel header="Review Package Information" key="1">
                     <p></p>
@@ -92,6 +139,7 @@ const PackageDeliveryStep = (
                         <Descriptions layout="vertical">
                             <Descriptions.Item label="Package Information">Placeholder</Descriptions.Item>
                             <Descriptions.Item label="Delivery Location">{deliveryAddress}</Descriptions.Item>
+                            <Descriptions.Item label="Delivery Speed">{deliverySpeed}</Descriptions.Item>
                         </Descriptions>   
                     </Panel>
                     <Panel type="primary" header="Delivery Dispatch" key="1">

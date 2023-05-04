@@ -3,11 +3,13 @@ import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import { useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
-import { DISPATCH_ROUTE_TYPE, DELIVERY_STATE, DISPATCHER_START_LOCATION, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE } from "../../../../utils/delivery_plan_utils";
+import { DISPATCH_ROUTE_TYPE, DELIVERY_STATE, DISPATCHER_START_LOCATION, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from "../../../../utils/delivery_plan_utils";
 import Geocode from "react-geocode";
 
 const DeliveryMapStateMachineController = (
-    { dispatcher, 
+    { pickupSpeed,
+      deliverySpeed,
+      dispatcher, 
       deliveryStartLocationKey, 
       deliveryState, 
       setDeliveryState,
@@ -138,6 +140,19 @@ const DeliveryMapStateMachineController = (
 
   const simulateRoutePlan = (speed, routeType) => {
 
+    let speedFactor = 1;
+    switch (speed) {
+      case DISPATCH_SPEED_TYPE.PRIORITY:
+        speedFactor = 20;
+        break;
+      case DISPATCH_SPEED_TYPE.FIRST_CLASS:
+        speedFactor = 50;
+        break;
+      case DISPATCH_SPEED_TYPE.NORMAL:
+        speedFactor = 100;
+        break;
+    }
+
     var destination = routeCoordinates[routeCoordinates.length - 1];
     routeCoordinates.forEach((c, i) => {
       setTimeout(() => {
@@ -152,7 +167,7 @@ const DeliveryMapStateMachineController = (
           }
         }
         dispatcherMarker.setLatLng([c.lat, c.lng]);
-      }, speed * i);
+      }, speedFactor * i);
     });
     focusPointMarker.setIcon(defaultIcon);
     setFocusPointMarker(focusPointMarker);
@@ -252,7 +267,7 @@ const DeliveryMapStateMachineController = (
         break;
 
       case DELIVERY_STATE.PICKUP_PROCESSING:
-        simulateRoutePlan(100, DISPATCH_ROUTE_TYPE.PICK_UP);
+        simulateRoutePlan(pickupSpeed, DISPATCH_ROUTE_TYPE.PICK_UP);
         break;
 
       case DELIVERY_STATE.DELIVER_PREPARATION:
@@ -273,7 +288,7 @@ const DeliveryMapStateMachineController = (
         break;
 
       case DELIVERY_STATE.DELIVER_PROCESSING:
-        simulateRoutePlan(100, DISPATCH_ROUTE_TYPE.DELIVERY);
+        simulateRoutePlan(deliverySpeed, DISPATCH_ROUTE_TYPE.DELIVERY);
         break;
 
       case DELIVERY_STATE.DELIVER_FINISHED:
