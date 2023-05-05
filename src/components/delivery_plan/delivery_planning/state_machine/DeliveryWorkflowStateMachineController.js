@@ -11,11 +11,15 @@
 import PackagePickupStep from '../workflow/PackagePickupStep';
 import PackageDeliveryStep from '../workflow/PackageDeliveryStep';
 import PackageInformationStep from '../workflow/PackageInformationStep';
-import { DELIVERY_STATE } from '../../../../utils/delivery_plan_utils';
+import { DELIVERY_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE } from '../../../../utils/delivery_plan_utils';
+import { showInfo, showSuccess } from '../../../../utils/dialog_utils';
 
 // Antd imports
 import { Button, Steps } from 'antd';
 import { CodeSandboxOutlined, RocketOutlined, AimOutlined } from '@ant-design/icons';
+
+// React imports
+import { useEffect } from 'react';
 
 const DeliveryWorkflowStateMachineController = (
   { pickupSpeed,
@@ -32,7 +36,8 @@ const DeliveryWorkflowStateMachineController = (
     setDeliveryStartLocationKey, 
     setTabKey,
     setPickupSpeed,
-    setDeliverySpeed}) => {
+    setDeliverySpeed,
+    setDispatcherType}) => {
 
     const steps = [
       {
@@ -73,6 +78,32 @@ const DeliveryWorkflowStateMachineController = (
     ];
 
     const items = steps.map((item) => ({ key: item.title, title: item.title, icon: item.icon }));
+
+    // Workflow state machine
+    useEffect(() => {
+
+      console.log("Package Delivery State: " + deliveryState);
+      switch (deliveryState) {
+  
+        case DELIVERY_STATE.DELIVER_PREPARATION:
+          if (currentStep === 1) {
+            setCurrentStep(currentStep + 1);
+            showInfo("Information", "The dispatcher has arrived the pick-up location, please review package information before handing over your package to dispatcher");
+          }
+          break;
+  
+        case DELIVERY_STATE.DELIVER_FINISHED:
+          showSuccess("Confirmation", "The package is delivered successfully!");
+          break;  
+  
+        case DELIVERY_STATE.RESET_ROUTE:
+          if (currentStep === 2) {
+            setCurrentStep(0);
+          }
+          setDeliveryStartLocationKey(DISPATCHER_START_LOCATION_KEY.LOCATION_A);
+          setDispatcherType(DISPATCHER_TYPE.ROBOT);
+      }
+    }, [deliveryState]);
 
     return (
       <>

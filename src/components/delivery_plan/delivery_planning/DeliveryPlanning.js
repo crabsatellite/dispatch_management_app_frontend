@@ -10,7 +10,6 @@
 // Project imports
 import "./state_machine/DeliveryMap.css";
 import { ROBOT_ICON } from "../../../utils/map_icon_utils";
-import { showSuccess, showInfo } from "../../../utils/dialog_utils"
 import DeliveryMapStateMachineController from "./state_machine/DeliveryMapStateMachineController";
 import DeliveryWorkflowStateMachineController from "./state_machine/DeliveryWorkflowStateMachineController";
 import { DELIVERY_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_START_LOCATION, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from "../../../utils/delivery_plan_utils";
@@ -105,44 +104,6 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
     }
   }, [authed]);
 
-  useEffect(() => {
-    return () => {
-      localStorage.setItem("CURRENT_STEP", currentStep);
-      localStorage.setItem("DELIVERY_STATE", deliveryState);
-      localStorage.setItem("PICKUP_ADDRESS", pickupAddress);
-      localStorage.setItem("DELIVERY_ADDRESS", deliveryAddress);
-      localStorage.setItem("PICKUP_SPEED", pickupSpeed);
-      localStorage.setItem("DELIVERY_SPEED", deliverySpeed);
-      localStorage.setItem("DISPATCHER", dispatcherType);
-      localStorage.setItem("START_LOCATION_KEY", deliveryStartLocationKey);
-    };
-  }, []);
-
-  useEffect(() => {
-
-    console.log("Package Delivery State: " + deliveryState);
-    switch (deliveryState) {
-
-      case DELIVERY_STATE.DELIVER_PREPARATION:
-        if (currentStep === 1) {
-          setCurrentStep(currentStep + 1);
-          showInfo("Information", "The dispatcher has arrived the pick-up location, please review package information before handing over your package to dispatcher");
-        }
-        break;
-
-      case DELIVERY_STATE.DELIVER_FINISHED:
-        showSuccess("Confirmation", "The package is delivered successfully!");
-        break;  
-
-      case DELIVERY_STATE.RESET_ROUTE:
-        if (currentStep === 2) {
-          setCurrentStep(0);
-        }
-        setDeliveryStartLocationKey(DISPATCHER_START_LOCATION_KEY.LOCATION_A);
-        setDispatcherType(DISPATCHER_TYPE.ROBOT);
-    }
-  }, [deliveryState]);
-
   return (
     <Row>
       <Col span={12} class="parent">
@@ -201,6 +162,7 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
             setDeliveryState={setDeliveryState} 
             setDeliverySpeed={setDeliverySpeed}
             setDeliveryStartLocationKey={setDeliveryStartLocationKey} 
+            setDispatcherType={setDispatcherType}
           />
       </Col>
     </Row>

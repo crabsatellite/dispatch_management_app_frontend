@@ -197,7 +197,7 @@ const DeliveryMapStateMachineController = (
     dispatcherMarker.addTo(map);
   }, [dispatcherType]);
 
-  // State machine for delivery state update
+  // Map state machine
   useEffect(() => {
 
     if (!map) {
@@ -263,6 +263,8 @@ const DeliveryMapStateMachineController = (
             } 
           });
           setRouteCoordinates([]);
+          setPickupAddress("[]");
+          setDeliveryAddress("[]");
           
           // Add default markers back to map 
           dispatcherMarker.setLatLng(DISPATCHER_START_LOCATION.LOCATION_A);
