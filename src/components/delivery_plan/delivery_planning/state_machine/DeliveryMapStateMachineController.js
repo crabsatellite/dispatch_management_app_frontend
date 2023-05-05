@@ -1,96 +1,52 @@
+/**
+ * Copyright (c) 2023
+ *
+ * @summary Implementation of state machine controller for leaflet map
+ * @author Zilin Li
+ * @date 2023-04-28  
+ *  
+ */
+
+// Project imports
+import { DISPATCH_ROUTE_TYPE, DELIVERY_STATE, DISPATCHER_START_LOCATION, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from "../../../../utils/delivery_plan_utils";
+import { DEFAULT_ICON, WAREHOUSE_ICON, PICKUP_ICON, DELIVERY_ICON, ROBOT_ICON, DRONE_ICON } from "../../../../utils/map_icon_utils";
+
+// Map imports
 import L from "leaflet";
 import "leaflet-routing-machine";
-import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
-import { useMap } from "react-leaflet";
-import { useEffect, useState } from "react";
-import { DISPATCH_ROUTE_TYPE, DELIVERY_STATE, DISPATCHER_START_LOCATION, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from "../../../../utils/delivery_plan_utils";
 import Geocode from "react-geocode";
+import { useMap } from "react-leaflet";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+
+// React imports
+import { useEffect } from "react";
 
 const DeliveryMapStateMachineController = (
-    { pickupSpeed,
+    { map,
+      geoCoder,
+      routeControl,
+      focusPointPos,
+      routeCoordinates,
+      dispatcherMarker,
+      focusPointMarker,
+      pickupSpeed,
       deliverySpeed,
-      dispatcher, 
+      dispatcherType, 
+      deliveryState,
       deliveryStartLocationKey, 
-      deliveryState, 
+      setMap,
+      setGeoCoder,
+      setRouteControl,
+      setFocusPointPos,
+      setRouteCoordinates,
+      setDispatcherMarker,
+      setFocusPointMarker,
       setDeliveryState,
       setPickupAddress,
       setDeliveryAddress}) => {
 
-  /*
-   * Icon definitions start -----------------------------------------------------------------------------------------------------
-  */
-  let defaultIcon = L.icon({
-    iconUrl: "/marker-icon.png",
-    iconSize: [25, 41],
-    iconAnchor: [10, 41],
-    popupAnchor: [2, -40],
-  });
-
-  let wareHouseIcon = L.icon({
-    iconUrl: "/warehouse.png",
-    iconSize: [45, 45],
-  });
-
-  let pickUpIcon = L.icon({
-    iconUrl: "/home.png",
-    iconSize: [90, 90],
-  });
-
-  let deliveryIcon = L.icon({
-    iconUrl: "/destination.png",
-    iconSize: [90, 90],
-  });
-
-  let robotIcon = L.icon({
-    iconUrl: "/robot.png",
-    iconSize: [90, 90],
-  });
-
-  let droneIcon = L.icon({
-    iconUrl: "/drone.png",
-    iconSize: [90, 90],
-  });
-  /*
-   * Icon definitions end -----------------------------------------------------------------------------------------------------
-  */
   
-
-  /*
-   * React state definitions start -----------------------------------------------------------------------------------------------
-  */
   const leafletMap = useMap();
-  const [map, setMap] = useState();
-  const [dispatcherMarker, setDispatcherMarker] = useState(L.marker([DISPATCHER_START_LOCATION[deliveryStartLocationKey][0], DISPATCHER_START_LOCATION[deliveryStartLocationKey][1]], { icon: robotIcon}));
-  const [routeCoordinates, setRouteCoordinates] = useState([]);
-  const [focusPointPos, setFocusPointPos] = useState([]);
-  const [focusPointMarker, setFocusPointMarker] = useState(L.marker([DISPATCHER_START_LOCATION[deliveryStartLocationKey][0], DISPATCHER_START_LOCATION[deliveryStartLocationKey][1]]));
-  const [routeControl, setRouteControl] = useState(L.Routing.control({
-    waypoints: [
-      L.latLng(DISPATCHER_START_LOCATION.LOCATION_A),
-      L.latLng(DISPATCHER_START_LOCATION.LOCATION_A)
-    ],
-    lineOptions: {
-      styles: [
-        {
-          color: "blue",
-          weight: 4,
-          opacity: 0.7,
-        },
-      ],
-    },
-    routeWhileDragging: false,
-    geocoder: L.Control.Geocoder.nominatim(),
-    addWaypoints: false,
-    draggableWaypoints: false,
-    fitSelectedRoutes: true,
-    showAlternatives: false,
-  }));
-  const [geoCoder, setGeoCoder] = useState(L.Control.geocoder({
-    defaultMarkGeocode: false,
-  }));
-  /*
-   * React state definitions end -----------------------------------------------------------------------------------------------
-  */
  
   const generateRoutePlan = (lat, lng, routeType) => {
     
@@ -123,10 +79,10 @@ const DeliveryMapStateMachineController = (
 
     switch (routeType) {
       case DISPATCH_ROUTE_TYPE.PICK_UP:
-        focusPointMarker.setIcon(pickUpIcon);
+        focusPointMarker.setIcon(PICKUP_ICON);
         break;
       case DISPATCH_ROUTE_TYPE.DELIVERY:
-        focusPointMarker.setIcon(deliveryIcon);
+        focusPointMarker.setIcon(DELIVERY_ICON);
         break;
     }
     setFocusPointMarker(focusPointMarker);
@@ -169,15 +125,15 @@ const DeliveryMapStateMachineController = (
         dispatcherMarker.setLatLng([c.lat, c.lng]);
       }, speedFactor * i);
     });
-    focusPointMarker.setIcon(defaultIcon);
+    focusPointMarker.setIcon(DEFAULT_ICON);
     setFocusPointMarker(focusPointMarker);
 
     switch (routeType) {
       case DISPATCH_ROUTE_TYPE.PICK_UP:
-        L.marker(destination, { icon: pickUpIcon }).addTo(map).bindPopup("Pick-up Location").openPopup();
+        L.marker(destination, { icon: PICKUP_ICON }).addTo(map).bindPopup("Pick-up Location").openPopup();
         break;
       case DISPATCH_ROUTE_TYPE.DELIVERY:
-        L.marker(destination, { icon: deliveryIcon }).addTo(map).bindPopup("Delivery Location").openPopup();
+        L.marker(destination, { icon: DELIVERY_ICON }).addTo(map).bindPopup("Delivery Location").openPopup();
         break;
     }
   };
@@ -194,9 +150,9 @@ const DeliveryMapStateMachineController = (
     if (map) {
       geoCoder.addTo(map);
       dispatcherMarker.addTo(map);
-      L.marker(DISPATCHER_START_LOCATION.LOCATION_A, { icon: wareHouseIcon }).addTo(map).bindPopup("Location A").openPopup();
-      L.marker(DISPATCHER_START_LOCATION.LOCATION_B, { icon: wareHouseIcon }).addTo(map).bindPopup("Location B").openPopup();
-      L.marker(DISPATCHER_START_LOCATION.LOCATION_C, { icon: wareHouseIcon }).addTo(map).bindPopup("Location C").openPopup();
+      L.marker(DISPATCHER_START_LOCATION.LOCATION_A, { icon: WAREHOUSE_ICON }).addTo(map).bindPopup("Location A").openPopup();
+      L.marker(DISPATCHER_START_LOCATION.LOCATION_B, { icon: WAREHOUSE_ICON }).addTo(map).bindPopup("Location B").openPopup();
+      L.marker(DISPATCHER_START_LOCATION.LOCATION_C, { icon: WAREHOUSE_ICON }).addTo(map).bindPopup("Location C").openPopup();
     }
   });
 
@@ -234,12 +190,12 @@ const DeliveryMapStateMachineController = (
     map.removeLayer(dispatcherMarker);
 
     // Update values
-    dispatcherMarker.setIcon(dispatcher === DISPATCHER_TYPE.ROBOT ? robotIcon : droneIcon);
+    dispatcherMarker.setIcon(dispatcherType === DISPATCHER_TYPE.ROBOT ? ROBOT_ICON : DRONE_ICON);
     setDispatcherMarker(dispatcherMarker);
     
     // Add to map layer
     dispatcherMarker.addTo(map);
-  }, [dispatcher]);
+  }, [dispatcherType]);
 
   // State machine for delivery state update
   useEffect(() => {
@@ -310,12 +266,12 @@ const DeliveryMapStateMachineController = (
           
           // Add default markers back to map 
           dispatcherMarker.setLatLng(DISPATCHER_START_LOCATION.LOCATION_A);
-          dispatcherMarker.setIcon(robotIcon);
+          dispatcherMarker.setIcon(ROBOT_ICON);
           setDispatcherMarker(dispatcherMarker);
           dispatcherMarker.addTo(map);
           setFocusPointPos(DISPATCHER_START_LOCATION.LOCATION_A);
           focusPointMarker.setLatLng(DISPATCHER_START_LOCATION.LOCATION_A);
-          focusPointMarker.setIcon(defaultIcon);
+          focusPointMarker.setIcon(DEFAULT_ICON);
           setFocusPointMarker(focusPointMarker);
         }
         // Reset state

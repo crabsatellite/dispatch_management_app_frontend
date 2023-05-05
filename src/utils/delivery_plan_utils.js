@@ -1,3 +1,12 @@
+/**
+ * Copyright (c) 2023
+ *
+ * @summary Common definitions for delivery plan
+ * @author Zilin Li
+ * @date 2023-04-28  
+ *  
+ */
+
 export const DELIVERY_STATE = {
 
     PICKUP_PREPARATION : 'PICKUP_PREPARATION',

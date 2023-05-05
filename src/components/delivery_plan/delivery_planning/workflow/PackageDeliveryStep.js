@@ -1,8 +1,20 @@
-import { Button, Image, Result, Card, Collapse,Descriptions, Dropdown } from 'antd';
-import { LoadingOutlined, SearchOutlined, AimOutlined, InfoCircleFilled, CodeSandboxOutlined, HomeOutlined } from '@ant-design/icons';
-import { DELIVERY_STATE, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from '../../../../utils/delivery_plan_utils';
+/**
+ * Copyright (c) 2023
+ *
+ * @summary Implementation of package delivery step which is part of delivery plan workflow
+ * @author Zilin Li
+ * @date 2023-04-28  
+ *  
+ */
+
+// Project imports
 import "./InfoSelection.css";
 import { showError } from '../../../../utils/dialog_utils';
+import { DELIVERY_STATE, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from '../../../../utils/delivery_plan_utils';
+
+// Antd imports
+import { Button, Image, Result, Card, Collapse,Descriptions, Dropdown } from 'antd';
+import { LoadingOutlined, SearchOutlined, AimOutlined, InfoCircleFilled, CodeSandboxOutlined, HomeOutlined } from '@ant-design/icons';
 
 const { Panel } = Collapse;
 const PackageDeliveryStep = (

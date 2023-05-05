@@ -1,10 +1,21 @@
-import { Button, Steps } from 'antd';
-import { CodeSandboxOutlined, RocketOutlined, AimOutlined } from '@ant-design/icons';
+/**
+ * Copyright (c) 2023
+ *
+ * @summary Implementation of state machine controller for delivery plan workflow steps
+ * @author Zilin Li
+ * @date 2023-04-28  
+ *  
+ */
+
+// Project imports
+import PackagePickupStep from '../workflow/PackagePickupStep';
+import PackageDeliveryStep from '../workflow/PackageDeliveryStep';
+import PackageInformationStep from '../workflow/PackageInformationStep';
 import { DELIVERY_STATE } from '../../../../utils/delivery_plan_utils';
 
-import PackagePickupStep from '../workflow/PackagePickupStep';
-import PackageInformationStep from '../workflow/PackageInformationStep';
-import PackageDeliveryStep from '../workflow/PackageDeliveryStep';
+// Antd imports
+import { Button, Steps } from 'antd';
+import { CodeSandboxOutlined, RocketOutlined, AimOutlined } from '@ant-design/icons';
 
 const DeliveryWorkflowStateMachineController = (
   { pickupSpeed,
@@ -12,10 +23,10 @@ const DeliveryWorkflowStateMachineController = (
     pickupAddress,
     deliveryAddress,
     currentStep,
-    setCurrentStep,
     dispatcher, 
-    setDispatcher, 
     deliveryState, 
+    setDispatcher, 
+    setCurrentStep,
     setDeliveryState, 
     deliveryStartLocationKey,
     setDeliveryStartLocationKey, 
@@ -34,28 +45,27 @@ const DeliveryWorkflowStateMachineController = (
       {
           title: 'Package Pick-up',
           content: <PackagePickupStep 
+                      dispatcher={dispatcher} 
                       pickupSpeed={pickupSpeed}
                       pickupAddress={pickupAddress} 
-                      dispatcher={dispatcher} 
                       deliveryState={deliveryState} 
                       setDispatcher={setDispatcher} 
+                      setPickupSpeed={setPickupSpeed}
                       setDeliveryState={setDeliveryState} 
                       deliveryStartLocationKey={deliveryStartLocationKey}
                       setDeliveryStartLocationKey={setDeliveryStartLocationKey}
-                      pick
-                      setPickupSpeed={setPickupSpeed}
                     />,
           icon: <AimOutlined />,
       },
       {
           title: 'Package Delivery',
           content: <PackageDeliveryStep 
-                      deliverySpeed={deliverySpeed}
-                      deliveryAddress={deliveryAddress}
                       dispatcher={dispatcher} 
                       deliveryState={deliveryState} 
-                      setDeliveryState={setDeliveryState} 
+                      deliverySpeed={deliverySpeed}
+                      deliveryAddress={deliveryAddress}
                       setTabKey={setTabKey}
+                      setDeliveryState={setDeliveryState} 
                       setDeliverySpeed={setDeliverySpeed}
                     />,
           icon: <RocketOutlined />,

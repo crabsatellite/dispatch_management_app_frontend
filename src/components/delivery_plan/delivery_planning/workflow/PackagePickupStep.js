@@ -1,8 +1,20 @@
-import { Button, Image, Result, Card, Dropdown, Collapse, Descriptions } from 'antd';
-import { HomeOutlined, SearchOutlined, AimOutlined, InfoCircleFilled, LoadingOutlined } from '@ant-design/icons';
-import { DELIVERY_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from '../../../../utils/delivery_plan_utils';
+/**
+ * Copyright (c) 2023
+ *
+ * @summary Implementation of package pick-up step which is part of delivery plan workflow
+ * @author Zilin Li
+ * @date 2023-04-28  
+ *  
+ */
+
+// Project imports
 import "./InfoSelection.css";
 import { showError } from '../../../../utils/dialog_utils';
+import { DELIVERY_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from '../../../../utils/delivery_plan_utils';
+
+// Antd imports
+import { Button, Image, Result, Card, Dropdown, Collapse, Descriptions } from 'antd';
+import { HomeOutlined, SearchOutlined, AimOutlined, InfoCircleFilled, LoadingOutlined } from '@ant-design/icons';
 
 const { Panel } = Collapse;
 const PackagePickupStep = (

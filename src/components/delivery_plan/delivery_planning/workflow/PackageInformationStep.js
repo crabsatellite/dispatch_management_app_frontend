@@ -1,5 +1,17 @@
-import { Card, Image } from "antd";
+/**
+ * Copyright (c) 2023
+ *
+ * @summary <description>
+ * @author <author>
+ * @date Year-Month-Day  
+ *  
+ */
+
+// Project imports
 import { DELIVERY_STATE } from "./../../../../utils/delivery_plan_utils"
+
+// Antd imports
+import { Card, Image } from "antd";
 
 const PackageInformationStep = ({deliveryState}) => {
   return (

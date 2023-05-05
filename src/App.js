@@ -1,8 +1,14 @@
-import { Layout } from "antd";
-import { useState } from 'react';
+
+// Project includes
 import PageHeader from "./components/layout/PageHeader";
 import PageContent from "./components/layout/PageContent";
 import PageFooter from "./components/layout/PageFooter";
+
+// Antd imports
+import { Layout } from "antd";
+
+// React imports
+import { useState } from 'react';
 
 function App() {
 
