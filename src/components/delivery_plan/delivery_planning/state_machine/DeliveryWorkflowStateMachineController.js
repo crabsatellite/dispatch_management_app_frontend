@@ -22,7 +22,8 @@ import { CodeSandboxOutlined, RocketOutlined, AimOutlined } from '@ant-design/ic
 import { useEffect } from 'react';
 
 const DeliveryWorkflowStateMachineController = (
-  { pickupSpeed,
+  { authed,
+    pickupSpeed,
     deliverySpeed,
     pickupAddress,
     deliveryAddress,
@@ -123,10 +124,21 @@ const DeliveryWorkflowStateMachineController = (
               Proceed To Delivery Portal
             </Button>)
           }
-          {(currentStep === 0 && (deliveryState === DELIVERY_STATE.PICKUP_PREPARATION 
+          {(currentStep === 0 && (deliveryState === DELIVERY_STATE.IDLE
+            || deliveryState === DELIVERY_STATE.PICKUP_PREPARATION 
             || deliveryState === DELIVERY_STATE.PICKUP_INITIALIZATION
             || deliveryState === DELIVERY_STATE.PICKUP_PROCESSING)) && (
-            <Button style={{marginLeft: 22}} type="primary" onClick={() => setCurrentStep(1)}>
+            <Button 
+              style={{marginLeft: 22}} 
+              type="primary" 
+              onClick={() => {
+                if (!authed) {
+                  showInfo("Information", "You need to login before proceeding further!");
+                  return;
+                }
+                setCurrentStep(1)}
+              }
+            >
               Proceed To Pick-Up Portal
             </Button>)
           }

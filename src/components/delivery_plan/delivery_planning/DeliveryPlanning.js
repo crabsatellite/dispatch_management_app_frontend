@@ -147,6 +147,7 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
       </Col>
       <Col span={12}>
           <DeliveryWorkflowStateMachineController
+            authed={authed}
             currentStep={currentStep}
             pickupSpeed={pickupSpeed}
             dispatcher={dispatcherType} 
