@@ -13,10 +13,11 @@ import { showError } from '../../../../utils/dialog_utils';
 import { DELIVERY_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from '../../../../utils/delivery_plan_utils';
 
 // Antd imports
-import { Button, Image, Result, Card, Dropdown, Collapse, Descriptions } from 'antd';
-import { HomeOutlined, SearchOutlined, AimOutlined, InfoCircleFilled, LoadingOutlined } from '@ant-design/icons';
+import { Button, Image, Result, Card, Dropdown, Collapse, Space, Table } from 'antd';
+import { SearchOutlined, AimOutlined, InfoCircleFilled, LoadingOutlined, CaretRightFilled } from '@ant-design/icons';
 
 const { Panel } = Collapse;
+const { Column, ColumnGroup } = Table;
 const PackagePickupStep = (
         {   pickupSpeed,
             pickupAddress,
@@ -28,16 +29,27 @@ const PackagePickupStep = (
             setDeliveryStartLocationKey,
             setPickupSpeed}) => {
 
+    const summary = [
+        {
+            key: '1',
+            address: <div>{pickupAddress}</div>,
+            dispatcher: <div>{dispatcher}</div>,
+            warehouse: <div>{deliveryStartLocationKey}</div>,
+            speed: <div>{pickupSpeed}</div>,
+        },
+        
+    ];
+
     const dispatcherItems = [
         {
             label: 'Robot',
             key: '1',
-            icon: <HomeOutlined />,
+            icon: <CaretRightFilled />,
         },
         {
             label: 'Air Drone',
             key: '2',
-            icon: <HomeOutlined />,
+            icon: <CaretRightFilled />,
         },
     ];
 
@@ -45,17 +57,17 @@ const PackagePickupStep = (
         {
             label: 'Location A',
             key: '1',
-            icon: <HomeOutlined />,
+            icon: <CaretRightFilled />,
         },
         {
             label: 'Location B',
             key: '2',
-            icon: <HomeOutlined />,
+            icon: <CaretRightFilled />,
         },
         {
             label: 'Location C',
             key: '3',
-            icon: <HomeOutlined />,
+            icon: <CaretRightFilled />,
         },
     ];
 
@@ -63,17 +75,17 @@ const PackagePickupStep = (
         {
             label: 'Priority',
             key: '1',
-            icon: <HomeOutlined />,
+            icon: <CaretRightFilled />,
         },
         {
             label: 'First Class',
             key: '2',
-            icon: <HomeOutlined />,
+            icon: <CaretRightFilled />,
         },
         {
             label: 'Normal',
             key: '3',
-            icon: <HomeOutlined />,
+            icon: <CaretRightFilled />,
         },
     ];
 
@@ -159,7 +171,7 @@ const PackagePickupStep = (
         >   
             <Collapse bordered={false} defaultActiveKey={['1']}>
                 <Panel header="Select Pick-up Location" key="1">
-                    <p style={{marginLeft: 90}}>
+                    <p>
                         <SearchOutlined />
                         First Way: Use Top-Right Corner Search Bar On Map
                     </p>
@@ -167,34 +179,29 @@ const PackagePickupStep = (
                         <AimOutlined />
                         Second Way: Use Left Mouse Click To Localize On Map
                     </p>
-                    <p style={{marginLeft: 315}}>
-                    <Descriptions>
-                        <Descriptions.Item label="Pick-up Location">{pickupAddress}</Descriptions.Item>
-                    </Descriptions>
-                    </p>
                 </Panel>
-                <Panel header="Select Warehouse" key="1">
-                    <Dropdown.Button style={{marginLeft: 410, top: 100}} type="primary" menu={startLocationMenuProps} onClick={handleStartLocationMenuClick}>
-                        Warehouse
-                    </Dropdown.Button>
-                    <p></p>
-                    <p>Selection: {deliveryStartLocationKey}</p>
+                <Panel header="Select Pick-up Customization" key="1">
+                    <Space direction="vertical">
+                        <Dropdown.Button type="primary" menu={startLocationMenuProps} onClick={handleStartLocationMenuClick}>
+                            Warehouse
+                        </Dropdown.Button>
+                        <Dropdown.Button type="primary" menu={dispatcherMenuProps} onClick={handleDispatcherMenuClick}>
+                            Dispatcher
+                        </Dropdown.Button>
+                        <Dropdown.Button type="primary" menu={dispatchSpeedMenuProps} onClick={handleDispatchSpeedMenuClick}>
+                            Speed
+                        </Dropdown.Button>
+                    </Space>
                 </Panel>
-                <Panel header="Select Dispatcher" key="1">
-                    <Dropdown.Button style={{marginLeft: 410}} type="primary" menu={dispatcherMenuProps} onClick={handleDispatcherMenuClick}>
-                        Dispatcher
-                    </Dropdown.Button>
-                    <p></p>
-                    <p>Selection: {dispatcher}</p>
+                <Panel header="Pick-up Selection Summary" key="1">
+                    <Table dataSource={summary}>
+                        <Column title="Pick-up Location" dataIndex="address" key="address" />
+                        <Column title="Warehouse Location" dataIndex="warehouse" key="warehouse" />
+                        <Column title="Dispatcher Type" dataIndex="dispatcher" key="dispatcher" />
+                        <Column title="Pick-up Speed" dataIndex="speed" key="speed" />
+                    </Table>
                 </Panel>
-                <Panel header="Select Pick-up Speed" key="1">
-                    <Dropdown.Button style={{marginLeft: 410}} type="primary" menu={dispatchSpeedMenuProps} onClick={handleDispatchSpeedMenuClick}>
-                        Speed
-                    </Dropdown.Button>
-                    <p></p>
-                    <p>Selection: {pickupSpeed}</p>
-                </Panel>
-                <Panel header="Confirmation" key="1">
+                <Panel header="Pick-up Confirmation" key="1">
                     <Button 
                         type="primary" 
                         onClick={() => {
@@ -226,15 +233,16 @@ const PackagePickupStep = (
         >
             <Collapse bordered={false} defaultActiveKey={['1']}>
                 <Panel header="Pick-up Planning Summary" key="1">
-                    <Descriptions layout="vertical">
-                        <Descriptions.Item label="Pick-up Location">{pickupAddress}</Descriptions.Item>
-                        <Descriptions.Item label="Warehouse Location">{deliveryStartLocationKey}</Descriptions.Item>
-                        <Descriptions.Item label="Dispatcher Type">{dispatcher}</Descriptions.Item>
-                        <Descriptions.Item label="Pick-up Speed">{pickupSpeed}</Descriptions.Item>
-                    </Descriptions>   
+
+                    <Table dataSource={summary}>
+                        <Column title="Pick-up Location" dataIndex="address" key="address" />
+                        <Column title="Warehouse Location" dataIndex="warehouse" key="warehouse" />
+                        <Column title="Dispatcher Type" dataIndex="dispatcher" key="dispatcher" />
+                        <Column title="Pick-up Speed" dataIndex="speed" key="speed" />
+                    </Table>
                 </Panel>
                 <Panel type="primary" header="Pick-up Dispatch" key="1">
-                    <Button type="primary" onClick={() => {setDeliveryState(DELIVERY_STATE.PICKUP_PROCESSING)}}>Start Pick-up</Button>,
+                    <Button style={{marginLeft: 35}} type="primary" onClick={() => {setDeliveryState(DELIVERY_STATE.PICKUP_PROCESSING)}}>Start Pick-up</Button>,
                     <p></p>
                     <p>
                         <InfoCircleFilled />

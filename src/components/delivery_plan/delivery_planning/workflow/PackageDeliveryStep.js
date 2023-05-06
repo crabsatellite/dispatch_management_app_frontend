@@ -13,10 +13,11 @@ import { showError } from '../../../../utils/dialog_utils';
 import { DELIVERY_STATE, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from '../../../../utils/delivery_plan_utils';
 
 // Antd imports
-import { Button, Image, Result, Card, Collapse,Descriptions, Dropdown } from 'antd';
+import { Button, Image, Result, Card, Collapse, Dropdown, Space, Table } from 'antd';
 import { LoadingOutlined, SearchOutlined, AimOutlined, InfoCircleFilled, CodeSandboxOutlined, HomeOutlined } from '@ant-design/icons';
 
 const { Panel } = Collapse;
+const { Column, ColumnGroup } = Table;
 const PackageDeliveryStep = (
         {   deliverySpeed,
             deliveryAddress,
@@ -25,6 +26,14 @@ const PackageDeliveryStep = (
             setDeliveryState, 
             setTabKey,
             setDeliverySpeed}) => {
+
+    const summary = [
+        {
+            key: '1',
+            address: <div>{deliveryAddress}</div>,
+            speed: <div>{deliverySpeed}</div>,
+        },
+    ];
 
     const dispatchSpeedItems = [
         {
@@ -88,7 +97,7 @@ const PackageDeliveryStep = (
             >
                  <Collapse bordered={false} defaultActiveKey={['1']}>
                     <Panel header="Select Delivery Location" key="1">
-                        <p style={{marginLeft: 90}}>
+                        <p>
                             <SearchOutlined />
                             First Way: Use Top-Right Corner Search Bar On Map
                         </p>
@@ -96,27 +105,28 @@ const PackageDeliveryStep = (
                             <AimOutlined />
                             Second Way: Use Left Mouse Click To Localize On Map
                         </p>
-                        <p style={{marginLeft: 315}}>
-                        <Descriptions>
-                            <Descriptions.Item label="Delivery Location">{deliveryAddress}</Descriptions.Item>
-                        </Descriptions>
-                        </p>
                     </Panel>
                     <Panel header="Select Delivery Speed" key="1">
-                    <Dropdown.Button style={{marginLeft: 410}} type="primary" menu={dispatchSpeedMenuProps} onClick={handleDispatchSpeedMenuClick}>
+                    <Space direction="vertical">
+                        <Dropdown.Button type="primary" menu={dispatchSpeedMenuProps} onClick={handleDispatchSpeedMenuClick}>
                             Speed
                         </Dropdown.Button>
-                        <p></p>
-                        <p>Selection: {deliverySpeed}</p>
+                        </Space>
+                    </Panel>
+                    <Panel header="Delivery Selection Summary" key="1">
+                        <Table dataSource={summary}>
+                            <Column title="Delivery Location" dataIndex="address" key="address" />
+                            <Column title="Delivery Speed" dataIndex="speed" key="speed" />
+                        </Table>
                     </Panel>
                     <Panel header="Review Package Information" key="1">
-                    <p></p>
-                    <p>
-                        <CodeSandboxOutlined/>
-                        Please go back and review the package information again.    
-                    </p>
+                        <p></p>
+                        <p>
+                            <CodeSandboxOutlined/>
+                            Please go back and review the package information again.    
+                        </p>
                     </Panel>
-                    <Panel header="Confirmation" key="1">
+                    <Panel header="Delivery Confirmation" key="1">
                         <Button 
                             type="primary" 
                             onClick={() => {
@@ -148,11 +158,10 @@ const PackageDeliveryStep = (
             >
                 <Collapse bordered={false} defaultActiveKey={['1']}>
                     <Panel header="Delivery Planning Summary" key="1">
-                        <Descriptions layout="vertical">
-                            <Descriptions.Item label="Package Information">Placeholder</Descriptions.Item>
-                            <Descriptions.Item label="Delivery Location">{deliveryAddress}</Descriptions.Item>
-                            <Descriptions.Item label="Delivery Speed">{deliverySpeed}</Descriptions.Item>
-                        </Descriptions>   
+                        <Table dataSource={summary}>
+                            <Column title="Delivery Location" dataIndex="address" key="address" />
+                            <Column title="Delivery Speed" dataIndex="speed" key="speed" />
+                        </Table>
                     </Panel>
                     <Panel type="primary" header="Delivery Dispatch" key="1">
                         <Button type="primary" onClick={() => {setDeliveryState(DELIVERY_STATE.DELIVER_PROCESSING)}}>Start Delivery</Button>,
