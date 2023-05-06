@@ -14,6 +14,8 @@ The project json files have included all the required dependencies (antd etc), n
 2. Run the project
 `npm start`
 
+If you encounter issues with `react-geocode`, please run `npm install react-geocode` to install it locally.
+
 
 ## Software Architecture
 
