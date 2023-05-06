@@ -130,7 +130,7 @@ const PackageDeliveryStep = (
                         <Button 
                             type="primary" 
                             onClick={() => {
-                                if (deliveryAddress === "[]") {
+                                if (deliveryAddress === "-") {
                                     showError("Error!" ,"The delivery location can not be empty");
                                     return;
                                 }

@@ -32,7 +32,7 @@ const PackagePickupStep = (
     const summary = [
         {
             key: '1',
-            address: pickupAddress ===  <div>{pickupAddress}</div>,
+            address:    <div>{pickupAddress}</div>,
             dispatcher: <div>{dispatcher}</div>,
             warehouse: <div>{deliveryStartLocationKey}</div>,
             speed: <div>{pickupSpeed}</div>,
@@ -205,7 +205,7 @@ const PackagePickupStep = (
                     <Button 
                         type="primary" 
                         onClick={() => {
-                            if (pickupAddress === "[]") {
+                            if (pickupAddress === "-") {
                                 showError("Error!" ,"The pick-up location can not be empty");
                                 return;
                             }
