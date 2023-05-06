@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2023
+ *
+ * @summary Implementation of index.js
+ * @author 202302 Flag Camp Team03
+ * @date 2023-04-28  
+ *  
+ */
 
 // Project includes
 import PageHeader from "./components/layout/PageHeader";

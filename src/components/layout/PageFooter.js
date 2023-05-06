@@ -1,8 +1,17 @@
+/**
+ * Copyright (c) 2023
+ *
+ * @summary Implementation of index.js
+ * @author 202302 Flag Camp Team03
+ * @date 2023-04-28  
+ *  
+ */
+
+// Antd imports 
 import { Layout, Col } from "antd";
 import { MailOutlined, WechatOutlined, CustomerServiceOutlined } from '@ant-design/icons';
 
 const { Footer } = Layout;
-
 const PageFooter = () => {
 
     return (

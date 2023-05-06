@@ -1,8 +1,22 @@
-import { Layout } from "antd";
-import { useState } from "react";
+/**
+ * Copyright (c) 2023
+ *
+ * @summary Implementation of index.js
+ * @author 202302 Flag Camp Team03
+ * @date 2023-04-28  
+ *  
+ */
+
+// Project imports
 import HomePage from "../home/HomePage";
-import DeliveryPlanPage from "../delivery_plan/DeliveryPlanPage";
 import LoginForm from "../user_portal/LoginForm";
+import DeliveryPlanPage from "../delivery_plan/DeliveryPlanPage";
+
+// Antd imports
+import { Layout } from "antd";
+
+// React imports
+import { useState } from "react";
 
 const { Content } = Layout;
 

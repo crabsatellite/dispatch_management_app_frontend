@@ -1,3 +1,13 @@
+/**
+ * Copyright (c) 2023
+ *
+ * @summary Implementation of index.js
+ * @author 202302 Flag Camp Team03
+ * @date 2023-04-28  
+ *  
+ */
+
+// Antd imports
 import { Layout, Menu, Row, Col } from "antd";
 import { UserOutlined, ReadOutlined, CompassOutlined } from '@ant-design/icons';
 
