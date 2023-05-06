@@ -13,13 +13,14 @@ import { showError } from '../../../../utils/dialog_utils';
 import { DELIVERY_STATE, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from '../../../../utils/delivery_plan_utils';
 
 // Antd imports
-import { Button, Image, Result, Card, Collapse, Dropdown, Space, Table } from 'antd';
+import { Button, Image, Result, Card, Collapse, Dropdown, Space, Table, Progress } from 'antd';
 import { LoadingOutlined, SearchOutlined, AimOutlined, InfoCircleFilled, CodeSandboxOutlined, HomeOutlined } from '@ant-design/icons';
 
 const { Panel } = Collapse;
 const { Column } = Table;
 const PackageDeliveryStep = (
         {   deliverySpeed,
+            dispatchProgress,
             deliveryAddress,
             dispatcher, 
             deliveryState, 
@@ -83,7 +84,8 @@ const PackageDeliveryStep = (
                     title="DISPATCH FOR DELIVERY"
                     subTitle="THE DISPATCHER IS MOVING TOWARDS YOUR DELIVERY LOCATION......"
                 />
-                <LoadingOutlined style={{fontSize: 50, marginLeft: 200}}/>
+                <LoadingOutlined style={{fontSize: 50}}/>
+                <Progress strokeLinecap="round" percent={Math.floor(dispatchProgress)} />
                 <Image className="image" width={200} src={dispatcher === DISPATCHER_TYPE.ROBOT ? "./robot.png" : "./drone.png"}/>
             </Card>
         );

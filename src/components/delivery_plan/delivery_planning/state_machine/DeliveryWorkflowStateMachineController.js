@@ -24,6 +24,7 @@ import { useEffect } from 'react';
 const DeliveryWorkflowStateMachineController = (
   { authed,
     pickupSpeed,
+    dispatchProgress,
     deliverySpeed,
     pickupAddress,
     deliveryAddress,
@@ -53,6 +54,7 @@ const DeliveryWorkflowStateMachineController = (
           content: <PackagePickupStep 
                       dispatcher={dispatcher} 
                       pickupSpeed={pickupSpeed}
+                      dispatchProgress={dispatchProgress}
                       pickupAddress={pickupAddress} 
                       deliveryState={deliveryState} 
                       setDispatcher={setDispatcher} 
@@ -69,6 +71,7 @@ const DeliveryWorkflowStateMachineController = (
                       dispatcher={dispatcher} 
                       deliveryState={deliveryState} 
                       deliverySpeed={deliverySpeed}
+                      dispatchProgress={dispatchProgress}
                       deliveryAddress={deliveryAddress}
                       setTabKey={setTabKey}
                       setDeliveryState={setDeliveryState} 

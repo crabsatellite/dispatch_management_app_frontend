@@ -87,6 +87,7 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
   */
   const [pickupSpeed, setPickupSpeed] = useState(DISPATCH_SPEED_TYPE.NORMAL);
   const [deliverySpeed, setDeliverySpeed] = useState(DISPATCH_SPEED_TYPE.NORMAL);
+  const [dispatchProgress, setDispatchProgress] = useState(0);
   
   /*
   * State machine properties -----------------------------------------------------------------------------------------------------
@@ -137,6 +138,7 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
                 setDeliveryState={setDeliveryState} 
                 setPickupAddress={setPickupAddress}
                 setDeliveryAddress={setDeliveryAddress}
+                setDispatchProgress={setDispatchProgress}
               />
           </MapContainer>
 
@@ -150,6 +152,7 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
             authed={authed}
             currentStep={currentStep}
             pickupSpeed={pickupSpeed}
+            dispatchProgress={dispatchProgress}
             dispatcher={dispatcherType} 
             deliveryState={deliveryState} 
             deliverySpeed={deliverySpeed}

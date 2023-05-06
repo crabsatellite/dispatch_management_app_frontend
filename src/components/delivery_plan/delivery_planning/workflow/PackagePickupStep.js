@@ -13,13 +13,14 @@ import { showError } from '../../../../utils/dialog_utils';
 import { DELIVERY_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from '../../../../utils/delivery_plan_utils';
 
 // Antd imports
-import { Button, Image, Result, Card, Dropdown, Collapse, Space, Table } from 'antd';
+import { Button, Image, Result, Card, Dropdown, Collapse, Space, Table, Progress } from 'antd';
 import { SearchOutlined, AimOutlined, InfoCircleFilled, LoadingOutlined, CaretRightFilled } from '@ant-design/icons';
 
 const { Panel } = Collapse;
 const { Column } = Table;
 const PackagePickupStep = (
         {   pickupSpeed,
+            dispatchProgress,
             pickupAddress,
             dispatcher, 
             deliveryState, 
@@ -153,11 +154,13 @@ const PackagePickupStep = (
             title="PICK-UP PROCESSING"
             style={{width: 1000, left: 20}}
         >
+
             <Result
                 title="DISPATCH FOR PICK-UP"
                 subTitle="THE DISPATCHER IS MOVING TOWARDS YOUR PICK-UP LOCATION......"
-            />
-            <LoadingOutlined style={{fontSize: 50, marginLeft: 200}}/>
+                />
+            <LoadingOutlined style={{fontSize: 50}}/>
+            <Progress strokeLinecap="round" percent={Math.floor(dispatchProgress)} />
             <Image className="image" width={200} src={dispatcher === DISPATCHER_TYPE.ROBOT ? "./robot.png" : "./drone.png"}/>
         </Card>
         );

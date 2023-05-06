@@ -43,7 +43,8 @@ const DeliveryMapStateMachineController = (
       setFocusPointMarker,
       setDeliveryState,
       setPickupAddress,
-      setDeliveryAddress}) => {
+      setDeliveryAddress,
+      setDispatchProgress}) => {
 
   
   const leafletMap = useMap();
@@ -122,7 +123,21 @@ const DeliveryMapStateMachineController = (
               break;
           }
         }
+
+        let dispatchSpeed = deliveryState === DELIVERY_STATE.PICKUP_PROCESSING ? pickupSpeed : deliverySpeed;
+        switch (dispatchSpeed) {
+          case DISPATCH_SPEED_TYPE.PRIORITY:
+            setDispatchProgress(1200 * i / speedFactor / routeCoordinates.length);
+            break;
+          case DISPATCH_SPEED_TYPE.FIRST_CLASS:
+            setDispatchProgress(5200 * i / speedFactor / routeCoordinates.length);
+            break;
+          case DISPATCH_SPEED_TYPE.NORMAL:
+            setDispatchProgress(10500 * i / speedFactor / routeCoordinates.length);
+            break;
+        }
         dispatcherMarker.setLatLng([c.lat, c.lng]);
+        console.log(i);
       }, speedFactor * i);
     });
     focusPointMarker.setIcon(DEFAULT_ICON);
@@ -224,9 +239,11 @@ const DeliveryMapStateMachineController = (
 
       case DELIVERY_STATE.PICKUP_PROCESSING:
         simulateRoutePlan(pickupSpeed, DISPATCH_ROUTE_TYPE.PICK_UP);
+        setDispatchProgress(0);
         break;
 
       case DELIVERY_STATE.DELIVER_PREPARATION:
+        setDispatchProgress(0);
         map.removeControl(routeControl);
         map.off("click");
         map.off("markgeocode");
@@ -239,6 +256,7 @@ const DeliveryMapStateMachineController = (
         break;
 
       case DELIVERY_STATE.DELIVER_INITIALIZATION:
+        setDispatchProgress(0);
         map.off("click");
         map.off("markgeocode");
         break;
@@ -248,6 +266,7 @@ const DeliveryMapStateMachineController = (
         break;
 
       case DELIVERY_STATE.DELIVER_FINISHED:
+        setDispatchProgress(0);
         map.removeControl(routeControl);
         setRouteCoordinates([]);
         break;
