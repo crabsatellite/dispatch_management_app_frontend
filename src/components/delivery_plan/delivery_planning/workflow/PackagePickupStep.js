@@ -17,7 +17,7 @@ import { Button, Image, Result, Card, Dropdown, Collapse, Space, Table } from 'a
 import { SearchOutlined, AimOutlined, InfoCircleFilled, LoadingOutlined, CaretRightFilled } from '@ant-design/icons';
 
 const { Panel } = Collapse;
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 const PackagePickupStep = (
         {   pickupSpeed,
             pickupAddress,
@@ -32,7 +32,7 @@ const PackagePickupStep = (
     const summary = [
         {
             key: '1',
-            address: <div>{pickupAddress}</div>,
+            address: pickupAddress ===  <div>{pickupAddress}</div>,
             dispatcher: <div>{dispatcher}</div>,
             warehouse: <div>{deliveryStartLocationKey}</div>,
             speed: <div>{pickupSpeed}</div>,

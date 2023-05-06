@@ -79,8 +79,8 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
   /*
   * Address properties -----------------------------------------------------------------------------------------------------
   */
-  const [pickupAddress, setPickupAddress] = useState("[]");
-  const [deliveryAddress, setDeliveryAddress] = useState("[]");
+  const [pickupAddress, setPickupAddress] = useState("-");
+  const [deliveryAddress, setDeliveryAddress] = useState("-");
   
   /*
   * Map config properties -----------------------------------------------------------------------------------------------------

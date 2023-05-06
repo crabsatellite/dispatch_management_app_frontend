@@ -17,7 +17,7 @@ import { Button, Image, Result, Card, Collapse, Dropdown, Space, Table } from 'a
 import { LoadingOutlined, SearchOutlined, AimOutlined, InfoCircleFilled, CodeSandboxOutlined, HomeOutlined } from '@ant-design/icons';
 
 const { Panel } = Collapse;
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 const PackageDeliveryStep = (
         {   deliverySpeed,
             deliveryAddress,
