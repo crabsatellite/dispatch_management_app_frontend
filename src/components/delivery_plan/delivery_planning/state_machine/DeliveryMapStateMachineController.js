@@ -1,290 +1,301 @@
+/**
+ * Copyright (c) 2023
+ *
+ * @summary Implementation of state machine controller for leaflet map
+ * @author Zilin Li
+ * @date 2023-04-28  
+ *  
+ */
+
+// Project imports
+import { DISPATCH_ROUTE_TYPE, DELIVERY_STATE, DISPATCHER_START_LOCATION, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from "../../../../utils/delivery_plan_utils";
+import { DEFAULT_ICON, WAREHOUSE_ICON, PICKUP_ICON, DELIVERY_ICON, ROBOT_ICON, DRONE_ICON } from "../../../../utils/map_icon_utils";
+
+// Map imports
 import L from "leaflet";
 import "leaflet-routing-machine";
-import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import Geocode from "react-geocode";
 import { useMap } from "react-leaflet";
-import { useEffect, useState } from "react";
-import { DELIVERY_STATE, DISPATCHER_START_LOCATION, DISPATCHER_TYPE } from "../../../../utils/delivery_plan_utils";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 
+// React imports
+import { useEffect } from "react";
 
-const DeliveryMapStateMachineController = ({dispatcher, deliveryStartLocationKey, deliveryState, setDeliveryState}) => {
+const DeliveryMapStateMachineController = (
+    { map,
+      geoCoder,
+      routeControl,
+      focusPointPos,
+      routeCoordinates,
+      dispatcherMarker,
+      focusPointMarker,
+      pickupSpeed,
+      deliverySpeed,
+      dispatcherType, 
+      deliveryState,
+      deliveryStartLocationKey, 
+      setMap,
+      setGeoCoder,
+      setRouteControl,
+      setFocusPointPos,
+      setRouteCoordinates,
+      setDispatcherMarker,
+      setFocusPointMarker,
+      setDeliveryState,
+      setPickupAddress,
+      setDeliveryAddress,
+      setDispatchProgress}) => {
+
   
-  let defaultIcon = L.icon({
-    iconUrl: "/marker-icon.png",
-    iconSize: [25, 41],
-    iconAnchor: [10, 41],
-    popupAnchor: [2, -40],
-  });
-
-  let wareHouseIcon = L.icon({
-    iconUrl: "/warehouse.png",
-    iconSize: [45, 45],
-  });
-
-  let pickUpIcon = L.icon({
-    iconUrl: "/home.png",
-    iconSize: [90, 90],
-  });
-
-  let deliveryIcon = L.icon({
-    iconUrl: "/destination.png",
-    iconSize: [90, 90],
-  });
-
   const leafletMap = useMap();
-  const [map, setMap] = useState();
-  const [dispatcherMarker, setDispatcherMarker] = useState();
-  const [dispatcherIcon, setDispatcherIcon] = useState(L.icon({iconUrl: "/robot.png", iconSize: [90, 90]}));
-  const [routeCoordinates, setRouteCoordinates] = useState([]);
-  const [focusPointPos, setFocusPointPos] = useState([]);
-  const [focusPointMarker, setFocusPointMarker] = useState([]);
-  const [routeControl, setRouteControl] = useState(L.Routing.control({
-    waypoints: [
-      L.latLng(DISPATCHER_START_LOCATION[deliveryStartLocationKey][0], DISPATCHER_START_LOCATION[deliveryStartLocationKey][1]),
-      L.latLng(DISPATCHER_START_LOCATION[deliveryStartLocationKey][0], DISPATCHER_START_LOCATION[deliveryStartLocationKey][1]),
-    ],
-    lineOptions: {
-      styles: [
-        {
-          color: "blue",
-          weight: 4,
-          opacity: 0.7,
-        },
-      ],
-    },
-    routeWhileDragging: false,
-    geocoder: L.Control.Geocoder.nominatim(),
-    addWaypoints: false,
-    draggableWaypoints: false,
-    fitSelectedRoutes: true,
-    showAlternatives: false,
-  }));
-
-  const [geoCoder, setGeoCoder] = useState(L.Control.geocoder({
-    defaultMarkGeocode: false,
-  }));
  
-  // Data init
+  const generateRoutePlan = (lat, lng, routeType) => {
+    
+    // Update address
+    Geocode.fromLatLng(lat, lng).then(
+      response => {
+        const address = response.results[0].formatted_address;
+        switch (routeType) {
+          case DISPATCH_ROUTE_TYPE.PICK_UP:
+            setPickupAddress(address);
+            break;
+          case DISPATCH_ROUTE_TYPE.DELIVERY:
+            setDeliveryAddress(address);
+            break;
+        }
+      },
+      error => {
+        console.error(error);
+      }
+    );
+
+    // Update route control
+    routeControl.getPlan().setWaypoints([
+      L.latLng([dispatcherMarker.getLatLng().lat, dispatcherMarker.getLatLng().lng]),
+      L.latLng(lat, lng),
+    ]);
+    setRouteControl(routeControl);
+    setFocusPointPos([lat, lng]);
+    focusPointMarker.setLatLng([lat, lng]);
+
+    switch (routeType) {
+      case DISPATCH_ROUTE_TYPE.PICK_UP:
+        focusPointMarker.setIcon(PICKUP_ICON);
+        break;
+      case DISPATCH_ROUTE_TYPE.DELIVERY:
+        focusPointMarker.setIcon(DELIVERY_ICON);
+        break;
+    }
+    setFocusPointMarker(focusPointMarker);
+    focusPointMarker.addTo(map);
+
+    // Save the coordinates of route
+    routeControl.on("routesfound", function (e) {
+      setRouteCoordinates(e.routes[0].coordinates);
+    }).addTo(map);
+  };
+
+  const simulateRoutePlan = (speed, routeType) => {
+
+    let speedFactor = 1;
+    switch (speed) {
+      case DISPATCH_SPEED_TYPE.PRIORITY:
+        speedFactor = 10;
+        break;
+      case DISPATCH_SPEED_TYPE.FIRST_CLASS:
+        speedFactor = 50;
+        break;
+      case DISPATCH_SPEED_TYPE.NORMAL:
+        speedFactor = 100;
+        break;
+    }
+
+    var destination = routeCoordinates[routeCoordinates.length - 1];
+    routeCoordinates.forEach((c, i) => {
+      setTimeout(() => {
+        if (c.lat === destination.lat && c.lng === destination.lng) {
+          switch (routeType) {
+            case DISPATCH_ROUTE_TYPE.PICK_UP:
+              setDeliveryState(DELIVERY_STATE.DELIVER_PREPARATION);
+              break;
+            case DISPATCH_ROUTE_TYPE.DELIVERY:
+              setDeliveryState(DELIVERY_STATE.DELIVER_FINISHED);
+              break;
+          }
+        }
+
+        let dispatchSpeed = deliveryState === DELIVERY_STATE.PICKUP_PROCESSING ? pickupSpeed : deliverySpeed;
+        switch (dispatchSpeed) {
+          case DISPATCH_SPEED_TYPE.PRIORITY:
+            setDispatchProgress(1200 * i / speedFactor / routeCoordinates.length);
+            break;
+          case DISPATCH_SPEED_TYPE.FIRST_CLASS:
+            setDispatchProgress(5200 * i / speedFactor / routeCoordinates.length);
+            break;
+          case DISPATCH_SPEED_TYPE.NORMAL:
+            setDispatchProgress(10500 * i / speedFactor / routeCoordinates.length);
+            break;
+        }
+        dispatcherMarker.setLatLng([c.lat, c.lng]);
+        console.log(i);
+      }, speedFactor * i);
+    });
+    focusPointMarker.setIcon(DEFAULT_ICON);
+    setFocusPointMarker(focusPointMarker);
+
+    switch (routeType) {
+      case DISPATCH_ROUTE_TYPE.PICK_UP:
+        L.marker(destination, { icon: PICKUP_ICON }).addTo(map).bindPopup("Pick-up Location").openPopup();
+        break;
+      case DISPATCH_ROUTE_TYPE.DELIVERY:
+        L.marker(destination, { icon: DELIVERY_ICON }).addTo(map).bindPopup("Delivery Location").openPopup();
+        break;
+    }
+  };
+
   useEffect(() => {
+    Geocode.setApiKey("AIzaSyCz5OF-rGLoXBxBJthfwawYJfLpLN1vfBw");
+    Geocode.setRegion("us");
+    Geocode.setLanguage("en");
     setMap(leafletMap);
-    setDispatcherMarker(L.marker([DISPATCHER_START_LOCATION[deliveryStartLocationKey][0], DISPATCHER_START_LOCATION[deliveryStartLocationKey][1]], { icon: dispatcherIcon })); 
-    setFocusPointMarker(L.marker([DISPATCHER_START_LOCATION[deliveryStartLocationKey][0], DISPATCHER_START_LOCATION[deliveryStartLocationKey][1]])); 
   }, []);
 
-  // User event listener
   useEffect(() => {
 
     if (map) {
-
       geoCoder.addTo(map);
-      routeControl.addTo(map);
-      focusPointMarker.addTo(map);
-            
-      dispatcherMarker.setIcon(dispatcherIcon);
-      setDispatcherMarker(dispatcherMarker);
       dispatcherMarker.addTo(map);
-      
-      L.marker(DISPATCHER_START_LOCATION.LOCATION_A, { icon: wareHouseIcon }).addTo(map).bindPopup("Location A").openPopup();
-      L.marker(DISPATCHER_START_LOCATION.LOCATION_B, { icon: wareHouseIcon }).addTo(map).bindPopup("Location B").openPopup();
-      L.marker(DISPATCHER_START_LOCATION.LOCATION_C, { icon: wareHouseIcon }).addTo(map).bindPopup("Location C").openPopup();
-
-      // Search box event listener
-      geoCoder.on("markgeocode", function (e) {
-
-        map.fitBounds(e.geocode.bbox);
-
-        // Update waypoints
-        routeControl.getPlan().setWaypoints([
-          L.latLng([dispatcherMarker.getLatLng().lat, dispatcherMarker.getLatLng().lng]),
-          L.latLng(e.geocode.center.lat, e.geocode.center.lng),
-        ]);
-
-        // Update the current focus point location
-        focusPointMarker.setLatLng([e.geocode.center.lat, e.geocode.center.lng]);
-        setFocusPointPos([e.geocode.center.lat, e.geocode.center.lng]);
-
-        // Save the coordinates of route
-        routeControl.on("routesfound", function (e) {
-          setRouteCoordinates(e.routes[0].coordinates);
-        }).addTo(map);
-      });
-      
-      // Mouse click event listener
-      map.on("click", function (e) {
-
-        // Update waypoints
-        routeControl.getPlan().setWaypoints([
-          L.latLng([dispatcherMarker.getLatLng().lat, dispatcherMarker.getLatLng().lng]),
-          L.latLng(e.latlng.lat, e.latlng.lng),
-        ]);
-
-        // Update the current focus point location
-        focusPointMarker.setLatLng([e.latlng.lat, e.latlng.lng]);
-        setFocusPointPos([e.latlng.lat, e.latlng.lng]);
-
-        // Save the coordinates of route
-        routeControl.on("routesfound", function (e) {
-          setRouteCoordinates(e.routes[0].coordinates);
-        }).addTo(map);
-      });
+      L.marker(DISPATCHER_START_LOCATION.LOCATION_A, { icon: WAREHOUSE_ICON }).addTo(map).bindPopup("Location A").openPopup();
+      L.marker(DISPATCHER_START_LOCATION.LOCATION_B, { icon: WAREHOUSE_ICON }).addTo(map).bindPopup("Location B").openPopup();
+      L.marker(DISPATCHER_START_LOCATION.LOCATION_C, { icon: WAREHOUSE_ICON }).addTo(map).bindPopup("Location C").openPopup();
     }
-  }, [map, deliveryStartLocationKey, focusPointPos, dispatcherIcon]);
+  });
 
-  // Update route control if start location updates
   useEffect(() => {
 
     if (!map) {
       return;
     }
 
-    try {
-      map.removeLayer(dispatcherMarker);
-      map.removeLayer(routeControl);
-    } catch (error) {
-      console.log("Error from map update");
-    }
-    setDispatcherMarker(L.marker(DISPATCHER_START_LOCATION[deliveryStartLocationKey], { icon: dispatcherIcon }));  
+    // Clean-up
+    map.removeLayer(dispatcherMarker);
+    map.removeLayer(routeControl);
+
+    // Update values
+    dispatcherMarker.setLatLng(DISPATCHER_START_LOCATION[deliveryStartLocationKey]);
+    setDispatcherMarker(dispatcherMarker);
     routeControl.getPlan().setWaypoints([
       L.latLng(DISPATCHER_START_LOCATION[deliveryStartLocationKey]),
-      focusPointPos === [] ? L.latLng(DISPATCHER_START_LOCATION[deliveryStartLocationKey]) : L.latLng(focusPointPos),
+      focusPointPos === DISPATCHER_START_LOCATION[DISPATCHER_START_LOCATION_KEY.LOCATION_A] ? L.latLng(DISPATCHER_START_LOCATION[deliveryStartLocationKey]) : L.latLng(focusPointPos),
     ]);
     setRouteControl(routeControl);
+    
+    // Add to map layer
+    routeControl.addTo(map);
+    dispatcherMarker.addTo(map);
   }, [deliveryStartLocationKey]);
 
-  // Re-render dispatcher marker on map
   useEffect(() => {
-    if (map) {
-      dispatcherMarker.addTo(map);
-    }
-  }, [dispatcherMarker]);
 
-  // Re-render focus point marker on map
-  useEffect(() => {
-    if (map) {
-      focusPointMarker.addTo(map);
+    if (!map) {
+      return;
     }
-  }, [focusPointMarker]);
 
-  // Re-render dispatcher icon on map
-  useEffect(() => {
-    if (map) {
-      setDispatcherIcon(L.icon({
-        iconUrl: dispatcher === DISPATCHER_TYPE.ROBOT ?  "/robot.png" : "/drone.png",
-        iconSize: [90, 90],
-      }));
+    // Clean-up
+    map.removeLayer(dispatcherMarker);
 
-      try {
-        map.removeLayer(dispatcherMarker);
-      } catch (error) {
-        console.log("Error from updating the dispatcher marker");
-      }
-      dispatcherMarker.setIcon(dispatcherIcon);
-      setDispatcherMarker(dispatcherMarker);
-      dispatcherMarker.addTo(map);
-    }
+    // Update values
+    dispatcherMarker.setIcon(dispatcherType === DISPATCHER_TYPE.ROBOT ? ROBOT_ICON : DRONE_ICON);
+    setDispatcherMarker(dispatcherMarker);
     
-  }, [dispatcher]);
+    // Add to map layer
+    dispatcherMarker.addTo(map);
+  }, [dispatcherType]);
 
-  // Re-render route control to map
+  // Map state machine
   useEffect(() => {
-    if (map) {
-      routeControl.addTo(map);
+
+    if (!map) {
+      return;
     }
-  }, [routeControl]);
-
-  // State machine for delivery state update
-  useEffect(() => {
 
     switch (deliveryState) {
 
       case DELIVERY_STATE.PICKUP_PREPARATION: 
-        if (focusPointPos.length === 0) {
-          return;
-        }
-        focusPointMarker.setLatLng([focusPointPos[0], focusPointPos[1]]).bindPopup("Pick-up Location").openPopup();
-        setFocusPointMarker(focusPointMarker);
+        map.off("click");
+        map.off("markgeocode");
+        map.on("click", function (e) {
+          generateRoutePlan(e.latlng.lat, e.latlng.lng, DISPATCH_ROUTE_TYPE.PICK_UP);
+        });
+        geoCoder.on("markgeocode", function (e) {
+          generateRoutePlan(e.geocode.center.lat, e.geocode.center.lng, DISPATCH_ROUTE_TYPE.PICK_UP);
+        });
         break;
 
       case DELIVERY_STATE.PICKUP_INITIALIZATION:
-        focusPointMarker.setIcon(pickUpIcon);
-        setFocusPointMarker(focusPointMarker);
+        map.off("click");
+        map.off("markgeocode");
         break;
 
       case DELIVERY_STATE.PICKUP_PROCESSING:
-        var destination = routeCoordinates[routeCoordinates.length-1];
-        routeCoordinates.forEach((c, i) => {
-          setTimeout(() => {
-            if (c.lat === destination.lat && c.lng === destination.lng) {
-              setDeliveryState(DELIVERY_STATE.DELIVER_PREPARATION);
-            }
-            dispatcherMarker.setLatLng([c.lat, c.lng]);
-          }, 100 * i);
-        });
-        focusPointMarker.setIcon(defaultIcon);
-        setFocusPointMarker(focusPointMarker);
-        L.marker(destination, { icon: pickUpIcon }).addTo(map).bindPopup("Pick-up Location").openPopup();
+        simulateRoutePlan(pickupSpeed, DISPATCH_ROUTE_TYPE.PICK_UP);
+        setDispatchProgress(0);
         break;
 
       case DELIVERY_STATE.DELIVER_PREPARATION:
-        if (map) {
-          map.removeControl(routeControl);
-          setRouteCoordinates([]);   
-          focusPointMarker.setIcon(deliveryIcon);
-          setFocusPointMarker(focusPointMarker);       
-        } 
+        setDispatchProgress(0);
+        map.removeControl(routeControl);
+        map.off("click");
+        map.off("markgeocode");
+        map.on("click", function (e) {
+          generateRoutePlan(e.latlng.lat, e.latlng.lng, DISPATCH_ROUTE_TYPE.DELIVERY);
+        });
+        geoCoder.on("markgeocode", function (e) {
+          generateRoutePlan(e.geocode.center.lat, e.geocode.center.lng, DISPATCH_ROUTE_TYPE.DELIVERY);
+        });
+        break;
+
+      case DELIVERY_STATE.DELIVER_INITIALIZATION:
+        setDispatchProgress(0);
+        map.off("click");
+        map.off("markgeocode");
         break;
 
       case DELIVERY_STATE.DELIVER_PROCESSING:
-        var destination = routeCoordinates[routeCoordinates.length-1];
-        routeCoordinates.forEach((c, i) => {
-          setTimeout(() => {
-            if (c.lat === destination.lat && c.lng === destination.lng) {
-              setDeliveryState(DELIVERY_STATE.DELIVER_FINISHED);
-            }
-            dispatcherMarker.setLatLng([c.lat, c.lng]);
-          }, 100 * i);
-        });
-        focusPointMarker.setIcon(defaultIcon);
-        setFocusPointMarker(focusPointMarker);
-        L.marker(destination, { icon: deliveryIcon }).addTo(map).bindPopup("Delivery Location").openPopup();
+        simulateRoutePlan(deliverySpeed, DISPATCH_ROUTE_TYPE.DELIVERY);
         break;
 
       case DELIVERY_STATE.DELIVER_FINISHED:
-        if (map) {
-          map.removeControl(routeControl);
-          setRouteCoordinates([]);
-        } 
+        setDispatchProgress(0);
+        map.removeControl(routeControl);
+        setRouteCoordinates([]);
         break;
 
       case DELIVERY_STATE.RESET_ROUTE:
+         
+        // Clean-up
         if (map) {
-
-          // Remove route control 
           map.removeControl(routeControl);
-          setRouteCoordinates([]);
-
-          // Reset focus point
-          focusPointMarker.setIcon(defaultIcon);
-          setFocusPointMarker(focusPointMarker);
-          
-          // Remove all markers
           map.eachLayer(function (layer) {
             if (layer instanceof L.Marker) {
-              try {
-                map.removeLayer(layer);
-              } catch (error) {
-                console.log("Error from reset route state");
-              }
-            }
+              map.removeLayer(layer);
+            } 
           });
+          setRouteCoordinates([]);
+          setPickupAddress("[]");
+          setDeliveryAddress("[]");
           
-           // Add default markers back to map 
+          // Add default markers back to map 
           dispatcherMarker.setLatLng(DISPATCHER_START_LOCATION.LOCATION_A);
+          dispatcherMarker.setIcon(ROBOT_ICON);
           setDispatcherMarker(dispatcherMarker);
           dispatcherMarker.addTo(map);
-          L.marker(DISPATCHER_START_LOCATION.LOCATION_A, { icon: wareHouseIcon }).addTo(map).bindPopup("Location A").openPopup();
-          L.marker(DISPATCHER_START_LOCATION.LOCATION_B, { icon: wareHouseIcon }).addTo(map).bindPopup("Location B").openPopup();
-          L.marker(DISPATCHER_START_LOCATION.LOCATION_C, { icon: wareHouseIcon }).addTo(map).bindPopup("Location C").openPopup();
-        } 
+          setFocusPointPos(DISPATCHER_START_LOCATION.LOCATION_A);
+          focusPointMarker.setLatLng(DISPATCHER_START_LOCATION.LOCATION_A);
+          focusPointMarker.setIcon(DEFAULT_ICON);
+          setFocusPointMarker(focusPointMarker);
+        }
+        // Reset state
         setDeliveryState(DELIVERY_STATE.PICKUP_PREPARATION);
         break;
     }

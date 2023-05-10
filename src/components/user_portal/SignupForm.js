@@ -6,11 +6,11 @@
  * @date 
  *  
  */
-const LoginForm = () => {
+const SignupButton = () => {
 
   return (
     <div>Hello World</div>
   );
 };
 
-export default LoginForm;
+export default SignupButton;

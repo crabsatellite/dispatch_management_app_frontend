@@ -1,3 +1,13 @@
+/**
+ * Copyright (c) 2023
+ *
+ * @summary Common ui dialog definitions
+ * @author Zilin Li
+ * @date 2023-04-28  
+ *  
+ */
+
+// Antd imports
 import { Modal } from "antd";
 
 export const showError = (titleInput, contentInput) => {
@@ -6,7 +16,6 @@ export const showError = (titleInput, contentInput) => {
         content: contentInput,
     });
 };
-
 
 export const showSuccess = (titleInput, contentInput) => {
     Modal.success({

@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2023
+ *
+ * @summary Implementation of HomePage
+ * @author Catherine Zhou
+ * @date 2023-05-09
+ *  
+ */
 import React from "react";
 import { Carousel, Row, Col, Space, Typography, Button, Image } from "antd";
 

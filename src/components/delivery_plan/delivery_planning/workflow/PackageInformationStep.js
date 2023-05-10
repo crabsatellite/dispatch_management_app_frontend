@@ -1,8 +1,20 @@
+/**
+ * Copyright (c) 2023
+ *
+ * @summary Implementation of PackageInformationStep
+ * @author Catherine Zhou
+ * @date 2023-05-09
+ *  
+ */
+
 import { Card, Image } from "antd";
 import React, { useState } from "react";
 import { Form, Button, Input, message } from "antd";
 import { UserOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { login } from "../../../../utils/backend_utils";
+
+// Project imports
+import { DELIVERY_STATE } from "./../../../../utils/delivery_plan_utils"
 
 const PackageInformationStep = ({ deliveryState }) => {
   const [loading, setLoading] = useState(false);

@@ -1,7 +1,22 @@
-import { Tabs } from "antd";
-import React, { useState } from "react";
+/**
+ * Copyright (c) 2023
+ *
+ * @summary Implementation of delivery planning page
+ * @author Zilin Li
+ * @date 2023-04-28  
+ *  
+ */
+
+// Project imports
 import DeliveryPlanning from "./delivery_planning/DeliveryPlanning";
 import DeliveryOrderHistory from "./delivery_order_history/DeliveryOrderHistory";
+import { showInfo } from "../../utils/dialog_utils";
+
+// Antd imports
+import { Tabs } from "antd";
+
+// React imports
+import React, { useState } from "react";
 
 const { TabPane } = Tabs;
 
@@ -15,7 +30,13 @@ const DeliveryPlanPage = ({authed}) => {
                 defaultActiveKey="1" 
                 activeKey={tabKey}
                 destroyInactiveTabPane={true}
-                onChange={(newKey) => {setTabKey(newKey)}}
+                onChange={(newKey) => {
+                    if (!authed && newKey == "2") {
+                        showInfo("Information", "You need to login before proceeding further!");
+                        return;
+                    }
+                    setTabKey(newKey)
+                }}
             >
             <TabPane tab="Delivery Planning" key="1">
                 <DeliveryPlanning authed={authed} setTabKey={setTabKey}/>
