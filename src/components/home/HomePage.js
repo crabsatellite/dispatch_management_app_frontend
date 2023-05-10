@@ -1,58 +1,77 @@
+import React from "react";
+import { Carousel, Row, Col, Space, Typography, Button, Image } from "antd";
 
-import React from 'react';
-import { Carousel, Row, Col } from 'antd';
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+const { Title, Text } = Typography;
 
-const contentStyle = {
-    margin: 0,
-    height: '450px',
-    color: '#fff',
-    lineHeight: '160px',
-    textAlign: 'center',
-    background: '#364d79',
+const HomePage = ({ setNavigationKey }) => {
+  return (
+    <>
+      <Space direction="vertical" size="large" style={{ display: "flex" }}>
+        <Carousel autoplay>
+          <div align="center">
+            <Image src="./tech.jpeg" />
+          </div>
+          <div align="center">
+            <Image src="./robot_delivery.webp" />
+          </div>
+          <div align="center">
+            <Image src="./drone_delivery.jpeg" />
+          </div>
+          <div align="center">
+            <Image src="./storage.jpeg" />
+          </div>
+        </Carousel>
+        <Row justify="space-around">
+          <Col span={6}>
+            <Title level={3}>Step-by-step shipping guidance</Title>
+            <Col span={17}>
+              <Text style={{ color: "grey" }}>
+                We provide a easy-to-follow shipping process, from filling your
+                information to tracking your package - by text, symbols, and
+                pictures.
+              </Text>
+            </Col>
+          </Col>
+          <Col span={6}>
+            <Title level={3}>An experienced delivery journey</Title>
+            <Col span={17}>
+              <Text style={{ color: "grey" }}>
+                For your shipment, you can choose either Robot or Air Drone to
+                pick up your package. Staying at home, let tech work for us.
+              </Text>
+            </Col>
+          </Col>
+          <Col span={6}>
+            <Title level={3}>Specialized customer service</Title>
+            <Col span={17}>
+              <Text style={{ color: "grey" }}>
+                New Members get 24/7 access to specially trained Support agents
+                who can help with everything from account issues to billing
+                support.
+              </Text>
+            </Col>
+          </Col>
+        </Row>
+        <br />
+        <br />
+        <div style={{ textAlign: "center" }}>
+          <Text strong>Ready to Get Started?</Text>
+        </div>
+        <div style={{ textAlign: "center" }}>
+          <Button
+            style={{ background: "#394867", color: "white", fontWeight: 2 }}
+            onClick={(e) => {
+              {
+                setNavigationKey(`2`);
+              }
+            }}
+          >
+            Order Now
+          </Button>
+        </div>
+      </Space>
+    </>
+  );
 };
 
-const HomePage = () => {
-    return (
-        <>
-            <Carousel 
-                dots={true}
-                arrows={true}
-                prevArrow={<LeftOutlined />}
-                nextArrow={<RightOutlined />}
-            >
-                <div>
-                    <h3 style={contentStyle}>Image 1</h3>
-                </div>
-                <div>
-                    <h3 style={contentStyle}>Image 2</h3>
-                </div>
-                <div>
-                    <h3 style={contentStyle}>Image 3</h3>
-                </div>
-                <div>
-                    <h3 style={contentStyle}>Image 4</h3>
-                </div>
-            </Carousel>
-
-
-            <Row>
-                <Col span={8}>
-                    Hello
-                </Col>
-
-
-                <Col span={8}>
-                    World!
-                </Col>
-
-                <Col span={8}>
-                    App
-                </Col>
-            </Row>
-        </>
-        
-      );
-};
-
-export default HomePage; 
+export default HomePage;
