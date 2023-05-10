@@ -20,32 +20,29 @@ import { useState } from "react";
 
 const { Content } = Layout;
 
-const PageContent = ({navigationKey}) => {
+const PageContent = ({ navigationKey, setNavigationKey }) => {
+  // TODO: change it to false after backend API integration for login is completed,
+  // since unauthenticated status might blocks some testing on delivery plan page
+  const [authed, setAuthed] = useState(true);
 
-    // TODO: change it to false after backend API integration for login is completed,
-    // since unauthenticated status might blocks some testing on delivery plan page
-    const [authed, setAuthed] = useState(true); 
-
-    const renderItem = (key) => {
-
-      if (key === '1') {
-        return <HomePage />
-      } else if (key === '2') {
-        return <DeliveryPlanPage authed={authed}/>
-      } else if (key === '3') {
-        return <LoginForm setAuthed={setAuthed}/>
-      }
-      return <div></div>
+  const renderItem = (key) => {
+    if (key === "1") {
+      return <HomePage setNavigationKey={setNavigationKey} />;
+    } else if (key === "2") {
+      return <DeliveryPlanPage authed={authed} />;
+    } else if (key === "3") {
+      return <LoginForm setAuthed={setAuthed} />;
     }
+    return <div></div>;
+  };
 
-    return (
-        <Content
-            style={{ height: "calc(100% - 64px)", padding: 20, overflowY: "auto" }}
-        >
-        {renderItem(navigationKey)}
-      </Content>
-    );
-
+  return (
+    <Content
+      style={{ height: "calc(100% - 64px)", padding: 20, overflowY: "auto" }}
+    >
+      {renderItem(navigationKey)}
+    </Content>
+  );
 };
 
 export default PageContent;

@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2023
  *
- * @summary Implementation of index.js
+ * @summary Implementation of App.js
  * @author 202302 Flag Camp Team03
  * @date 2023-04-28  
  *  
@@ -20,12 +20,17 @@ import { Layout } from "antd";
 
 
 function App() {
-
   const [navigationKey, setNavigationKey] = useState(`1`);
   return (
     <Layout style={{ height: "100vh" }}>
-      <PageHeader navigationKey={navigationKey} setNavigationKey={setNavigationKey} />
-      <PageContent navigationKey={navigationKey} />    
+      <PageHeader
+        navigationKey={navigationKey}
+        setNavigationKey={setNavigationKey}
+      />
+      <PageContent
+        navigationKey={navigationKey}
+        setNavigationKey={setNavigationKey}
+      />
       <PageFooter />
     </Layout>
   );

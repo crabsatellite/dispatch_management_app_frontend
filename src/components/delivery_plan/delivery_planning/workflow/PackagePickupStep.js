@@ -258,7 +258,6 @@ const PackagePickupStep = (
         </Card>
         );
     }
-    return null;
-};
+  };
 
 export default PackagePickupStep;
