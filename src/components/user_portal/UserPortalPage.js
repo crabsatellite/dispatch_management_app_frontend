@@ -20,7 +20,7 @@ import { useState } from "react";
 import { Player } from 'video-react';
 import "video-react/dist/video-react.css";  
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 const UserPortalPage = ({authed, setAuthed, setNavigationKey}) => {
 
     const [player, setPlayer] = useState();
@@ -47,12 +47,16 @@ const UserPortalPage = ({authed, setAuthed, setNavigationKey}) => {
                                     <source src="./demo.mp4" />
                                 </Player>
                         </Modal>
-                        <Row span={12}>
+                        <Row span={12} style={{backgroundColor: '#364d79'}}>
                             <Result
                                 icon={<Image preview={false} width={350} src={"./user.png"}/>}
-                                title={"Welcome, we are so glad to see you here !"}
-                                subTitle={"First time here? Click to watch a demo on our delivery plan workflow . "}
-                                style={{marginLeft: 800}}
+                                title={<Text style={{ fontSize: 50, color: "white" }}>
+                                            Welcome, we are so glad to see you here ! 
+                                        </Text>}
+                                subTitle={<Text style={{ fontSize: 20, color: "#999999" }}>
+                                            First time here? Click to watch a demo on our delivery plan workflow . 
+                                        </Text>}
+                                style={{marginLeft: 550}}
                                 extra={<Button icon={<PlayCircleOutlined />} type="primary" onClick={() => setShowVideo(true)}>
                                             Play Demo
                                         </Button>}
@@ -79,7 +83,7 @@ const UserPortalPage = ({authed, setAuthed, setNavigationKey}) => {
                             </Col>
                             <Col span={4}>
                                 <Space direction="vertical" align="center">
-                                    <Image preview={false} width={150} src={"./clock.png"}/>
+                                    <Image preview={false} width={150} src={"./tracking.png"}/>
                                     <Button icon={<ShoppingOutlined />} type="primary" onClick={() => setViewOrderTrackingHistory(true)}>Order Tracking History</Button>
                                     <Text style={{ color: "grey" }}>
                                         Want to keep track of your order history ? 
