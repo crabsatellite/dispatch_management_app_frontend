@@ -9,8 +9,6 @@
 
 // Project imports
 import DeliveryPlanning from "./delivery_planning/DeliveryPlanning";
-import DeliveryOrderHistory from "./delivery_order_history/DeliveryOrderHistory";
-import { showInfo } from "../../utils/dialog_utils";
 
 // Antd imports
 import { Tabs } from "antd";
@@ -18,35 +16,10 @@ import { Tabs } from "antd";
 // React imports
 import React, { useState } from "react";
 
-const { TabPane } = Tabs;
+const DeliveryPlanPage = ({authed, setNavigationKey}) => {
 
-const DeliveryPlanPage = ({authed}) => {
-
-    const [tabKey, setTabKey] = useState('1');
     return (
-        <div>
-            {
-            <Tabs 
-                defaultActiveKey="1" 
-                activeKey={tabKey}
-                destroyInactiveTabPane={true}
-                onChange={(newKey) => {
-                    if (!authed && newKey == "2") {
-                        showInfo("Information", "You need to login before proceeding further!");
-                        return;
-                    }
-                    setTabKey(newKey)
-                }}
-            >
-            <TabPane tab="Delivery Planning" key="1">
-                <DeliveryPlanning authed={authed} setTabKey={setTabKey}/>
-            </TabPane>
-            <TabPane tab="Delivery Order History" key="2"    >
-                <DeliveryOrderHistory />
-            </TabPane>
-            </Tabs> 
-            }
-        </div>
+        <DeliveryPlanning authed={authed} setNavigationKey={setNavigationKey}/>
     );
 };
 

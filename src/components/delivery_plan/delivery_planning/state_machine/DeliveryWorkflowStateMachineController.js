@@ -36,7 +36,7 @@ const DeliveryWorkflowStateMachineController = (
     setDeliveryState, 
     deliveryStartLocationKey,
     setDeliveryStartLocationKey, 
-    setTabKey,
+    setNavigationKey,
     setPickupSpeed,
     setDeliverySpeed,
     setDispatcherType}) => {
@@ -73,7 +73,7 @@ const DeliveryWorkflowStateMachineController = (
                       deliverySpeed={deliverySpeed}
                       dispatchProgress={dispatchProgress}
                       deliveryAddress={deliveryAddress}
-                      setTabKey={setTabKey}
+                      setNavigationKey={setNavigationKey}
                       setDeliveryState={setDeliveryState} 
                       setDeliverySpeed={setDeliverySpeed}
                     />,

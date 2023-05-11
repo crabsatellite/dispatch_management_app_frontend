@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2023
  *
- * @summary Implementation of index.js
+ * @summary Implementation of PageContent.js
  * @author 202302 Flag Camp Team03
  * @date 2023-04-28  
  *  
@@ -9,7 +9,7 @@
 
 // Project imports
 import HomePage from "../home/HomePage";
-import LoginForm from "../user_portal/LoginForm";
+import UserPortalPage from "../user_portal/UserPortalPage";
 import DeliveryPlanPage from "../delivery_plan/DeliveryPlanPage";
 
 // Antd imports
@@ -29,9 +29,9 @@ const PageContent = ({ navigationKey, setNavigationKey }) => {
     if (key === "1") {
       return <HomePage setNavigationKey={setNavigationKey} />;
     } else if (key === "2") {
-      return <DeliveryPlanPage authed={authed} />;
+      return <DeliveryPlanPage authed={authed} setNavigationKey={setNavigationKey}/>;
     } else if (key === "3") {
-      return <LoginForm setAuthed={setAuthed} />;
+      return <UserPortalPage authed={authed} setAuthed={setAuthed} setNavigationKey={setNavigationKey}/>;
     }
     return <div></div>;
   };

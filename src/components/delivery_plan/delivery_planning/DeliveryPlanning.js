@@ -35,7 +35,7 @@ function ChangeView({ center, zoom }) {
 }
 
 
-const DeliveryPlanning = ({authed, setTabKey}) => {
+const DeliveryPlanning = ({authed, setNavigationKey}) => {
   
   /*
   * Marker icons properties -----------------------------------------------------------------------------------------------------
@@ -159,7 +159,7 @@ const DeliveryPlanning = ({authed, setTabKey}) => {
             pickupAddress={pickupAddress}
             deliveryAddress={deliveryAddress} 
             deliveryStartLocationKey={deliveryStartLocationKey}
-            setTabKey={setTabKey}
+            setNavigationKey={setNavigationKey}
             setPickupSpeed={setPickupSpeed}
             setCurrentStep={setCurrentStep}
             setDispatcher={setDispatcherType} 

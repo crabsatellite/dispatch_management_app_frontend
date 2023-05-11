@@ -25,7 +25,7 @@ const PackageDeliveryStep = (
             dispatcher, 
             deliveryState, 
             setDeliveryState, 
-            setTabKey,
+            setNavigationKey,
             setDeliverySpeed}) => {
 
     const summary = [
@@ -86,7 +86,7 @@ const PackageDeliveryStep = (
                 />
                 <LoadingOutlined style={{fontSize: 50}}/>
                 <Progress strokeLinecap="round" percent={Math.floor(dispatchProgress)} />
-                <Image className="image" width={200} src={dispatcher === DISPATCHER_TYPE.ROBOT ? "./robot.png" : "./drone.png"}/>
+                <Image preview={false} className="image" width={200} src={dispatcher === DISPATCHER_TYPE.ROBOT ? "./robot.png" : "./drone.png"}/>
             </Card>
         );
 
@@ -148,7 +148,7 @@ const PackageDeliveryStep = (
                         </p>
                     </Panel>
                 </Collapse>
-                <Image className="image" width={200} src={"./delivery_box.png"}/>
+                <Image preview={false} className="image" width={200} src={"./delivery_box.png"}/>
             </Card>
         );
     } else if (deliveryState == DELIVERY_STATE.DELIVER_INITIALIZATION) {
@@ -174,7 +174,7 @@ const PackageDeliveryStep = (
                         </p>
                     </Panel>
                 </Collapse>
-                <Image className="image" width={200} src={"./delivery_box.png"}/>
+                <Image preview={false} className="image" width={200} src={"./delivery_box.png"}/>
             </Card>
         );
     }
@@ -190,10 +190,10 @@ const PackageDeliveryStep = (
                 subTitle="THANK YOU FOR CHOOSING OUR SERVICE"
                 extra={[
                     <Button type="primary" onClick={() => {setDeliveryState(DELIVERY_STATE.RESET_ROUTE)}}>Place Another Delivery Plan</Button>,
-                    <Button type="primary" onClick={() => {setTabKey('2')}}>View Delivery History</Button>,
+                    <Button type="primary" onClick={() => {setNavigationKey("3")}}>View Order Tracking History</Button>,
                 ]}
             />
-            <Image className="image" width={200} src={"./thanks.png"}/>
+            <Image preview={false} className="image" width={200} src={"./thanks.png"}/>
         </Card>
     );
 };

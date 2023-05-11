@@ -161,7 +161,7 @@ const PackagePickupStep = (
                 />
             <LoadingOutlined style={{fontSize: 50}}/>
             <Progress strokeLinecap="round" percent={Math.floor(dispatchProgress)} />
-            <Image className="image" width={200} src={dispatcher === DISPATCHER_TYPE.ROBOT ? "./robot.png" : "./drone.png"}/>
+            <Image preview={false} className="image" width={200} src={dispatcher === DISPATCHER_TYPE.ROBOT ? "./robot.png" : "./drone.png"}/>
         </Card>
         );
 
@@ -224,7 +224,7 @@ const PackagePickupStep = (
                     </p>
                 </Panel>
             </Collapse>
-            <Image className="image" width={200} src={"./location.png"}/>
+            <Image preview={false} className="image" width={200} src={"./location.png"}/>
         </Card>
         );
     } else if (deliveryState === DELIVERY_STATE.PICKUP_INITIALIZATION) {
@@ -254,7 +254,7 @@ const PackagePickupStep = (
                 </Panel>
             </Collapse>
             
-            <Image className="image" width={200} src={dispatcher === DISPATCHER_TYPE.ROBOT ? "./robot.png" : "./drone.png"}/>
+            <Image preview={false} className="image" width={200} src={dispatcher === DISPATCHER_TYPE.ROBOT ? "./robot.png" : "./drone.png"}/>
         </Card>
         );
     }
