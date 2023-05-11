@@ -5,6 +5,10 @@
 ## Note
 The project json files have included all the required dependencies (antd etc), no need to install again locally on your workspace
 
+If you encounter issues with `react-geocode`, please run `npm install react-geocode` to install it locally.
+
+If you encounter issues with `video-react`, please run `npm install --save video-react react react-dom` to install it locally.
+
 ## Project Steps
 0. Navigate to current project directory on your local workspace
 
@@ -13,9 +17,6 @@ The project json files have included all the required dependencies (antd etc), n
 
 2. Run the project
 `npm start`
-
-If you encounter issues with `react-geocode`, please run `npm install react-geocode` to install it locally.
-
 
 ## Software Architecture
 
