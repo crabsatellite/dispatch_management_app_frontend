@@ -10,12 +10,6 @@
 // Project imports
 import DeliveryPlanning from "./delivery_planning/DeliveryPlanning";
 
-// Antd imports
-import { Tabs } from "antd";
-
-// React imports
-import React, { useState } from "react";
-
 const DeliveryPlanPage = ({authed, setNavigationKey}) => {
 
     return (

@@ -36,7 +36,7 @@ const UserPortalPage = ({authed, setAuthed, setNavigationKey}) => {
             return (
                     <div>
                         <Modal
-                            title="Delivery Plan Workflow Demo"
+                            title="Delivery Plan Workflow Tutorial Demo"
                             visible={showVideo}
                             footer={null}
                             onCancel={() => setShowVideo(false)}
@@ -53,8 +53,8 @@ const UserPortalPage = ({authed, setAuthed, setNavigationKey}) => {
                                 title={<Text style={{ fontSize: 50, color: "white" }}>
                                             Welcome, we are here to provide advanced delivery solution for you ! 
                                         </Text>}
-                                subTitle={<Text style={{ fontSize: 20, color: "#999999" }}>
-                                            First time here? Click to watch a demo on our delivery plan workflow . 
+                                subTitle={<Text style={{ fontSize: 20, color: "white" }}>
+                                            First time here? We provide a tutorial demo on our delivery plan workflow . 
                                         </Text>}
                                 style={{marginLeft: 250}}
                                 extra={<Button icon={<PlayCircleOutlined />} type="primary" onClick={() => setShowVideo(true)}>
