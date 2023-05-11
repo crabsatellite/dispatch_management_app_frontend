@@ -20,20 +20,13 @@ import "leaflet-routing-machine";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.js";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 
 // React imports
 import { useEffect, useState } from "react";
 
 // Antd imports
-import { Row, Col, Image } from "antd";
-
-function ChangeView({ center, zoom }) {
-  const map = useMap();
-  map.setView(center, zoom);
-  return null;
-}
-
+import { Row, Col, Image, Button } from "antd";
 
 const DeliveryPlanning = ({authed, setNavigationKey}) => {
   
@@ -109,8 +102,7 @@ const DeliveryPlanning = ({authed, setNavigationKey}) => {
     <Row>
       <Col span={12} class="parent">
         <div class="parent">
-          <MapContainer class="leaflet-container" center={DISPATCHER_START_LOCATION[deliveryStartLocationKey]} zoom={13} scrollWheelZoom={false}>
-            <ChangeView center={DISPATCHER_START_LOCATION[deliveryStartLocationKey]} zoom={13} /> 
+          <MapContainer class="leaflet-container" center={[dispatcherMarker.getLatLng().lat, dispatcherMarker.getLatLng().lng]} zoom={13} scrollWheelZoom={false}>
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -138,7 +130,6 @@ const DeliveryPlanning = ({authed, setNavigationKey}) => {
                 setDeliveryState={setDeliveryState} 
                 setPickupAddress={setPickupAddress}
                 setDeliveryAddress={setDeliveryAddress}
-                setDispatchProgress={setDispatchProgress}
               />
           </MapContainer>
 
@@ -149,6 +140,7 @@ const DeliveryPlanning = ({authed, setNavigationKey}) => {
       </Col>
       <Col span={12}>
           <DeliveryWorkflowStateMachineController
+            routeCoordinates={routeCoordinates}
             authed={authed}
             currentStep={currentStep}
             pickupSpeed={pickupSpeed}
@@ -167,8 +159,10 @@ const DeliveryPlanning = ({authed, setNavigationKey}) => {
             setDeliverySpeed={setDeliverySpeed}
             setDeliveryStartLocationKey={setDeliveryStartLocationKey} 
             setDispatcherType={setDispatcherType}
+            setDispatchProgress={setDispatchProgress}
           />
       </Col>
+      <Button>Open Drawer</Button>
     </Row>
   );
 }
