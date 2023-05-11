@@ -26,15 +26,15 @@ If you encounter issues with `video-react`, please run `npm install --save video
 ------------------------------------------------------------------------------
 ### 2. Delivery Plan
 
-#### 2.1 Delivery Planning
-
-
-
-#### 2.2 Delivery History
-
 
 ------------------------------------------------------------------------------
 ### 3. User Portal
+
+#### 3.1 Main Page
+
+
+
+#### 3.2 Order Tracking History
 
 
 
