@@ -26,7 +26,7 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import { useEffect, useState } from "react";
 
 // Antd imports
-import { Row, Col, Image, Button } from "antd";
+import { Row, Col, Image } from "antd";
 
 const DeliveryPlanning = ({authed, setNavigationKey}) => {
   
@@ -162,7 +162,6 @@ const DeliveryPlanning = ({authed, setNavigationKey}) => {
             setDispatchProgress={setDispatchProgress}
           />
       </Col>
-      <Button>Open Drawer</Button>
     </Row>
   );
 }
