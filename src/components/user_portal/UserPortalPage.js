@@ -51,12 +51,12 @@ const UserPortalPage = ({authed, setAuthed, setNavigationKey}) => {
                             <Result
                                 icon={<Image preview={false} width={350} src={"./user.png"}/>}
                                 title={<Text style={{ fontSize: 50, color: "white" }}>
-                                            Welcome, we are so glad to see you here ! 
+                                            Welcome, we are here to provide advanced delivery solution for you ! 
                                         </Text>}
                                 subTitle={<Text style={{ fontSize: 20, color: "#999999" }}>
                                             First time here? Click to watch a demo on our delivery plan workflow . 
                                         </Text>}
-                                style={{marginLeft: 550}}
+                                style={{marginLeft: 250}}
                                 extra={<Button icon={<PlayCircleOutlined />} type="primary" onClick={() => setShowVideo(true)}>
                                             Play Demo
                                         </Button>}
