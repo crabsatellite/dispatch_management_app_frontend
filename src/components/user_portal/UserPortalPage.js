@@ -12,19 +12,15 @@ import LoginForm from "./user_authentication/LoginForm";
 import OrderTrackingHistory from "./user_order_history/OrderTrackingHistory";
 
 // Antd imports
-import { Result, Button, Space, Image, Row, Col, Typography, Modal } from 'antd';
+import { Result, Button, Space, Image, Row, Col, Typography } from 'antd';
 import { UserSwitchOutlined, ShoppingOutlined, CodeSandboxOutlined, PlayCircleOutlined } from '@ant-design/icons';
 
 // React imports
-import { useState } from "react";
-import { Player } from 'video-react';
-import "video-react/dist/video-react.css";  
+import { useState } from "react"; 
 
 const { Text } = Typography;
 const UserPortalPage = ({authed, setAuthed, setNavigationKey}) => {
 
-    const [player, setPlayer] = useState();
-    const [showVideo, setShowVideo] = useState(false);
     const [viewOrderTrackingHistory, setViewOrderTrackingHistory] = useState(false);
 
     const renderContent = () => {
@@ -35,31 +31,13 @@ const UserPortalPage = ({authed, setAuthed, setNavigationKey}) => {
 
             return (
                     <div>
-                        <Modal
-                            title="Delivery Plan Workflow Tutorial Demo"
-                            visible={showVideo}
-                            footer={null}
-                            onCancel={() => setShowVideo(false)}
-                            afterClose={() => player.pause()}
-                            bodyStyle={{ padding: 0 }}
-                            >
-                                <Player autoPlay ref={ref => setPlayer(ref)}>
-                                    <source src="./demo.mp4" />
-                                </Player>
-                        </Modal>
                         <Row span={12} style={{backgroundColor: '#364d79'}}>
                             <Result
                                 icon={<Image preview={false} width={350} src={"./user.png"}/>}
-                                title={<Text style={{ fontSize: 50, color: "white" }}>
+                                title={<Text style={{ fontSize: 30, color: "white" }}>
                                             Welcome, we are here to provide advanced delivery solution for you ! 
                                         </Text>}
-                                subTitle={<Text style={{ fontSize: 20, color: "white" }}>
-                                            First time here? We provide a tutorial demo on our delivery plan workflow . 
-                                        </Text>}
-                                style={{marginLeft: 250}}
-                                extra={<Button icon={<PlayCircleOutlined />} type="primary" onClick={() => setShowVideo(true)}>
-                                            Play Demo
-                                        </Button>}
+                                style={{marginLeft: 550}}
                             />
                         </Row>
                         <Row span={12}>
