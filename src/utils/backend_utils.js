@@ -17,3 +17,7 @@ export const register = () => {
 export const uploadDelivery = () => {
   
 }; 
+
+export const getDelivery = () => {
+  
+}; 
