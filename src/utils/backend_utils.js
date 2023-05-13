@@ -6,10 +6,14 @@
  * @date Year-Month-Day  
  *  
  */
-export const login = (credential) => {
+export const login = () => {
   
 }
 
-export const register = (credential) => {
+export const register = () => {
   
-};  
+}; 
+
+export const uploadDelivery = () => {
+  
+}; 
