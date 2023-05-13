@@ -9,6 +9,7 @@
 
 // Project imports
 import { register } from "../../../utils/backend_utils";
+import { showSuccess, showError } from "../../../utils/dialog_utils";
 
 // Antd imports
 import { Button, Modal, Form, Input, message } from "antd";
@@ -35,10 +36,10 @@ const SignupButton = () => {
 
     try {
       await register(data);
-      message.success("Sign up successfully");
+      showSuccess("Success", "Sign up successfully ! ");
       setModalVisible(false);
     } catch (error) {
-      message.error(error.message);
+      showError("Error!", "Fail to sign up . ");
     } finally {
       setLoading(false);
     }
@@ -51,7 +52,7 @@ const SignupButton = () => {
         style={{ padding: 0 }}
         onClick={handleRegisterOnClick}
       >
-        Join Our Membership Now!
+        Signup Now !  
       </Button>
       <Modal
         title="Sign Up"
