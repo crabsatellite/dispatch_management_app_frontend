@@ -38,7 +38,7 @@ export const uploadDelivery = (credential) => {
 //             "quantity": 2 ---> credential.content 
 //         }
 //     ],
-//      "status": "delivery_finished",
+//      "status": "delivery_finished", ---> credential.deliveryState
 // 	    “warehouseId”: “2”, ---> credential.warehouseId
 //      “courierId”: “1”, ---> credential.courierId 
 //      “pickupSpeed”: “priority” ---> credential.pickupSpeed
