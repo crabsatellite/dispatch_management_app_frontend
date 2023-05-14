@@ -49,3 +49,14 @@ export const DISPATCH_SPEED_TYPE = {
     FIRST_CLASS : 'FIRST_CLASS',
     NORMAL : 'NORMAL',
 }
+
+export const BACKEND_COURIER_ID = {
+    ROBOT : '1',
+    AIR_DRONE : '2',
+}
+
+export const BACKEND_WAREHOUSE_ID = {
+    LOCATION_A: '1',
+    LOCATION_B: '2',
+    LOCATION_C: '3',
+}

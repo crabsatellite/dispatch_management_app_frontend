@@ -147,7 +147,6 @@ const DeliveryPlanning = ({authed, setNavigationKey}) => {
       <Col span={12}>
           <DeliveryWorkflowStateMachineController
             routeCoordinates={routeCoordinates}
-            authed={authed}
             currentStep={currentStep}
             pickupSpeed={pickupSpeed}
             dispatchProgress={dispatchProgress}

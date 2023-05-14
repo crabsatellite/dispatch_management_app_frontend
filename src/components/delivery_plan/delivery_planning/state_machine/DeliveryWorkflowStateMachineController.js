@@ -11,8 +11,9 @@
 import PackagePickupStep from '../workflow/PackagePickupStep';
 import PackageDeliveryStep from '../workflow/PackageDeliveryStep';
 import PackageInformationStep from '../workflow/PackageInformationStep';
-import { DELIVERY_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from '../../../../utils/delivery_plan_utils';
+import { DELIVERY_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE, BACKEND_COURIER_ID, BACKEND_WAREHOUSE_ID} from '../../../../utils/delivery_plan_utils';
 import { showInfo, showSuccess, showWarning } from '../../../../utils/dialog_utils';
+import { uploadDelivery } from '../../../../utils/backend_utils';
 
 // Antd imports
 import { Button, Steps } from 'antd';
@@ -23,7 +24,6 @@ import { useEffect } from 'react';
 
 const DeliveryWorkflowStateMachineController = (
   { routeCoordinates,
-    authed,
     pickupSpeed,
     dispatchProgress,
     deliverySpeed,
@@ -151,14 +151,32 @@ const DeliveryWorkflowStateMachineController = (
         case DELIVERY_STATE.DELIVER_FINISHED:
           setDispatchProgress(0);
           showSuccess("Confirmation", "The package is delivered successfully ! ");
-          // packageInfo
-          // pickupAddress
-          // pickupSpeed
-          // deliveryAddress
-          // deliverySpeed
-          // deliveryStartLocationKey
-          // dispatcher
-          // deliveryState
+
+          let credential = {}
+          
+          // Sender
+          credential.senderName = packageInfo.senderFirstName + " " + packageInfo.senderLastName;
+          credential.pickupSpeed = pickupSpeed.toLowerCase();
+          credential.pickupAddress = pickupAddress;
+          credential.weight = packageInfo.weight;
+          credential.content = packageInfo.content;
+          
+          // Receiver
+          credential.receiverName = packageInfo.receiverFirstName + " " + packageInfo.receiverLastName;
+          credential.deliverySpeed = deliverySpeed.toLowerCase();
+          credential.receiverAddress = deliveryAddress;
+          credential.receiverPhoneNumber = packageInfo.phoneNumber;
+          credential.receiverEmail = packageInfo.email;
+          
+          // General
+          credential.deliveryDate = new Date().toJSON();
+          credential.courierLastPositionLat = "";
+          credential.courierLastPositionLng = "";
+          credential.deliveryState = deliveryState.toLowerCase();
+          credential.warehouseId = BACKEND_WAREHOUSE_ID[deliveryStartLocationKey];
+          credential.courierId = BACKEND_COURIER_ID[dispatcher];
+          
+          uploadDelivery(credential);
           break;  
   
         case DELIVERY_STATE.RESET_ROUTE:
