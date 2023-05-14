@@ -198,7 +198,7 @@ const PackageInformationStep = ({ packageInfoDrafted, setPackageInfoDrafted, pac
           {renderButton()}
         </Form.Item>
       </Form>
-      <Image className="image" width={200} src={"./box.png"} />
+      <Image preview={false} className="image" width={200} src={"./box.png"} />
     </Card>
   );
 };
