@@ -4,7 +4,7 @@
  * @summary Implementation of HomePage
  * @author Catherine Zhou
  * @date 2023-05-09
- *  
+ *
  */
 import React from "react";
 import { Carousel, Row, Col, Space, Typography, Button, Image } from "antd";
@@ -17,16 +17,16 @@ const HomePage = ({ setNavigationKey }) => {
       <Space direction="vertical" size="large" style={{ display: "flex" }}>
         <Carousel autoplay>
           <div align="center">
-            <Image src="./tech.jpeg" />
+            <Image src="./tech.jpeg" width={1500} height={1000} />
           </div>
           <div align="center">
-            <Image src="./robot_delivery.webp" />
+            <Image src="./robot_delivery.webp" width={1500} height={1000} />
           </div>
           <div align="center">
-            <Image src="./drone_delivery.jpeg" />
+            <Image src="./drone_delivery.jpeg" width={1500} height={1000} />
           </div>
           <div align="center">
-            <Image src="./storage.jpeg" />
+            <Image src="./storage.jpeg" width={1500} height={1000} />
           </div>
         </Carousel>
         <Row justify="space-around">

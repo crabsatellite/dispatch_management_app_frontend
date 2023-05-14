@@ -99,62 +99,86 @@ const PackageInformationStep = ({ packageInfoDrafted, setPackageInfoDrafted, pac
   }
 
   return (
-    <Card title="PACKAGE INFORMATION" style={{width: 1000, left: 20}}>
+    <Card title="PACKAGE INFORMATION" style={{ width: 1000, left: 20 }}>
       <Form ref={ref => setForm(ref)}>
-        <Form.Item
-          style={{ width: 350 }}
-          name="firstName"
-          label="First Name:"
-          initialValue={packageInfo.firstName}
-        >
-          <Input disabled={packageInfoDrafted} />
-        </Form.Item>
-        <Form.Item
-          style={{ width: 350 }}
-          label="Last Name:"
-          name="lastName"
-          initialValue={packageInfo.lastName}
-        >
-          <Input disabled={packageInfoDrafted} />
-        </Form.Item>
-        <Form.Item
-          style={{ width: 350 }}
-          label="Phone Number:"
-          name="phoneNumber"
-          initialValue={packageInfo.phoneNumber}
-        >
-          <Input disabled={packageInfoDrafted} />
-        </Form.Item>
-        <Form.Item
-          style={{ width: 350 }}
-          label="Email:"
-          name="email"
-          initialValue={packageInfo.email}
-        >
-          <Input disabled={packageInfoDrafted} />
-        </Form.Item>
-        <Form.Item
-          style={{ width: 350 }}
-          label="Content:"
-          name="content"
-          initialValue={packageInfo.content}
-        >
-          <Input disabled={packageInfoDrafted} />
-        </Form.Item>
-        <Form.Item
-          style={{ width: 350 }}
-          label="Weight:"
-          name="weight"
-          initialValue={packageInfo.weight}
-        >
-          <Input disabled={packageInfoDrafted} />
-        </Form.Item>
-        <Form.Item
-          label="Shipping Address:"
-          name="shippingAddress"
-        >
-          <Input disabled={packageInfoDrafted} />
-        </Form.Item>
+        <Title level={5} style={{ textAlign: "left" }}>
+          Sender's Information:
+        </Title>
+        <Space style={{ textAlign: "left" }}>
+           <Form.Item
+            style={{ width: 350 }}
+            name="senderFirstName"
+            label="First Name:"
+            initialValue={packageInfo.firstName}
+          >
+            <Input disabled={packageInfoDrafted} />
+          </Form.Item>
+          <Form.Item
+            style={{ width: 350 }}
+            label="Last Name:"
+            name="senderLastName"
+            initialValue={packageInfo.lastName}
+          >
+            <Input disabled={packageInfoDrafted} />
+          </Form.Item>
+        </Space>
+        <Title level={5} style={{ textAlign: "left" }}>
+          Receiver's Information:
+        </Title>
+        <Space style={{ textAlign: "left" }}>
+           <Form.Item
+            style={{ width: 350 }}
+            name="receiverFirstName"
+            label="First Name:"
+            initialValue={packageInfo.firstName}
+          >
+            <Input disabled={packageInfoDrafted} />
+          </Form.Item>
+          <Form.Item
+            style={{ width: 350 }}
+            label="Last Name:"
+            name="receiverLastName"
+            initialValue={packageInfo.lastName}
+          >
+            <Input disabled={packageInfoDrafted} />
+          </Form.Item>
+        </Space>
+        <Space>
+           <Form.Item
+            style={{ width: 350 }}
+            label="Phone Number:"
+            name="phoneNumber"
+            initialValue={packageInfo.phoneNumber}
+          >
+            <Input disabled={packageInfoDrafted} />
+          </Form.Item>
+          <Form.Item
+            style={{ width: 350 }}
+            label="Email:"
+            name="email"
+            initialValue={packageInfo.email}
+          >
+            <Input disabled={packageInfoDrafted} />
+          </Form.Item>
+        </Space>
+        <Space>
+           <Form.Item
+            style={{ width: 350 }}
+            label="Content:"
+            name="content"
+            initialValue={packageInfo.content}
+          >
+            <Input disabled={packageInfoDrafted} />
+          </Form.Item>
+          <Form.Item
+            style={{ width: 350 }}
+            label="Weight:"
+            name="weight"
+            initialValue={packageInfo.weight}
+          >
+            <Input disabled={packageInfoDrafted} />
+         </Form.Item>
+        </Space>
         <Form.Item>
           {renderButton()}
         </Form.Item>
