@@ -60,3 +60,14 @@ export const BACKEND_WAREHOUSE_ID = {
     LOCATION_B: '2',
     LOCATION_C: '3',
 }
+
+export const FRONTEND_COURIER_NAME = {
+    '1': 'ROBOT',
+    '2': 'AIR_DRONE',
+}
+
+export const FRONTEND_WAREHOUSE_NAME = {
+    '1': 'LOCATION_A',
+    '2': 'LOCATION_B',
+    '3': 'LOCATION_C',
+}

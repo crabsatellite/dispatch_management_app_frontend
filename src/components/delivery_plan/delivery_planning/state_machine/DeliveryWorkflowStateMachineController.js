@@ -12,7 +12,7 @@ import PackagePickupStep from '../workflow/PackagePickupStep';
 import PackageDeliveryStep from '../workflow/PackageDeliveryStep';
 import PackageInformationStep from '../workflow/PackageInformationStep';
 import { DELIVERY_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE, BACKEND_COURIER_ID, BACKEND_WAREHOUSE_ID} from '../../../../utils/delivery_plan_utils';
-import { showInfo, showSuccess, showWarning } from '../../../../utils/dialog_utils';
+import { showInfo, showSuccess, showWarning, showError } from '../../../../utils/dialog_utils';
 import { uploadDelivery } from '../../../../utils/backend_utils';
 
 // Antd imports
@@ -20,7 +20,11 @@ import { Button, Steps } from 'antd';
 import { CodeSandboxOutlined, RocketOutlined, AimOutlined } from '@ant-design/icons';
 
 // React imports
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+// Mock imports
+import { v4 as uuidv4 } from 'uuid';
+
 
 const DeliveryWorkflowStateMachineController = (
   { routeCoordinates,
@@ -46,6 +50,55 @@ const DeliveryWorkflowStateMachineController = (
     setDispatchProgress,
     setPackageInfoDrafted,
     setPackageInfo}) => {
+
+
+    const [loading, setLoading] = useState(false);
+
+    const handleUploadDelivery = async (credential) => {
+      setLoading(true);
+      try {
+        await uploadDelivery(credential);
+        showSuccess("Success", "Your delivery data is saved successfully! ");
+      } catch (error) {
+        showError("Error!", "Fail to save delivery data . ");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const handleUploadDeliveryMock = (credential) => {
+
+      const mockData = {
+        userId: uuidv4(),
+        deliveryDate: credential.deliveryDate,
+        senderAddress: {
+          name: credential.senderName,
+          street: credential.pickupAddress,
+        },
+        recipientAddress: {
+          name: credential.receiverName,
+          email: credential.receiverEmail,
+          phoneNumber:credential.receiverPhoneNumber,
+          street: credential.receiverAddress,
+        },
+        items: [
+          {
+            name: credential.content,
+            quantity:credential.weight, 
+          }
+        ],
+        status: credential.deliveryState,
+        warehouseId: credential.warehouseId,
+        courierId:credential.courierId,
+        pickupSpeed: credential.pickupSpeed,
+        deliverSpeed: credential.deliverySpeed, 
+        courierLastPositionLat: credential.courierLastPositionLat,
+        courierLastPositionLng: credential.courierLastPositionLng,
+      };
+
+      const json = JSON.stringify(mockData);
+      localStorage.setItem("mock_data", json);
+    };
 
     const simulateDispatcherProgress = (speed) => {
       let speedFactor = 1;
@@ -175,8 +228,8 @@ const DeliveryWorkflowStateMachineController = (
           credential.deliveryState = deliveryState.toLowerCase();
           credential.warehouseId = BACKEND_WAREHOUSE_ID[deliveryStartLocationKey];
           credential.courierId = BACKEND_COURIER_ID[dispatcher];
-          
-          uploadDelivery(credential);
+          // handleUploadDelivery(credential);
+          handleUploadDeliveryMock(credential);
           break;  
   
         case DELIVERY_STATE.RESET_ROUTE:

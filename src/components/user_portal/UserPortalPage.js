@@ -52,7 +52,11 @@ const UserPortalPage = ({ authed, setAuthed, setNavigationKey }) => {
                 <Button
                   icon={<UserSwitchOutlined />}
                   type="primary"
-                  onClick={() => setAuthed(false)}
+                  onClick={() => {
+                      setAuthed(false)
+                      localStorage.removeItem("mock_data");
+                    }
+                  }
                 >
                   Logout
                 </Button>

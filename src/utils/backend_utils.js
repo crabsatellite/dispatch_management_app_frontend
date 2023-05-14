@@ -34,8 +34,8 @@ export const uploadDelivery = (credential) => {
 //    },
 //     "items": [
 //         {
-//             "name": "Item 1", ---> credential.weight
-//             "quantity": 2 ---> credential.content 
+//             "name": "Item 1", ---> credential.content
+//             "quantity": 2 ---> credential.weight 
 //         }
 //     ],
 //      "status": "delivery_finished", ---> credential.deliveryState
