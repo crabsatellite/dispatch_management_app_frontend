@@ -8,15 +8,16 @@
  */
 
 // Project imports
-import { showError, showInfo } from "../../../../utils/dialog_utils";
+import { showError } from "../../../../utils/dialog_utils";
 
 // React imports
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // Antd imports
-import { Form, Button, Input, Card, Image } from "antd";
+import { Form, Button, Input, Card, Image, Space, Typography } from "antd";
 import { EditOutlined, SaveOutlined } from '@ant-design/icons';
 
+const { Title } = Typography;
 const PackageInformationStep = ({ packageInfoDrafted, setPackageInfoDrafted, packageInfo, setPackageInfo}) => {
 
   const [form, setForm] = useState();
@@ -25,14 +26,26 @@ const PackageInformationStep = ({ packageInfoDrafted, setPackageInfoDrafted, pac
 
     let errorMsg = [];
     errorMsg.push("Missed Field :  ");
-    if (form.getFieldValue("firstName") === undefined || form.getFieldValue("firstName") === "") {
-      errorMsg.push("First Name");
+    if (form.getFieldValue("senderFirstName") === undefined || form.getFieldValue("firstName") === "") {
+      errorMsg.push("Sender First Name");
     }
-    if (form.getFieldValue("lastName") === undefined || form.getFieldValue("lastName") === "") {
+    if (form.getFieldValue("senderLastName") === undefined || form.getFieldValue("firstName") === "") {
       if (errorMsg.length >= 2) {
         errorMsg.push(" , ");
       }
-      errorMsg.push("Last Name");
+      errorMsg.push("Sender Last Name");
+    }
+    if (form.getFieldValue("receiverFirstName") === undefined || form.getFieldValue("firstName") === "") {
+      if (errorMsg.length >= 2) {
+        errorMsg.push(" , ");
+      }
+      errorMsg.push("Receiver First Name");
+    }
+    if (form.getFieldValue("receiverLastName") === undefined || form.getFieldValue("firstName") === "") {
+      if (errorMsg.length >= 2) {
+        errorMsg.push(" , ");
+      }
+      errorMsg.push("Receiver Last Name");
     }
     if (form.getFieldValue("phoneNumber") === undefined || form.getFieldValue("phoneNumber") === "") {
       if (errorMsg.length >= 2) {
@@ -67,8 +80,10 @@ const PackageInformationStep = ({ packageInfoDrafted, setPackageInfoDrafted, pac
     
     setPackageInfo(packageInfo => ({
       ...packageInfo,
-      ...{"firstName": form.getFieldValue("firstName")},
-      ...{"lastName": form.getFieldValue("lastName")},
+      ...{"senderFirstName": form.getFieldValue("senderFirstName")},
+      ...{"senderLastName": form.getFieldValue("senderLastName")},
+      ...{"receiverFirstName": form.getFieldValue("receiverFirstName")},
+      ...{"receiverLastName": form.getFieldValue("receiverLastName")},
       ...{"phoneNumber": form.getFieldValue("phoneNumber")},
       ...{"email": form.getFieldValue("email")},
       ...{"content": form.getFieldValue("content")},
@@ -109,7 +124,7 @@ const PackageInformationStep = ({ packageInfoDrafted, setPackageInfoDrafted, pac
             style={{ width: 350 }}
             name="senderFirstName"
             label="First Name:"
-            initialValue={packageInfo.firstName}
+            initialValue={packageInfo.senderFirstName}
           >
             <Input disabled={packageInfoDrafted} />
           </Form.Item>
@@ -117,7 +132,7 @@ const PackageInformationStep = ({ packageInfoDrafted, setPackageInfoDrafted, pac
             style={{ width: 350 }}
             label="Last Name:"
             name="senderLastName"
-            initialValue={packageInfo.lastName}
+            initialValue={packageInfo.senderLastName}
           >
             <Input disabled={packageInfoDrafted} />
           </Form.Item>
@@ -130,7 +145,7 @@ const PackageInformationStep = ({ packageInfoDrafted, setPackageInfoDrafted, pac
             style={{ width: 350 }}
             name="receiverFirstName"
             label="First Name:"
-            initialValue={packageInfo.firstName}
+            initialValue={packageInfo.receiverFirstName}
           >
             <Input disabled={packageInfoDrafted} />
           </Form.Item>
@@ -138,7 +153,7 @@ const PackageInformationStep = ({ packageInfoDrafted, setPackageInfoDrafted, pac
             style={{ width: 350 }}
             label="Last Name:"
             name="receiverLastName"
-            initialValue={packageInfo.lastName}
+            initialValue={packageInfo.receiverLastName}
           >
             <Input disabled={packageInfoDrafted} />
           </Form.Item>

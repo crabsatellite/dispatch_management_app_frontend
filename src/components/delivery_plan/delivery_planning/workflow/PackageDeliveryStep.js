@@ -40,8 +40,10 @@ const PackageDeliveryStep = (
     const packageInfoStepSummary = [
         {
             key: '1',
-            firstName: <div>{packageInfo.firstName}</div>,
-            lastName: <div>{packageInfo.lastName}</div>,
+            senderFirstName: <div>{packageInfo.senderFirstName}</div>,
+            senderLastName: <div>{packageInfo.senderLastName}</div>,
+            receiverFirstName: <div>{packageInfo.receiverFirstName}</div>,
+            receiverLastName: <div>{packageInfo.receiverLastName}</div>,
             phoneNumber: <div>{packageInfo.phoneNumber}</div>,
             email: <div>{packageInfo.email}</div>,
             content: <div>{packageInfo.content}</div>,
@@ -128,20 +130,22 @@ const PackageDeliveryStep = (
                         </Dropdown.Button>
                         </Space>
                     </Panel>
-                    <Panel header="Delivery Selection Summary" key="1">
-                        <Table dataSource={deliveryStepSummary}>
+                    <Panel header="Delivery Information Summary" key="1">
+                        <Table dataSource={deliveryStepSummary} pagination={false}>
                             <Column title="Delivery Location" dataIndex="address" key="address" />
                             <Column title="Delivery Speed" dataIndex="speed" key="speed" />
                         </Table>
-                    </Panel>
-                    <Panel header="Review Package Information" key="1">
-                        <Table dataSource={packageInfoStepSummary}>
-                            <Column title="First Name" dataIndex="firstName" key="firstName" />
-                            <Column title="Last Name" dataIndex="lastName" key="lastName" />
-                            <Column title="Email" dataIndex="email" key="email" />
-                            <Column title="Phone Number" dataIndex="phoneNumber" key="phoneNumber" />
+                        <Table dataSource={packageInfoStepSummary} pagination={false}>
+                            <Column title="Sender First Name" dataIndex="senderFirstName" key="senderFirstName" />
+                            <Column title="Sender Last Name" dataIndex="senderLastName" key="senderLastName" />
                             <Column title="Content" dataIndex="content" key="content" />
                             <Column title="Weight" dataIndex="weight" key="weight" />
+                        </Table>
+                        <Table dataSource={packageInfoStepSummary} pagination={false}>
+                            <Column title="Receiver First Name" dataIndex="receiverFirstName" key="receiverFirstName" />
+                            <Column title="Receiver Last Name" dataIndex="receiverLastName" key="receiverLastName" />
+                            <Column title="Receiver Email" dataIndex="email" key="email" />
+                            <Column title="Receiver Phone Number" dataIndex="phoneNumber" key="phoneNumber" />
                         </Table>
                         <p></p>
                         <p>
@@ -180,21 +184,23 @@ const PackageDeliveryStep = (
                 style={{width: 1000, left: 20}}
             >
                 <Collapse bordered={false} defaultActiveKey={['1']}>
-                    <Panel header="Delivery Planning Summary" key="1">
-                        <Table dataSource={deliveryStepSummary}>
+                    <Panel header="Delivery Information Summary" key="1">
+                        <Table dataSource={deliveryStepSummary} pagination={false}>
                             <Column title="Delivery Location" dataIndex="address" key="address" />
                             <Column title="Delivery Speed" dataIndex="speed" key="speed" />
                         </Table>
-                        <Table dataSource={packageInfoStepSummary}>
+                        <Table dataSource={packageInfoStepSummary} pagination={false}>
+                            <Column title="Sender First Name" dataIndex="senderFirstName" key="senderFirstName" />
+                            <Column title="Sender Last Name" dataIndex="senderLastName" key="senderLastName" />
                             <Column title="Content" dataIndex="content" key="content" />
                             <Column title="Weight" dataIndex="weight" key="weight" />
                         </Table>
-                        <Table dataSource={packageInfoStepSummary}>
-                            <Column title="First Name" dataIndex="firstName" key="firstName" />
-                            <Column title="Last Name" dataIndex="lastName" key="lastName" />
-                            <Column title="Email" dataIndex="email" key="email" />
-                            <Column title="Phone Number" dataIndex="phoneNumber" key="phoneNumber" />
-                        </Table>
+                        <Table dataSource={packageInfoStepSummary} pagination={false}>
+                            <Column title="Receiver First Name" dataIndex="receiverFirstName" key="receiverFirstName" />
+                            <Column title="Receiver Last Name" dataIndex="receiverLastName" key="receiverLastName" />
+                            <Column title="Receiver Email" dataIndex="email" key="email" />
+                            <Column title="Receiver Phone Number" dataIndex="phoneNumber" key="phoneNumber" />
+                        </Table>    
                     </Panel>
                     <Panel type="primary" header="Delivery Dispatch" key="1">
                         <Button type="primary" onClick={() => {setDeliveryState(DELIVERY_STATE.DELIVER_PROCESSING)}}>Start Delivery</Button>,

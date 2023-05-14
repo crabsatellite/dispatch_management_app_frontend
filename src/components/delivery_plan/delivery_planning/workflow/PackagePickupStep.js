@@ -197,7 +197,7 @@ const PackagePickupStep = (
                     </Space>
                 </Panel>
                 <Panel header="Pick-up Selection Summary" key="1">
-                    <Table dataSource={summary}>
+                    <Table dataSource={summary} pagination={false}>
                         <Column title="Pick-up Location" dataIndex="address" key="address" />
                         <Column title="Warehouse Location" dataIndex="warehouse" key="warehouse" />
                         <Column title="Dispatcher Type" dataIndex="dispatcher" key="dispatcher" />
@@ -237,7 +237,7 @@ const PackagePickupStep = (
             <Collapse bordered={false} defaultActiveKey={['1']}>
                 <Panel header="Pick-up Planning Summary" key="1">
 
-                    <Table dataSource={summary}>
+                    <Table dataSource={summary} pagination={false}>
                         <Column title="Pick-up Location" dataIndex="address" key="address" />
                         <Column title="Warehouse Location" dataIndex="warehouse" key="warehouse" />
                         <Column title="Dispatcher Type" dataIndex="dispatcher" key="dispatcher" />

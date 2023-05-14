@@ -17,7 +17,6 @@ import {
   UserSwitchOutlined,
   ShoppingOutlined,
   CodeSandboxOutlined,
-  PlayCircleOutlined,
 } from "@ant-design/icons";
 
 // React imports
