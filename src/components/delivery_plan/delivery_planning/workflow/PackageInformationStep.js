@@ -7,125 +7,156 @@
  *  
  */
 
-import { Card, Image } from "antd";
-import React, { useState } from "react";
-import { Form, Button, Input, message } from "antd";
-import { UserOutlined, UsergroupAddOutlined } from "@ant-design/icons";
-import { login } from "../../../../utils/backend_utils";
-
 // Project imports
-import { DELIVERY_STATE } from "./../../../../utils/delivery_plan_utils"
+import { showError, showInfo } from "../../../../utils/dialog_utils";
 
-const PackageInformationStep = ({ deliveryState }) => {
-  const [loading, setLoading] = useState(false);
+// React imports
+import { useEffect, useState } from "react";
 
-  const handleFormSubmit = async (data) => {
-    setLoading(true);
+// Antd imports
+import { Form, Button, Input, Card, Image } from "antd";
+import { EditOutlined, SaveOutlined } from '@ant-design/icons';
 
-    try {
-      await login(data);
-    } catch (error) {
-      message.error(error.message);
-    } finally {
-      setLoading(false);
+const PackageInformationStep = ({ packageInfoDrafted, setPackageInfoDrafted, packageInfo, setPackageInfo}) => {
+
+  const [form, setForm] = useState();
+
+  const handleSavePackageInfo = () => {
+
+    let errorMsg = [];
+    errorMsg.push("Missed Field :  ");
+    if (form.getFieldValue("firstName") === undefined || form.getFieldValue("firstName") === "") {
+      errorMsg.push("First Name");
     }
-  };
+    if (form.getFieldValue("lastName") === undefined || form.getFieldValue("lastName") === "") {
+      if (errorMsg.length >= 2) {
+        errorMsg.push(" , ");
+      }
+      errorMsg.push("Last Name");
+    }
+    if (form.getFieldValue("phoneNumber") === undefined || form.getFieldValue("phoneNumber") === "") {
+      if (errorMsg.length >= 2) {
+        errorMsg.push(" , ");
+      }
+      errorMsg.push("Phone Number");
+    }
+    if (form.getFieldValue("email") === undefined || form.getFieldValue("email") === "") {
+      if (errorMsg.length >= 2) {
+        errorMsg.push(" , ");
+      }
+      errorMsg.push("Email");
+    }
+    if (form.getFieldValue("content") === undefined || form.getFieldValue("content") === "") {
+      if (errorMsg.length >= 2) {
+        errorMsg.push(" , ");
+      }
+      errorMsg.push("Content");
+    }
+    if (form.getFieldValue("weight") === undefined || form.getFieldValue("weight") === "") {
+      if (errorMsg.length >= 2) {
+        errorMsg.push(" , ");
+      }
+      errorMsg.push("Weight");
+    }
+    errorMsg.push(" . ");
+
+    if (errorMsg.length > 2) {
+      showError("Error!", errorMsg);
+      return;
+    }
+    
+    setPackageInfo(packageInfo => ({
+      ...packageInfo,
+      ...{"firstName": form.getFieldValue("firstName")},
+      ...{"lastName": form.getFieldValue("lastName")},
+      ...{"phoneNumber": form.getFieldValue("phoneNumber")},
+      ...{"email": form.getFieldValue("email")},
+      ...{"content": form.getFieldValue("content")},
+      ...{"weight": form.getFieldValue("weight")},
+    }));
+    setPackageInfoDrafted(true);
+  }
+
+  const renderButton = () => {
+
+    return packageInfoDrafted ? 
+    <Button 
+      onClick={() => setPackageInfoDrafted(false)}
+      style={{ width: "40%" }}
+      icon={<EditOutlined />}
+    >
+      Modify
+    </Button> 
+    : 
+    <Button 
+      type="primary"
+      onClick={() => handleSavePackageInfo()}
+      style={{ width: "40%" }}
+      icon={<SaveOutlined />}
+    >
+      Save
+    </Button>
+  }
 
   return (
-    <Card title="PACKAGE INFORMATION" style={{ width: 800, left: 20 }}>
-      <Form onFinish={handleFormSubmit}>
+    <Card title="PACKAGE INFORMATION" style={{width: 1000, left: 20}}>
+      <Form ref={ref => setForm(ref)}>
         <Form.Item
           style={{ width: 350 }}
+          name="firstName"
           label="First Name:"
-          rules={[
-            {
-              required: true,
-              message: "Please input First Name!",
-            },
-          ]}
+          initialValue={packageInfo.firstName}
         >
-          <Input disabled={loading} />
+          <Input disabled={packageInfoDrafted} />
         </Form.Item>
         <Form.Item
           style={{ width: 350 }}
           label="Last Name:"
-          rules={[
-            {
-              required: true,
-              message: "Please input Last Name!",
-            },
-          ]}
+          name="lastName"
+          initialValue={packageInfo.lastName}
         >
-          <Input disabled={loading} />
+          <Input disabled={packageInfoDrafted} />
         </Form.Item>
         <Form.Item
           style={{ width: 350 }}
           label="Phone Number:"
-          rules={[
-            {
-              required: true,
-              message: "Please input Contact!",
-            },
-          ]}
+          name="phoneNumber"
+          initialValue={packageInfo.phoneNumber}
         >
-          <Input disabled={loading} />
+          <Input disabled={packageInfoDrafted} />
         </Form.Item>
         <Form.Item
           style={{ width: 350 }}
           label="Email:"
-          rules={[
-            {
-              required: true,
-              message: "Please input Email!",
-            },
-          ]}
+          name="email"
+          initialValue={packageInfo.email}
         >
-          <Input disabled={loading} />
+          <Input disabled={packageInfoDrafted} />
         </Form.Item>
         <Form.Item
           style={{ width: 350 }}
           label="Content:"
-          rules={[
-            {
-              required: true,
-              message: "Please input Content!",
-            },
-          ]}
+          name="content"
+          initialValue={packageInfo.content}
         >
-          <Input disabled={loading} />
+          <Input disabled={packageInfoDrafted} />
         </Form.Item>
         <Form.Item
           style={{ width: 350 }}
           label="Weight:"
-          rules={[
-            {
-              required: true,
-              message: "Please input Weight!",
-            },
-          ]}
+          name="weight"
+          initialValue={packageInfo.weight}
         >
-          <Input disabled={loading} />
+          <Input disabled={packageInfoDrafted} />
         </Form.Item>
         <Form.Item
           label="Shipping Address:"
-          rules={[
-            {
-              required: true,
-              message: "Please input Shipping Address!",
-            },
-          ]}
+          name="shippingAddress"
         >
-          <Input disabled={loading} />
+          <Input disabled={packageInfoDrafted} />
         </Form.Item>
         <Form.Item>
-          <Button
-            loading={loading}
-            type="primary"
-            htmlType="submit"
-            style={{ width: "40%" }}
-          >
-            Confirm
-          </Button>
+          {renderButton()}
         </Form.Item>
       </Form>
       <Image className="image" width={200} src={"./box.png"} />

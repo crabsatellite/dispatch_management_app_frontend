@@ -26,8 +26,10 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import { useEffect, useState } from "react";
 
 // Antd imports
-import { Row, Col, Image } from "antd";
+import { Row, Col, Image, Result, Typography, Button } from "antd";
+import { LoginOutlined } from '@ant-design/icons';
 
+const { Text } = Typography;
 const DeliveryPlanning = ({authed, setNavigationKey}) => {
   
   /*
@@ -91,6 +93,8 @@ const DeliveryPlanning = ({authed, setNavigationKey}) => {
   * UI Workflow properties -----------------------------------------------------------------------------------------------------
   */
   const [currentStep, setCurrentStep] = useState(0); 
+  const [packageInfoDrafted, setPackageInfoDrafted] = useState(false);
+  const [packageInfo, setPackageInfo] = useState({});
   
   useEffect(() => {
     if (authed) {
@@ -99,6 +103,8 @@ const DeliveryPlanning = ({authed, setNavigationKey}) => {
   }, [authed]);
 
   return (
+
+    authed ? 
     <Row>
       <Col span={12} class="parent">
         <div class="parent">
@@ -151,6 +157,8 @@ const DeliveryPlanning = ({authed, setNavigationKey}) => {
             pickupAddress={pickupAddress}
             deliveryAddress={deliveryAddress} 
             deliveryStartLocationKey={deliveryStartLocationKey}
+            packageInfo={packageInfo}
+            packageInfoDrafted={packageInfoDrafted}
             setNavigationKey={setNavigationKey}
             setPickupSpeed={setPickupSpeed}
             setCurrentStep={setCurrentStep}
@@ -160,8 +168,28 @@ const DeliveryPlanning = ({authed, setNavigationKey}) => {
             setDeliveryStartLocationKey={setDeliveryStartLocationKey} 
             setDispatcherType={setDispatcherType}
             setDispatchProgress={setDispatchProgress}
+            setPackageInfoDrafted={setPackageInfoDrafted}
+            setPackageInfo={setPackageInfo}
           />
       </Col>
+    </Row>
+    :
+
+    <Row style={{backgroundColor: '#364d79'}}>
+      <Result
+        icon={<Image preview={false} width={350} src={"./login.png"}/>}
+        title={<Text style={{ fontSize: 30, color: "white" }}>
+                  Please login first before getting started on delivery planning . 
+                </Text>}
+        extra={<Button 
+          type="primary" 
+          icon={<LoginOutlined/>}
+          onClick={() => setNavigationKey("3")}
+          >
+          Login
+        </Button>}
+        style={{marginLeft: 600}}
+      />
     </Row>
   );
 }

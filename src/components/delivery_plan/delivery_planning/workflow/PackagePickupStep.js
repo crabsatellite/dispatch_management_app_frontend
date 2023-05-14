@@ -209,7 +209,7 @@ const PackagePickupStep = (
                         type="primary" 
                         onClick={() => {
                             if (pickupAddress === "-") {
-                                showError("Error!" ,"The pick-up location can not be empty");
+                                showError("Error!" ,"The pick-up location can not be empty . ");
                                 return;
                             }
                             setDeliveryState(DELIVERY_STATE.PICKUP_INITIALIZATION)

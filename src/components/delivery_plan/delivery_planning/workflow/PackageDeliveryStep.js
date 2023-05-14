@@ -20,6 +20,7 @@ const { Panel } = Collapse;
 const { Column } = Table;
 const PackageDeliveryStep = (
         {   deliverySpeed,
+            packageInfo,
             dispatchProgress,
             deliveryAddress,
             dispatcher, 
@@ -28,11 +29,23 @@ const PackageDeliveryStep = (
             setNavigationKey,
             setDeliverySpeed}) => {
 
-    const summary = [
+    const deliveryStepSummary = [
         {
             key: '1',
             address: <div>{deliveryAddress}</div>,
             speed: <div>{deliverySpeed}</div>,
+        },
+    ];
+
+    const packageInfoStepSummary = [
+        {
+            key: '1',
+            firstName: <div>{packageInfo.firstName}</div>,
+            lastName: <div>{packageInfo.lastName}</div>,
+            phoneNumber: <div>{packageInfo.phoneNumber}</div>,
+            email: <div>{packageInfo.email}</div>,
+            content: <div>{packageInfo.content}</div>,
+            weight: <div>{packageInfo.weight}</div>,
         },
     ];
 
@@ -116,12 +129,20 @@ const PackageDeliveryStep = (
                         </Space>
                     </Panel>
                     <Panel header="Delivery Selection Summary" key="1">
-                        <Table dataSource={summary}>
+                        <Table dataSource={deliveryStepSummary}>
                             <Column title="Delivery Location" dataIndex="address" key="address" />
                             <Column title="Delivery Speed" dataIndex="speed" key="speed" />
                         </Table>
                     </Panel>
                     <Panel header="Review Package Information" key="1">
+                        <Table dataSource={packageInfoStepSummary}>
+                            <Column title="First Name" dataIndex="firstName" key="firstName" />
+                            <Column title="Last Name" dataIndex="lastName" key="lastName" />
+                            <Column title="Email" dataIndex="email" key="email" />
+                            <Column title="Phone Number" dataIndex="phoneNumber" key="phoneNumber" />
+                            <Column title="Content" dataIndex="content" key="content" />
+                            <Column title="Weight" dataIndex="weight" key="weight" />
+                        </Table>
                         <p></p>
                         <p>
                             <CodeSandboxOutlined/>
@@ -133,7 +154,7 @@ const PackageDeliveryStep = (
                             type="primary" 
                             onClick={() => {
                                 if (deliveryAddress === "-") {
-                                    showError("Error!" ,"The delivery location can not be empty");
+                                    showError("Error!" ,"The delivery location can not be empty . ");
                                     return;
                                 }
                                 setDeliveryState(DELIVERY_STATE.DELIVER_INITIALIZATION)
@@ -160,9 +181,19 @@ const PackageDeliveryStep = (
             >
                 <Collapse bordered={false} defaultActiveKey={['1']}>
                     <Panel header="Delivery Planning Summary" key="1">
-                        <Table dataSource={summary}>
+                        <Table dataSource={deliveryStepSummary}>
                             <Column title="Delivery Location" dataIndex="address" key="address" />
                             <Column title="Delivery Speed" dataIndex="speed" key="speed" />
+                        </Table>
+                        <Table dataSource={packageInfoStepSummary}>
+                            <Column title="Content" dataIndex="content" key="content" />
+                            <Column title="Weight" dataIndex="weight" key="weight" />
+                        </Table>
+                        <Table dataSource={packageInfoStepSummary}>
+                            <Column title="First Name" dataIndex="firstName" key="firstName" />
+                            <Column title="Last Name" dataIndex="lastName" key="lastName" />
+                            <Column title="Email" dataIndex="email" key="email" />
+                            <Column title="Phone Number" dataIndex="phoneNumber" key="phoneNumber" />
                         </Table>
                     </Panel>
                     <Panel type="primary" header="Delivery Dispatch" key="1">

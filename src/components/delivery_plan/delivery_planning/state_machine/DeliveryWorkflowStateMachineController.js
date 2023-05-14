@@ -12,7 +12,7 @@ import PackagePickupStep from '../workflow/PackagePickupStep';
 import PackageDeliveryStep from '../workflow/PackageDeliveryStep';
 import PackageInformationStep from '../workflow/PackageInformationStep';
 import { DELIVERY_STATE, DISPATCHER_START_LOCATION_KEY, DISPATCHER_TYPE, DISPATCH_SPEED_TYPE } from '../../../../utils/delivery_plan_utils';
-import { showInfo, showSuccess } from '../../../../utils/dialog_utils';
+import { showInfo, showSuccess, showWarning } from '../../../../utils/dialog_utils';
 
 // Antd imports
 import { Button, Steps } from 'antd';
@@ -32,6 +32,8 @@ const DeliveryWorkflowStateMachineController = (
     currentStep,
     dispatcher, 
     deliveryState, 
+    packageInfoDrafted,
+    packageInfo,
     setDispatcher, 
     setCurrentStep,
     setDeliveryState, 
@@ -41,7 +43,9 @@ const DeliveryWorkflowStateMachineController = (
     setPickupSpeed,
     setDeliverySpeed,
     setDispatcherType,
-    setDispatchProgress}) => {
+    setDispatchProgress,
+    setPackageInfoDrafted,
+    setPackageInfo}) => {
 
     const simulateDispatcherProgress = (speed) => {
       let speedFactor = 1;
@@ -78,7 +82,10 @@ const DeliveryWorkflowStateMachineController = (
       {
           title: 'Package Information',
           content: <PackageInformationStep 
-                      deliveryState={deliveryState}
+                      packageInfo={packageInfo}
+                      packageInfoDrafted={packageInfoDrafted}
+                      setPackageInfoDrafted={setPackageInfoDrafted}
+                      setPackageInfo={setPackageInfo}
                     />,
           icon: <CodeSandboxOutlined />,
       },
@@ -102,6 +109,7 @@ const DeliveryWorkflowStateMachineController = (
           title: 'Package Delivery',
           content: <PackageDeliveryStep 
                       dispatcher={dispatcher} 
+                      packageInfo={packageInfo}
                       deliveryState={deliveryState} 
                       deliverySpeed={deliverySpeed}
                       dispatchProgress={dispatchProgress}
@@ -136,13 +144,21 @@ const DeliveryWorkflowStateMachineController = (
           setDispatchProgress(0);
           if (currentStep === 1) {
             setCurrentStep(currentStep + 1);
-            showInfo("Information", "The dispatcher has arrived the pick-up location, please review package information before handing over your package to dispatcher");
           }
+          showInfo("Information", "The dispatcher has arrived the pick-up location . ");  
           break;
   
         case DELIVERY_STATE.DELIVER_FINISHED:
           setDispatchProgress(0);
-          showSuccess("Confirmation", "The package is delivered successfully!");
+          showSuccess("Confirmation", "The package is delivered successfully ! ");
+          // packageInfo
+          // pickupAddress
+          // pickupSpeed
+          // deliveryAddress
+          // deliverySpeed
+          // deliveryStartLocationKey
+          // dispatcher
+          // deliveryState
           break;  
   
         case DELIVERY_STATE.RESET_ROUTE:
@@ -177,7 +193,17 @@ const DeliveryWorkflowStateMachineController = (
             || deliveryState == DELIVERY_STATE.DELIVER_INITIALIZATION 
             || deliveryState == DELIVERY_STATE.DELIVER_PROCESSING 
             || deliveryState == DELIVERY_STATE.DELIVER_FINISHED)) && (
-            <Button style={{marginLeft: 22}} type="primary" onClick={() => setCurrentStep(2)}>
+            <Button 
+              style={{marginLeft: 22}} 
+              type="primary" 
+              onClick={() => {
+                  if (!packageInfoDrafted) {
+                    showWarning("Warning", "You need to save package information by clicking save button before proceeding further . ");
+                    return;
+                  }
+                  setCurrentStep(2)}
+                }
+              >
               Proceed To Delivery Portal
             </Button>)
           }
@@ -189,8 +215,8 @@ const DeliveryWorkflowStateMachineController = (
               style={{marginLeft: 22}} 
               type="primary" 
               onClick={() => {
-                if (!authed) {
-                  showInfo("Information", "You need to login before proceeding further!");
+                if (!packageInfoDrafted) {
+                  showWarning("Warning", "You need to save package information by clicking save button before proceeding further . ");
                   return;
                 }
                 setCurrentStep(1)}
