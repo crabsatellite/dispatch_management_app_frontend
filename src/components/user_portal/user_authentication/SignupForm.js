@@ -32,10 +32,28 @@ const SignupButton = () => {
   };
 
   const handleFormSubmit = async (data) => {
+    
+    let errorMsg = [];
+    errorMsg.push("Missed Field :  ");
+    if (data.username === undefined || data.username === "") {
+      errorMsg.push("Username");
+    }
+    if (data.password === undefined || data.password === "") {
+      if (errorMsg.length >= 2) {
+        errorMsg.push(" , ");
+      }
+      errorMsg.push("Password");
+    }
+    errorMsg.push(" . ");
+    if (errorMsg.length > 2) {
+      showError("Error!", errorMsg);
+      return;
+    }
     setLoading(true);
 
     try {
       await register(data);
+      
       showSuccess("Success", "Sign up successfully ! ");
       setModalVisible(false);
     } catch (error) {
@@ -63,12 +81,6 @@ const SignupButton = () => {
         <Form onFinish={handleFormSubmit}>
           <Form.Item
             name="username"
-            rules={[
-              {
-                required: true,
-                message: "Please input your Username!",
-              },
-            ]}
           >
             <Input
               disabled={loading}
@@ -78,12 +90,6 @@ const SignupButton = () => {
           </Form.Item>
           <Form.Item
             name="password"
-            rules={[
-              {
-                required: true,
-                message: "Please input your Password!",
-              },
-            ]}
           >
             <Input.Password disabled={loading} placeholder="Password" />
           </Form.Item>

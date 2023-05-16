@@ -16,14 +16,12 @@ import { showInfo, showSuccess, showWarning, showError } from '../../../../utils
 import { uploadDelivery } from '../../../../utils/backend_utils';
 
 // Antd imports
-import { Button, Steps } from 'antd';
-import { CodeSandboxOutlined, RocketOutlined, AimOutlined } from '@ant-design/icons';
+import { Button, Steps, Modal, Space, Image } from 'antd';
+import { CodeSandboxOutlined, RocketOutlined, AimOutlined, LoadingOutlined, InfoCircleOutlined } from '@ant-design/icons';
 
 // React imports
 import { useEffect, useState } from 'react';
 
-// Mock imports
-import { v4 as uuidv4 } from 'uuid';
 
 
 const DeliveryWorkflowStateMachineController = (
@@ -56,6 +54,7 @@ const DeliveryWorkflowStateMachineController = (
 
     const handleUploadDelivery = async (credential) => {
       setLoading(true);
+      
       try {
         await uploadDelivery(credential);
         showSuccess("Success", "Your delivery plan data is saved successfully! ");
@@ -174,7 +173,6 @@ const DeliveryWorkflowStateMachineController = (
   
         case DELIVERY_STATE.DELIVER_FINISHED:
           setDispatchProgress(0);
-          showSuccess("Confirmation", "The package is delivered successfully ! ");
 
           let credential = {}
           const deliveryInfo = {
@@ -236,6 +234,20 @@ const DeliveryWorkflowStateMachineController = (
 
     return (
       <>
+        <Modal
+          title="Info"
+          visible={loading}
+          footer={null}
+          closable={false}
+          bodyStyle={{ padding: 0 }}
+          icon={<InfoCircleOutlined />}
+        >
+          <Space>
+              <Image preview={false} width={150} src={"./cloud-database.png"} />
+              <LoadingOutlined/>
+              Your delivery plan data is saving ...
+          </Space>
+        </Modal>
         <Steps current={currentStep} items={items} style={{marginLeft: 20}}/>
         <div style={{lineHeight: '700px', textAlign: 'center', marginTop: 16,}}>{steps[currentStep].content}</div>
         <div style={{ marginTop: 24 }}>

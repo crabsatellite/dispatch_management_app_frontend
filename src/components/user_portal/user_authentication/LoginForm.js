@@ -42,6 +42,23 @@ const LoginForm = ({ setAuthed }) => {
   const [loading, setLoading] = useState(false);
 
   const handleFormSubmit = async (data) => {
+
+    let errorMsg = [];
+    errorMsg.push("Missed Field :  ");
+    if (data.username === undefined || data.username === "") {
+      errorMsg.push("Username");
+    }
+    if (data.password === undefined || data.password === "") {
+      if (errorMsg.length >= 2) {
+        errorMsg.push(" , ");
+      }
+      errorMsg.push("Password");
+    }
+    errorMsg.push(" . ");
+    if (errorMsg.length > 2) {
+      showError("Error!", errorMsg);
+      return;
+    }
     setLoading(true);
 
     try {
@@ -50,7 +67,7 @@ const LoginForm = ({ setAuthed }) => {
       setAuthed(true);
       showSuccess("Success", "Login successfully ! ");
     } catch (error) {
-      showError("Error!", "Fail to login . ");
+      showError("Error!", "Fail to login . Double check your username or password");
     } finally {
       setLoading(false);
     }
@@ -90,12 +107,6 @@ const LoginForm = ({ setAuthed }) => {
               <Form onFinish={handleFormSubmit}>
                 <Form.Item
                   name="username"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Username!",
-                    },
-                  ]}
                 >
                   <Input
                     disabled={loading}
@@ -105,12 +116,6 @@ const LoginForm = ({ setAuthed }) => {
                 </Form.Item>
                 <Form.Item
                   name="password"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your Password!",
-                    },
-                  ]}
                 >
                   <Input.Password disabled={loading} placeholder="Password" />
                 </Form.Item>
