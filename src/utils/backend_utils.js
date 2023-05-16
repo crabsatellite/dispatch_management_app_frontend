@@ -6,13 +6,39 @@
  * @date Year-Month-Day  
  *  
  */
-export const login = () => {
-  
-}
 
-export const register = () => {
-  
-}; 
+export const login = (credential) => {
+  const loginUrl = "api/v1/users/login";
+  console.log(credential);
+  return fetch(loginUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credential),
+  }).then((response) => {
+    if (response.status !== 200) {
+      throw Error("Fail to log in");
+    }
+    return response.json();
+  });
+};
+
+export const register = (credential) => {
+  const registerUrl = "api/v1/users/register";
+  console.log(credential);
+  return fetch(registerUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credential),
+  }).then((response) => {
+    if (response.status !== 200) {
+      throw Error("Fail to register");
+    }
+  });
+};
 
 export const uploadDelivery = (credential) => {
 

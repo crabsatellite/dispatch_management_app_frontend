@@ -55,6 +55,8 @@ const UserPortalPage = ({ authed, setAuthed, setNavigationKey }) => {
                   onClick={() => {
                       setAuthed(false)
                       localStorage.removeItem("mock_data");
+                      localStorage.removeItem("token");
+                      console.log("The user token is: " + localStorage.getItem("token") + " after logout");
                     }
                   }
                 >

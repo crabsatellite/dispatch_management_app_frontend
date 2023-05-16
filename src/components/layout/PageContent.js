@@ -16,14 +16,20 @@ import DeliveryPlanPage from "../delivery_plan/DeliveryPlanPage";
 import { Layout } from "antd";
 
 // React imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const { Content } = Layout;
 
 const PageContent = ({ navigationKey, setNavigationKey }) => {
-  // TODO: change it to false after backend API integration for login is completed,
-  // since unauthenticated status might blocks some testing on delivery plan page
-  const [authed, setAuthed] = useState(true);
+  
+  const [authed, setAuthed] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("token") != null) {
+      console.log("The user token is: " + localStorage.getItem("token"));
+      setAuthed(true);
+    }
+  }, []);
 
   const renderItem = (key) => {
     if (key === "1") {

@@ -45,7 +45,8 @@ const LoginForm = ({ setAuthed }) => {
     setLoading(true);
 
     try {
-      await login(data);
+      const response = await login(data);
+      localStorage.setItem("token", response.token);
       setAuthed(true);
       showSuccess("Success", "Login successfully ! ");
     } catch (error) {
