@@ -242,10 +242,10 @@ const DeliveryWorkflowStateMachineController = (
           bodyStyle={{ padding: 0 }}
           icon={<InfoCircleOutlined />}
         >
-          <Space>
+          <Space align='center'>
               <Image preview={false} width={150} src={"./cloud-database.png"} />
               <LoadingOutlined/>
-              Your delivery plan data is saving ...
+              Your delivery plan data is saving, please wait ...
           </Space>
         </Modal>
         <Steps current={currentStep} items={items} style={{marginLeft: 20}}/>
