@@ -25,32 +25,35 @@ const OrderTrackingHistory = ({setViewOrderTrackingHistory}) => {
            2nd way: developer can set the mock data here directly, e.g.
 
             mockData = {
-                userId: 1,
-                deliveryDate: "2023-04-29T12:00:00.000Z",
-                senderAddress: {
-                    name: "John Doe",
-                    street: "123 Main St, New York, NY, 10001, USA",
+                "deliveryInfo": {
+                    "deliveryDate": "2023-05-16",
+                    "senderName": "John Doe",
+                    "senderAddress":"123 Main St, New York, NY, 10001, USA",
+                    "receiverName": "Smith Doe",
+                    "receiverAddress":"123 Main St, New York, NY, 10001, USA",
+                    "receiverEmail":"dummy@dummy.com",
+                    "receiverPhoneNumber":"123-456-7890",
+                    "warehouseId": "2",
+                    "courierId": "1",
+                    "pickUpSpeed": "priority",
+                    "deliverySpeed": "first_class"
                 },
-                recipientAddress: {
-                    name: "Jane Smith",
-                    email: : "dummy@dummy.com",
-                    phoneNumber: "123-456-7890",
-                    street: "456 Elm St, Los Angeles, CA, 90001, USA",
+                "deliveryStatus": {
+                    "status": "delivery_finished"
                 },
-                items: [
-                    {
-                        name: "Item 1",
-                        quantity: 2
-                    }
-                ],
-                status: "delivery_finished",
-                warehouseId: "2",
-                courierId: "1",
-                pickupSpeed: "priority"
-                deliverSpeed: "first_class"
-                courierLastPositionLat: 40.74
-                courierLastPositionLng: 70.59
-
+                "location": {
+                    "latitude": "40.74",
+                    "longitude": "70.59"
+                },
+                "deliveryItem": {
+                    "items": [
+                        {
+                            "name": "item1",
+                            "quantity": "12"
+                        }
+                    ]
+                }
+            }
             const json = JSON.stringify(mockData);
             localStorage.setItem("mock_data", json);
         */
@@ -60,21 +63,10 @@ const OrderTrackingHistory = ({setViewOrderTrackingHistory}) => {
             return;
         }
         mockData = JSON.parse(json);
-        console.log(mockData.userId);
-        console.log(mockData.deliveryDate);
-        console.log(mockData.senderAddress.name);
-        console.log(mockData.senderAddress.street);
-        console.log(mockData.recipientAddress.name);
-        console.log(mockData.recipientAddress.street);
-        console.log(mockData.items[0].name);
-        console.log(mockData.items[0].quantity);
-        console.log(mockData.status);
-        console.log(FRONTEND_WAREHOUSE_NAME[mockData.warehouseId].toLowerCase());
-        console.log(FRONTEND_COURIER_NAME[mockData.courierId].toLowerCase());
-        console.log(mockData.pickupSpeed);
-        console.log(mockData.deliverSpeed);
-        console.log(mockData.courierLastPositionLat);
-        console.log(mockData.courierLastPositionLng);
+        console.log(mockData.deliveryInfo);
+        console.log(mockData.deliveryStatus);
+        console.log(mockData.deliveryItem);
+        console.log(mockData.location);
     }, []);
     
     return (<div>

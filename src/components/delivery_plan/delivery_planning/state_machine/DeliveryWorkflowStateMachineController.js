@@ -58,7 +58,7 @@ const DeliveryWorkflowStateMachineController = (
       setLoading(true);
       try {
         await uploadDelivery(credential);
-        showSuccess("Success", "Your delivery data is saved successfully! ");
+        showSuccess("Success", "Your delivery plan data is saved successfully! ");
       } catch (error) {
         showError("Error!", "Fail to save delivery data . ");
       } finally {
@@ -67,36 +67,7 @@ const DeliveryWorkflowStateMachineController = (
     };
 
     const handleUploadDeliveryMock = (credential) => {
-
-      const mockData = {
-        userId: uuidv4(),
-        deliveryDate: credential.deliveryDate,
-        senderAddress: {
-          name: credential.senderName,
-          street: credential.pickupAddress,
-        },
-        recipientAddress: {
-          name: credential.receiverName,
-          email: credential.receiverEmail,
-          phoneNumber:credential.receiverPhoneNumber,
-          street: credential.receiverAddress,
-        },
-        items: [
-          {
-            name: credential.content,
-            quantity:credential.weight, 
-          }
-        ],
-        status: credential.deliveryState,
-        warehouseId: credential.warehouseId,
-        courierId:credential.courierId,
-        pickupSpeed: credential.pickupSpeed,
-        deliverSpeed: credential.deliverySpeed, 
-        courierLastPositionLat: credential.courierLastPositionLat,
-        courierLastPositionLng: credential.courierLastPositionLng,
-      };
-
-      const json = JSON.stringify(mockData);
+      const json = JSON.stringify(credential);
       localStorage.setItem("mock_data", json);
     };
 
@@ -206,35 +177,48 @@ const DeliveryWorkflowStateMachineController = (
           showSuccess("Confirmation", "The package is delivered successfully ! ");
 
           let credential = {}
+          const deliveryInfo = {
+            "deliveryDate": new Date().toJSON(),
+            "senderName": packageInfo.senderFirstName + " " + packageInfo.senderLastName,
+            "senderAddress": pickupAddress,
+            "receiverName": packageInfo.receiverFirstName + " " + packageInfo.receiverLastName,
+            "receiverAddress": deliveryAddress,
+            "receiverEmail": packageInfo.email,
+            "receiverPhoneNumber": packageInfo.phoneNumber,
+            "warehouseId": BACKEND_WAREHOUSE_ID[deliveryStartLocationKey],
+            "courierId": BACKEND_COURIER_ID[dispatcher],
+            "pickUpSpeed": pickupSpeed.toLowerCase(),
+            "deliverySpeed": deliverySpeed.toLowerCase()
+          }
           
-          // Sender
-          credential.senderName = packageInfo.senderFirstName + " " + packageInfo.senderLastName;
-          credential.pickupSpeed = pickupSpeed.toLowerCase();
-          credential.pickupAddress = pickupAddress;
-          credential.weight = packageInfo.weight;
-          credential.content = packageInfo.content;
-          
-          // Receiver
-          credential.receiverName = packageInfo.receiverFirstName + " " + packageInfo.receiverLastName;
-          credential.deliverySpeed = deliverySpeed.toLowerCase();
-          credential.receiverAddress = deliveryAddress;
-          credential.receiverPhoneNumber = packageInfo.phoneNumber;
-          credential.receiverEmail = packageInfo.email;
-          
-          // General
-          credential.deliveryDate = new Date().toJSON();
-          credential.courierLastPositionLat = "";
-          credential.courierLastPositionLng = "";
-          credential.deliveryState = deliveryState.toLowerCase();
-          credential.warehouseId = BACKEND_WAREHOUSE_ID[deliveryStartLocationKey];
-          credential.courierId = BACKEND_COURIER_ID[dispatcher];
-          // handleUploadDelivery(credential);
+          const deliveryStatus = {
+            "status": deliveryState.toLowerCase()
+          }
+
+          const location = {
+            "latitude": 0.0,
+            "longitude": 0.0
+          }
+
+          const deliveryItem = {
+            "items": [
+              {
+                "name": packageInfo.content,
+                "quantity": packageInfo.weight
+              }
+            ]
+          }
+          credential.deliveryInfo = deliveryInfo;
+          credential.deliveryStatus = deliveryStatus;
+          credential.deliveryItem = deliveryItem;
+          credential.location = location;
+          handleUploadDelivery(credential);
           handleUploadDeliveryMock(credential);
           break;  
-  
-        case DELIVERY_STATE.RESET_ROUTE:
-          if (currentStep === 2) {
-            setCurrentStep(0);
+          
+          case DELIVERY_STATE.RESET_ROUTE:
+            if (currentStep === 2) {
+              setCurrentStep(0);
           }
           setDeliveryStartLocationKey(DISPATCHER_START_LOCATION_KEY.LOCATION_A);
           setDispatcherType(DISPATCHER_TYPE.ROBOT);
