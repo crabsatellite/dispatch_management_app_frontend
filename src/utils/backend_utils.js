@@ -53,7 +53,7 @@ export const uploadDelivery = (credential) => {
       },
       body: JSON.stringify(credential),
     }).then((response) => {
-      if (response.status !== 406) {
+      if (response.status !== 200) {
         throw Error("Fail to upload delivery plan data");
       }
     });
