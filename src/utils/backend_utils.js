@@ -59,8 +59,7 @@ export const uploadDelivery = (credential) => {
     });
 }; 
 
-export const getDelivery = () => {
+export const getDelivery = (credential) => {
 
   // TODO: Huanjie
-  
 }; 

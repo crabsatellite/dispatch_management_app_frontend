@@ -42,7 +42,7 @@ const UserPortalPage = ({ authed, setAuthed, setNavigationKey }) => {
                   solution for you !
                 </Text>
               }
-              style={{ marginLeft: 550 }}
+              style={{ marginLeft: 650 }}
             />
           </Row>
           <Row span={12}>
