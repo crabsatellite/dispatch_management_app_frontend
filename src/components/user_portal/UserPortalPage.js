@@ -20,12 +20,20 @@ import {
 } from "@ant-design/icons";
 
 // React imports
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const { Text } = Typography;
 const UserPortalPage = ({ authed, setAuthed, setNavigationKey }) => {
-  const [viewOrderTrackingHistory, setViewOrderTrackingHistory] =
-    useState(false);
+  const [viewOrderTrackingHistory, setViewOrderTrackingHistory] = useState(
+    JSON.parse(localStorage.getItem("viewOrderTrackingHistory")) || false
+  );
+
+  useEffect(() => {
+    localStorage.setItem(
+      "viewOrderTrackingHistory",
+      JSON.stringify(viewOrderTrackingHistory)
+    );
+  }, [viewOrderTrackingHistory]);
 
   const renderContent = () => {
     if (!authed) {
@@ -53,12 +61,15 @@ const UserPortalPage = ({ authed, setAuthed, setNavigationKey }) => {
                   icon={<UserSwitchOutlined />}
                   type="primary"
                   onClick={() => {
-                      setAuthed(false)
-                      localStorage.removeItem("mock_data");
-                      localStorage.removeItem("token");
-                      console.log("The user token is: " + localStorage.getItem("token") + " after logout");
-                    }
-                  }
+                    setAuthed(false);
+                    localStorage.removeItem("mock_data");
+                    localStorage.removeItem("token");
+                    console.log(
+                      "The user token is: " +
+                        localStorage.getItem("token") +
+                        " after logout"
+                    );
+                  }}
                 >
                   Logout
                 </Button>
