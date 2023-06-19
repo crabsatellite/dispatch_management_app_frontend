@@ -2,6 +2,8 @@
 
 Welcome to the frontend repository of the Dispatch Management Application! This project is a comprehensive system designed to manage and monitor the flow of deliveries within a logistics operation. The backend code can be found [here](https://github.com/crabsatellite/DispatchManagementApp_backend).
 
+#### Demo Link: https://drive.google.com/file/d/1rJrNQ1C9xRBCGVX9M4t7-wN1H8s_AmHf/view?usp=drive_link
+
 ## Tech Stack
 
 The frontend is developed using ReactJS and Ant Design, providing a dynamic and user-friendly interface.
