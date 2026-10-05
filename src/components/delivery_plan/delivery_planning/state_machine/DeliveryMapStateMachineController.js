@@ -139,7 +139,7 @@ const DeliveryMapStateMachineController = (
   };
 
   useEffect(() => {
-    Geocode.setApiKey("AIzaSyCz5OF-rGLoXBxBJthfwawYJfLpLN1vfBw");
+    Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
     Geocode.setRegion("us");
     Geocode.setLanguage("en");
     setMap(leafletMap);
